@@ -1,0 +1,128 @@
+<%if !@no_data_avaliable%> 
+<% country_unique_listen = @listen_medias.select(:device_access_id).map(&:device_access_id).uniq.collect{|i| i.to_s} %>
+<% country_unique_listen.each do |listen_media| %>
+  <% @total_listen_count = [] if @total_listen_count.blank? %>
+  <% country_listen = get_country(listen_media) rescue nil %>
+  <% unless country_listen.blank? %>
+    <% listen_count = get_listen_count(listen_media, @listen_medias) rescue nil%>
+    <% @total_listen_count.push(listen_count) %>
+  <%end%>
+<%end%>
+<% country_list = @device_accesses.pluck(:access_country).uniq.compact %>
+<% city_list = @device_accesses.pluck(:access_city).uniq.compact %>
+<% total_records =@device_accesses.count %>
+<% country_stat_hash = get_country_statistics_report(country_list,@device_accesses) rescue nil%>
+<% city_stat_hash = get_city_statistics_report(city_list, @device_accesses) rescue nil%>
+<% city_stat_hash %>
+<%end%>
+    <div class="container container-fix">
+      <!--
+        <div class="row">
+            <div class="col-sm-12">
+                <h2 class="heading-title text-left">
+                    Statistics
+                </h2>
+            </div>
+        </div> -->
+
+
+      <!--========================   Heading End  ======================-->
+    
+      <div class="row">
+            <div class="col-xs-12 col-sm-4 col-md-3 custom-width">
+                <img alt="" class="logo-fix" src="<%= cookies[:logo_path] %>" />
+            </div>
+          <div class="col-xs-12 col-sm-8 col-md-9">
+                <h2 class="heading-title text-left subdomain_title">
+                  <% if @can_update%>
+                    <%= current_user.church_name.titlecase %> Media Store<small>&nbsp;<a href = "/my_account">Update your site's info</a></small>
+                  <%else%>
+                    <%= subdomain_name.titleize %> Media Store
+                  <%end%>
+                </h2>
+              <p>
+                  Your Online Church Media Site: <a href="<%=request.base_url%>"><%=request.base_url%></a>
+              </p>
+            </div>
+        </div>
+
+    <div class="the_tabs">
+      <%= render 'the_tabs' %>
+    <div>
+      
+    <!--========================   Upload  Start   ======================-->
+   
+    <div class="row">
+        <div class="col-sm-12">
+            <a href="/get_statistic_overview" class="btn btn-default">Overview</a>
+            <a href="/device_statistic" class="btn btn-default">Devices </a>
+            <a href="/get_location_report" class="btn btn-info">Location</a>
+        </div>
+    </div>
+    <%if @no_data_avaliable%> 
+        <p class="text-center">
+          There is not data to be shown in statistics.
+        </p>
+
+    <%else%>
+    <div class="row">
+        <div class="col-sm-9">
+            <h2 class="" style="margin-bottom: 25px;">
+                   Location
+                </h2>
+        </div>
+        <div class="col-sm-3">
+            <div class="form-group" style=" margin-top: 20px;">
+                <label>Location From</label>
+                  <%=select_tag "device_statistics", options_for_select([ "Last 7 Days", "Last 14 Days", "Last 30 Days" ], "Last 7 Days"),:class=>"form-control"%>  
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="table-responsive">
+                <table style="width:100%;" class="table table-bordered play_count">
+                    <%= render "country_play_count"%>
+                </table>
+            </div>  
+        </div>   
+    </div>
+    
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h2>Top Countries </h2>
+                    <div class="table-responsive country">
+                      <%= render "country_stats"%>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-sm-6">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h2>Top Cities </h2>
+                    <div class="table-responsive city">
+                       <%= render "city_stats"%>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--========================   Upload   End  ======================-->
+    
+<%end%>
+</div>
+</div>
+</div>
+
+<script>
+$(".odd").find("tr:odd").css("background-color","#FFF5EB")
+$(".odd1").find("tr:even").css("background-color","#FFF5EB")
+</script>
+
+<%= javascript_include_tag "device_accesses.js","bootstrap.file-input.js", "bootstrap-colorpicker.js", "bootstrap-datetimepicker.min.js", "bootstrap-hover-dropdown.js", "bootstrap-tabdrop.js", "ekko-lightbox.js", "icheck.min.js", "jquery.raty.js", "jquery.videoBG.js", "summernote.min.js", "my_account.js" %>
+
+<%=stylesheet_link_tag "device_accesses.css"%>

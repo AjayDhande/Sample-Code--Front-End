@@ -1,0 +1,69 @@
+ <div class="container container-fix contact-background">
+        <div class="row">
+            <!--========================   Heading Start  ======================-->
+            <div class="col-sm-12">
+                <h2 class="heading-title text-left" style="margin-top: 20px;">
+                    Contact Us
+                </h2>
+            </div>
+        </div>
+      <!--========================   Heading End  ======================-->
+    <div class="row">
+            <div class="col-sm-12" style="margin-bottom: 30px;">
+                <p>
+                    We are here to answer any questions you may have about our Online Church Media experience. Reach out to us and we'll respond as soon as we can.   
+                </p>
+                <p>
+                    Even if there is something you have always wanted to experience and can't find it on Online Church Media, let us know and we promise we'll do our best to look into it and find a solution that works best for you.
+                </p>
+                <p>
+                    <b>Email</b><a href="#" >: questions@onlinechurchmedia.com</a><br>
+                    <b>Telephone</b>: (424) 333-0706
+                </p>
+            </div>
+
+            <div class="col-sm-6">
+                <form action="/contact_mails" class="form-horizontal bv-form" method="post" id="contact_form">
+                    <div class="form-group">
+                        <label class="required">Name</label>
+                        <input type="text" name="name" placeholder="name" class="form-control" id ="username">
+                    </div>
+                    <div class="form-group">
+                        <label class="required">Email</label>
+                        <input type="text" name="email" placeholder="email" class="form-control" id="email">
+                    </div>
+                    <div class="form-group">
+                        <label class="required">Message</label>
+                        <textarea type="text" class="form-control" id="message" placeholder="Message" name="message" value=""><%= %></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="">
+                            <button type="submit" class="btn btn-info">Send</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- <div class="col-sm-6">
+                <p><b>Email</b><a href="#" >: Questions@onlinechurchmedia.com</a></p>
+                <p><b>Telephone</b>: (424) 333-0706</p>
+            </div> -->
+        </div>
+    <!--========================   Upload   End  ======================-->
+</div>
+
+<style type="text/css">
+    .form-horizontal .form-group {
+        margin-right: 0px !important;
+        margin-left: 0px !important; 
+    }
+    .contact-background{
+        background-image: url(<%= asset_path 'contact_header.jpg'%>);
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center 135px;
+    }
+</style>
+
+
+<%= javascript_include_tag  'bootstrap-colorpicker.js', 'bootstrap-datetimepicker.min.js', 'bootstrap-hover-dropdown.js', 'bootstrap-tabdrop.js',  'ekko-lightbox.js', 'icheck.min.js', 'jquery.raty.js', 'summernote.min.js', 'faq.js' %>

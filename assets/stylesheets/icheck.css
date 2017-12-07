@@ -1,0 +1,147 @@
+/*=================================   Checkbox Css Start  ===================================================*/
+/*Adding custom checkbox icons*/
+.checkbox-default {
+	width: 100%;
+	float: left;
+	height: 32px;
+}
+.checkbox-default input {
+	position: absolute;
+	z-index: 999;
+	opacity: 0;
+	cursor: pointer;
+	margin-left: 0 !important;
+}
+.checkbox-default label {
+	position: relative;
+	padding-left: 10px !important;
+	font-size: 14px;
+	cursor: pointer;
+}
+.checkbox-default label:before, .checkbox-default label:after {
+	font-family: FontAwesome;
+	font-size: 25px;
+	/*absolutely positioned*/
+	position: absolute;
+	top: 1px;
+	left: -17px;
+}
+.checkbox-default label:before {
+	content: ''; /*unchecked*/
+	width: 20px;
+	height: 20px;
+	border: 1px solid #ddd;
+}
+.checkbox-default label:hover:before {
+	border-color: #D54E21;
+	transition: all 0.35s;
+}
+.checkbox-default label:after {
+	content: ''; /*checked*/
+	/*checked icon will be hidden by default by using 0 max-width and overflow hidden*/
+	width: 12px;
+	height: 9px;
+	border: solid #fff;
+	left: -13px;
+	top: 4px;
+	border-width: 0 0 3px 3px;
+	-webkit-transform: rotate(-50deg);
+	-moz-transform: rotate(-50deg);
+	-ms-transform: rotate(-50deg);
+	-o-transform: rotate(-50deg);
+	transform: rotate(-50deg);
+	overflow: hidden;
+	opacity: 0;
+	/*CSS3 transitions for animated effect*/
+	transition: all 0.35s;
+}
+.checkbox-default input[type="checkbox"]:checked + label:before {
+	background: #D54E21;
+	width: 20px;
+	height: 20px;
+	transition: all 0.35s;
+	border-color: #D54E21;
+}
+/*when the user checks the checkbox the checked icon will animate in*/
+.checkbox-default input[type="checkbox"]:checked + label:after {
+	max-width: 25px; /*an arbitratry number more than the icon's width*/
+	opacity: 1; /*for fade in effect*/
+}
+/*adding some colors for fun*/
+.two+label:before, .two+label:after {
+	color: #88A530;
+}
+/*=================================   Checkbox Css End  ===================================================*/
+
+/*=================================   Radio Css End  ===================================================*/
+/*Adding custom checkbox icons*/
+.radio-default {
+	width: 100%;
+	float: left;
+	height: 32px;
+}
+.radio-default input {
+	position: absolute;
+	z-index: 999;
+	opacity: 0;
+	cursor: pointer;
+	margin-left: 0 !important;
+}
+.radio-default label {
+	position: relative;
+	padding-left: 30px;
+	font-size: 14px;
+	cursor: pointer;
+}
+.radio-default label:before, .radio-default label:after {
+	font-family: FontAwesome;
+	font-size: 25px;
+	/*absolutely positioned*/
+	position: absolute;
+	top: 1px;
+	left: 0;
+}
+.radio-default label:before {
+	content: ''; /*unchecked*/
+	width: 20px;
+	height: 20px;
+	border: 1px solid #ddd;
+	border-radius: 12px;
+	-ms-border-radius: 12px;
+	-webkit-border-radius: 12px;
+}
+.radio-default label:hover:before {
+	border-color: #D54E21;
+	transition: all 0.35s;
+}
+.radio-default label:after {
+	content: ''; /*checked*/
+	/*checked icon will be hidden by default by using 0 max-width and overflow hidden*/
+	width: 12px;
+	height: 9px;
+	border: solid #fff;
+	left: 4px;
+	top: 5px;
+	border-width: 0 0 3px 3px;
+	-webkit-transform: rotate(-50deg);
+	-moz-transform: rotate(-50deg);
+	-ms-transform: rotate(-50deg);
+	-o-transform: rotate(-50deg);
+	transform: rotate(-50deg);
+	overflow: hidden;
+	opacity: 0;
+	/*CSS3 transitions for animated effect*/
+	transition: all 0.35s;
+}
+.radio-default input[type="radio"]:checked + label:before {
+	background: #D54E21;
+	width: 20px;
+	height: 20px;
+	transition: all 0.35s;
+	border-color: #D54E21;
+}
+/*when the user checks the checkbox the checked icon will animate in*/
+.radio-default input[type="radio"]:checked + label:after {
+	max-width: 25px; /*an arbitratry number more than the icon's width*/
+	opacity: 1; /*for fade in effect*/
+}

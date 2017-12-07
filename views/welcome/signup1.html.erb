@@ -1,0 +1,194 @@
+<div class="containerfluid1">
+   <!--  <div class="col-sm-12 text-center">
+        <h2 class="heading-title">
+            Let's Do This! Get started on your Home Church plan.
+        </h2>
+        <p class="">
+            Get access to all of your favorite messages in one place.<br>
+            It's the best use of your time and plans start at <br>just $<%#= number_with_precision(minimal_customer_plan, :precision => 2) %>/month.
+        </p>
+        
+        <img class="glob" id="image" src="<%#= asset_path 'SignUp1HeaderImageA.jpg' %>" alt="GET" />
+        <p id="text">dsafdf</p>  
+    </div> -->
+    <div id="container">
+    <img id="image" lass="glob" src="<%= asset_path 'NewSignUp1HeaderImageB.jpg' %>"/>  
+     
+    </div>
+</div>
+
+ <div class="container"> 
+    
+    
+    <!-- <div class="col-sm-12 text-center">&nbsp;</div> -->
+  <div class="row" style="margin-top: 20%;">
+    <div class="col-sm-1"></div>
+    <% if  !device_name.is_mobile? %>
+      <div class="col-sm-6 col-xs-12" style="padding-top: 46px;">
+        <% @popular = most_popular2%>
+        <%if @popular.empty?%>
+          <%images = %w(Image1.jpg Image2.jpg Image3.jpg)%>
+          <%for image in images do %>
+            <div class="item col-xs-12 col-sm-4 col-md-4 custom-width" style="padding-bottom:10px; ">
+              <div class="circular" style="width: 100%;"> 
+                <%=image_tag image, size: "150x150",:class=>"circularclass"%>
+              </div>
+            </div>
+          <%end%>
+        <%else%> 
+          <% @popular.each do |message| %>
+            <% link = "/media_details/#{ApplicationController.crypt(message.id)}"%>
+            <div class="item col-xs-12 col-sm-4 col-md-4 custom-width" style="padding-bottom:10px;">
+              <div class="circular" style="width: 100%;">
+                <a href="<%= link %>"><img class="circularclass group list-group-image border" src="<%= message.media_art.url(:thumb) %>" alt=""></a>
+              </div>
+            </div>
+          <%end%>  
+        <%end%>  
+      </div>
+    <%end%>
+    <div class="col-sm-5 col-xs-12" style="border-left:2px solid #DAD5D5;">
+    <form action="<%= signup_path%>" class="bv-form" method="get" id="signup1" name="form2" >
+        <div class="form-group">
+          <p style="font-size: 30px;"><strong>Two ways to get started</strong></p>
+            <h5 style="padding-left: 15px;">Select an option below, and
+            click continue to create your account.</h5>
+            <label class="checkbox-inline" style="padding-left: 0px;">
+            <input type="hidden" name="name" value="<%= params[:name]%>">
+            <input type="hidden" name="email" value="<%= params[:email]%>">
+            <input type="radio" name="user[role]" value="BUSINESS", id="role2" class="user_role"><strong> Business Account</strong>
+            </label>
+            <p><h5 style="padding-left: 18px;"> This is if you are
+            a Church, Independent Speaker/Preacher, Church Musician or Religious Organization signing up for an account where you will manage sales for your online media.</h5>
+            </p>
+        </div>
+        <div class="form-group">  
+            <label class="checkbox-inline" style="padding-left: 0px;">
+            <input type="radio" name="user[role]" value="CUSTOMER", id="role1" class="user_role"><strong> Customer Account</strong>
+            </label>
+            <p><h5 style="padding-left: 18px;"> This is if you are an individual signing up for a subscription to listen to messages, media, and more.</h5></p>  
+        </div>
+        
+        <div class="form-group">
+          <div class="">
+      <a href="/signup"><button type="submit" class="btn btn-info" id="continue">Continue</button></a>
+          </div>
+        </div>
+      </form>
+  </div>
+  <% if  device_name.is_mobile? %>
+      <div class="col-sm-6 col-xs-12" style="padding-top: 46px;">
+        <% @popular = most_popular2%>
+        <%if @popular.empty?%>
+          <%images = %w(Image1.jpg Image2.jpg Image3.jpg)%>
+          <%for image in images do %>
+            <div class="item col-xs-12 col-sm-4 col-md-4 custom-width" style="padding-bottom:10px; ">
+              <div class="circular" style="width: 100%;"> 
+                <%=image_tag image, size: "150x150",:class=>"circularclass"%>
+              </div>
+            </div>
+          <%end%>
+        <%else%> 
+          <% @popular.each do |message| %>
+            <% link = "/media_details/#{ApplicationController.crypt(message.id)}"%>
+            <div class="item col-xs-12 col-sm-4 col-md-4 custom-width" style="padding-bottom:10px;">
+              <div class="circular" style="width: 100%;">
+                <a href="<%= link %>"><img class="circularclass group list-group-image border" src="<%= message.media_art.url(:thumb) %>" alt=""></a>
+              </div>
+            </div>
+          <%end%>  
+        <%end%>  
+      </div>
+    <%end%>
+  </div>
+</div>
+
+<%= javascript_include_tag  "signup.js" %>
+
+<style type="text/css">
+  .HeaderImage{
+    top: -290px;
+  }
+  #container{
+    /*height:400px;
+    width:400px;*/
+    position:relative;
+}
+#image{    
+    position:absolute;
+    /*left:0;
+    top:0;*/
+}
+#text{
+    z-index: 100;
+    position: absolute;
+    color: white;
+    font-size: 37px;
+    font-weight: bold;
+    right: 471px;
+    top: 19px;
+}
+
+#text2{
+    z-index: 100;
+    position: absolute;
+    color: white;
+    font-size: 20px;
+    /* font-weight: bold; */
+    right: 405px;
+    top: 106px;
+}
+
+.containerfluid1
+  {
+    padding-right: 0px;
+    padding-left: 0px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 90px;
+  }
+
+@media only screen and (max-width: 767px) {
+  .containerfluid1
+  {
+    padding-right: 0px;
+    padding-left: 0px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 74px !important;
+  }
+}
+
+
+  @media only screen and (min-width: 768px) and (max-width: 890px){
+   .containerfluid1
+   {
+    margin-top: 26%;
+   }
+ }
+
+ @media only screen and (min-width: 891px) and (max-width: 991px){
+   .containerfluid1
+   {
+    margin-top: 23%;
+   }
+ }
+
+ @media only screen and (min-width: 992px) and (max-width: 1100px){
+   .containerfluid1
+   {
+    margin-top: 12%;
+   }
+ }
+
+ @media only screen and (min-width: 1101px) and (max-width: 1200px){
+   .containerfluid1
+   {
+    margin-top: 10%;
+   }
+ }
+
+
+</style>
+
+

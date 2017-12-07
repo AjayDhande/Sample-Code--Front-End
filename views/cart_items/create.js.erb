@@ -1,0 +1,7 @@
+$(".cart-text").html("<%= escape_javascript(render 'layouts/add_to_cart') %>");
+<% if params[:redirect] == "1" %>
+  window.location.href = "/carts";
+<% else %>
+  $("#show_error").next("div").next("div").removeClass("container-fix");
+  notify('<%= flash[:title] %>', '<%= flash[:message] %>', '<%= flash[:type] %>');
+<% end %>

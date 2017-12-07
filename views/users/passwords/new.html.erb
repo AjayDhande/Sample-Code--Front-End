@@ -1,0 +1,38 @@
+<!--========================   Breadcrumb  Start  ======================-->
+<div class="container container-fix">
+    <div class="row">
+        
+    <!--========================   Breadcrumb End  ======================-->
+        <!--========================   Heading Start  ======================-->
+        <div class="col-sm-12">
+            <h2 class="heading-title text-left">
+                Forgot Password
+            </h2>
+        </div>
+    </div>
+      <!--========================   Heading End  ======================-->
+    <h5 class="text-left">
+        Enter your login username below. We will send you an email with a link to reset your password.
+    </h5>
+    <!--========================   Sign Up  Start   ======================-->
+    <div class="col-sm-5 col-xs-12">
+      <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: "form-horizontal bv-form", id:"new_user1" }) do |f| %>
+        <div class="form-group">
+          <%= label_tag "username", "Enter Username", class: "required" %><br />
+          <%= f.text_field :username, autofocus: true, placeholder: " Enter Username", class: "form-control", id: "username" %>
+        </div>
+
+        <div class="form-group">
+          <div class="">
+            <input type="reset" value="Cancel" class="btn btn-info">
+            <%= f.submit "Reset My Password", class: "btn btn-info", id: "reset_password" %>
+          </div>
+        </div>
+      <% end %>
+        
+    </div>
+    <!--========================   Sign Up   End  ======================-->
+</div>
+
+<%= javascript_include_tag 'forgot_password.js' %>
+

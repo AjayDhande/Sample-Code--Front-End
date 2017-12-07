@@ -1,0 +1,183 @@
+
+    <!--========================   Breadcrumb  Start  ======================-->
+    <div class="container container-fix">
+    <%=render "customers/header_admin1"%>
+        <div class="row">
+                    <div class="col-sm-12">
+            <div class="navbar navbar-default" role="navigation">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed menu-options-toggle" data-toggle="collapse"
+                        data-target=".navbar-ex1-collapse">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+                    <div class="collapse navbar-collapse navbar-ex1-collapse" style="padding-left: 0px; margin-left: -15px;">
+                        <ul class="nav navbar-nav">
+                            <li class="menu-item dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">Dashboard</a>
+                                <ul class="dropdown-menu">
+                                    <li class="menu-item"><a href="/total_users" >Total Users</a></li>
+                                    <li class="menu-item"><a href="/total_downloads" >Total Downloads</a></li>
+                                    <li class="menu-item"><a href="/total_bandwidth" >Total Bandwidth</a></li>       
+                                </ul>
+                            </li>
+                            
+                            <li class="menu-item dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">Admin</a>
+                                <ul class="dropdown-menu">
+                                    <%if current_user.id == 0%>
+                                    <li class="menu-item"><a href="/organizations">Organization Management</a></li>
+                                    <li class="menu-item"><a href="/church_musicians">Church Musician Management</a></li>
+                                    <li class="menu-item"><a href="/churchs" >Church Management</a></li>
+                                    <li class="menu-item"><a href="/independent_speakers">Independent Speaker Management</a></li>
+                                    
+                                    <li class="menu-item">
+                                        <a href="/categories/new">Category Management</a>
+                                    </li>
+                                    <li class="menu-item">
+                                        <a href="/subcategories/new">Sub-Category Management</a>
+                                    </li>
+                                    <%end%>
+                                    <li class="menu-item"><a href="/manage_customer">Customer Management</a></li>
+                                    <%if current_user.id == 0%>
+                                    <li class="menu-item"><a href="/track_artworks/new">Add Royalty Images</a></li>
+                                    <%end%>
+                                </ul>
+                            </li>
+                            
+                            <li class="menu-item report"><a href="/reports">Reports</a></li>
+                            <li class="menu-item  billing"><a href="/billing_statistics">Billings</a></li>
+                            <%if current_user.id == 0%>
+                                <li class="menu-item  active"><a href="/plans/new">Subscriptions</a></li>
+                            <%end%>
+                            <%if current_user && ["TENANT_OWNER","SUPER_ADMIN","OCM_ADMIN"].include?(current_user.user_role.role)%>
+                                <li class="menu-item incomplete_registration" id="incomplete_registration"><a href="/show_incomplete_registration" >Incomplete Registration</a></li>
+                            <%end%>
+                            <%if current_user && ["TENANT_OWNER","SUPER_ADMIN","OCM_ADMIN"].include?(current_user.user_role.role)%>
+                            <li class="menu-item exchange" id="show_exchanges"><a href="/show_exchanges" >Exchange</a></li>
+                            <%end%>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <!--========================   Breadcrumb End  ======================-->
+
+            <!--========================   Heading Start  ======================-->
+             <div class="col-sm-6">
+                <h2 class="heading-title text-left">
+                    Subscription
+                </h2>
+            </div>
+           <!-- <div class="col-sm-6">
+                <h2 class="heading-title text-left">
+                    Grace Period
+                </h2>
+            </div> -->
+        </div>
+      <!--========================   Heading End  ======================-->
+    
+    <!--========================   Upload  Start   ======================-->
+    <div class="row">
+        <div class="col-sm-6 col-xs-12">
+               <%= form_for(@plan,:remote => true,:html=>{:class=>"form-horizontal label-padding", :role=>"form",:id =>"add_plan_subscriptions"}) do |f| %>
+                <div class="form-group">
+                    <label for="Subscription" class="col-xs-5 col-sm-4 control-label required">Subscription Name</label>
+                    <div class="col-xs-7 col-sm-8">
+                         <%= f.text_field :plan_name, :class=>'form-control', :placeholder => 'Subscription Name',:id=>"subscription_name" %>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Amount" class="col-xs-5 col-sm-4 control-label required">Amount ($)</label>
+                    <div class="col-xs-7 col-sm-8">
+                         <%= f.text_field :plan_amount, :class => 'form-control', :placeholder => 'Amount',:id=>"plan_amount" %>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="Amount" class="col-xs-5 col-sm-4 control-label required">Plan Description</label>
+                    <div class="col-xs-7 col-sm-8">
+                         <%= f.text_field :plan_description, :class => 'form-control', :placeholder => 'Plan Description',:id=>"plan_description" %>
+                    </div>
+                </div>
+
+                <div class="form-group" >
+                    <label class="col-xs-5 col-sm-4 control-label required">User Type</label>
+                   
+                    <div class="col-xs-7 col-sm-8">
+                        <select name="plan[subdomain_type_id]" data-placeholder="Subdomain Type" class="chosen-select" tabindex="2" style="width:100%;">
+                            <option value="" id="subdomaintype">Select</option>
+                            <% @subdomain_types.each do |subdomain_type| -%>
+                                <option value="<%= subdomain_type.id %>"><%= subdomain_type.subdomain_type.gsub(/_/, " ")%></option>
+                            <% end %>
+                            <option value="customer" id="subdomaintype">CUSTOMER</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group" >
+                    <label class="col-xs-5 col-sm-4 control-label required">Plan Type</label>
+                    <div class="col-xs-7 col-sm-8">
+                        <select name="plan[plan_type_id]" data-placeholder="Plan Type" class="chosen-select" tabindex="2" style="width:100%;">
+                            <option value="" id="plantype">Select</option>
+                            <% @plan_types.each do |plan_type| -%>
+                                <option value="<%= plan_type.id %>"><%= plan_type.type_name %></option>
+                            <% end %>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-offset-5 col-sm-offset-4 col-xs-6">
+                        <%= f.submit "Create", :class =>"btn btn-info" %>
+                    </div>
+                </div>
+               <% end %>
+        </div>
+        <div class="col-sm-6 col-xs-12">
+            <form id="grace_period_value" class="form-horizontal label-padding" method="post" action="/save_grace_value" accept-charset="UTF-8">
+                <div class="form-group">
+                    <label for="Subscription" class="col-xs-5 col-sm-4 control-label required">Grace Period (days)</label>
+                    <div class="col-xs-7 col-sm-8">
+                    <input id="grace_value" class="form-control" type="text" value="<%=get_previous_grace_value.to_i%>" name="grace_value">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-offset-5 col-sm-offset-4 col-xs-6">
+                        <input class="btn btn-info" type="submit" value="Save">
+                    </div>
+                </div>
+            </form>        
+        </div> 
+        <!-- <br><br><br>
+       <div class="row">
+           <label class="col-sm-2 control-label required" style ="margin-left:16px;">Grace Period</label>
+            <%#= form_tag '/save_grace_value' do |f| %>
+              <%#= text_field_tag :grace_value, get_previous_grace_value%>
+              <%#= submit_tag "Save", :class => "btn btn-info" %>
+            <%# end %>
+        </div><br><br><br>   -->    
+        <div class="plans_table">
+            <%=render 'plan'%>
+        </div>   
+    </div>
+    <div class="row">
+        <div class="col-sm-8 col-xs-12">
+            <ul class="pagination">
+                 <%=render 'paginate_plan'%>
+            </ul>
+        </div>
+        <div class="col-sm-4">
+            
+        </div>
+    </div>
+ 
+    <!--========================   Upload   End  ======================-->
+</div>
+
+
+<%= javascript_include_tag 'bootstrap-hover-dropdown.js', 'bootstrap-tabdrop.js', 'ekko-lightbox.js', 'icheck.min.js', 'summernote.min.js', 'plans.js', 'will_paginate.js','admin_tab.js', 'my_account.js' %>
+
+<%= stylesheet_link_tag 'dev_custom.css'  %>
+

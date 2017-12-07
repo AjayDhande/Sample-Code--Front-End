@@ -1,0 +1,97 @@
+<!--========================   Breadcrumb  Start  ======================-->
+    <div class="container container-fix">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="breadcrumb-outer">
+                </div>
+            </div>
+          </div>
+            <!--========================   Breadcrumb End  ======================-->
+
+            <!--========================   Heading Start  ======================-->
+        <div class="row">
+            <!--========================   Heading Start  ======================-->
+            <div class="col-sm-12">
+                <h2 class="heading-title text-left" style="margin-top: 20px;text-align: center">
+                    <small>Use the search bar below to look for the answers you need!</small>
+                </h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4"></div>
+            <div class="col-sm-4">
+              <form id="search_faq">
+                <div style="margin-bottom: 12px;" class="input-group">
+                    <input type="text" class="form-control" name="search_text">
+                    <span style="padding: 0px;" class="input-group-addon">
+                        <input type="submit" style="border-radius: 0px; border: none;" class="btn btn-default" value="Search">
+                    </span>
+                </div>
+              </form>
+            </div>
+            <div class="col-sm-4"></div>
+        </div>
+        
+        <div class="row">
+            <div class="col-sm-12">
+                <h2 class="heading-title text-center" style="margin-bottom: 0px;">Help Guides</h2>
+                <p class="text-center">If you come looking for help, you've come to the right place</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="well text-center help-guide">
+                    <figure><img src="<%= asset_path 'music.png'%>" width="40px" height="40px"alt=""></figure>
+                    <h3><a href="<% if current_user %><%= medialist_path%><% else %>/SignUp<% end %>">Getting Started</a></h3>
+                    <p>Everything you need to start listening to you messages</p>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="well text-center help-guide">
+                    <figure><img src="<%= asset_path 'statistics.png'%>" width="40px" height="40px"alt=""></figure>
+                    <h3><a href="#" onclick="coming_soon();">Message Statistics</a></h3>
+                    <p>We can help you understand your play statistics to better understand what's popular</p>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="well text-center help-guide">
+                    <figure><img src="<%= asset_path 'home.png'%>" width="40px" height="40px" alt=""></figure>
+                    <h3><a href="<%= medialist_path%>">Your Online Media Site</a></h3>
+                    <p>Frequently Asked Questions to help you setup your online church media site</p>
+                </div>
+            </div>
+        </div>
+        
+      <!--========================   Heading End  ======================-->
+      <div class="row">
+          <div class="col-sm-12">
+              <h2 class="heading-title text-left" style="margin-top: 20px;">
+                  Frequently Asked Questions
+              </h2>
+          </div>
+      </div>
+      <div id="questions_ajax">
+        <%= render partial: "questions_with_pagination", locals: { questions: @questions } %>
+      </div>
+      
+      <div class="row">
+          <div class="col-sm-12">
+              <div class="well text-center text-warning">
+                  <p>For more in-depth questions  <a <%= raw current_user ? "href='/support'" : "href='#' onclick='login_required();'" %>>email our support team</a>, and we'll</p>
+                 <p> personally get back to you as quickly as we can .<b>Monday-Friday (9am-5pm PST)</b></p>
+                 <p>Still Looking? <a href="mailto:support@onlinechurchmedia.com">Email Us.</a></p>
+              </div>
+          </div>
+      </div>
+      <div class="row">
+          <div class="col-sm-12 text-center">
+              <% if current_subdomain.is_ocm? %>
+                <a href="<% if current_user %><%= medialist_path%><% else%><%= signup1_path %><% end %>" class="btn btn-info btn-lg">Get Started Now</a>
+              <%else%>
+                <a href="<% if current_user %><%= medialist_path%><% else%><%= signup_path %><% end %>" class="btn btn-info btn-lg">Get Started Now</a>
+              <%end%>
+          </div>
+      </div>
+    <!--========================   Upload   End  ======================-->
+</div>
+<%= javascript_include_tag "faq.js" %>

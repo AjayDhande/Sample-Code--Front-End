@@ -1,0 +1,82 @@
+
+<div class="container container-fix">
+      <!--========================   Heading End  ======================-->
+    
+    <!--========================   Upload  Start   ======================-->
+    
+    <div class="row">
+       <%= render 'layouts/admin_header' %>
+    </div>
+    
+    <div class="row">
+        <div class="col-sm-12">
+            <h2 class="heading-title text-left">Add Subcategory</h2>
+            <%= form_for(@subcategory,:html=>{:class => "form-horizontal UserAdministration",:role=> "form",:id => "add_subcategory_form"}) do |f| %>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label required">Category Name</label>
+                    <div class="col-sm-5">
+                        <select name="subcategory[category_id]" data-placeholder="Category" class="chosen-select" tabindex="2" id= "category1">
+                            <option value="" id="category">Select</option>
+                            <% Category.all.each do |category| -%>
+                                <option value="<%= category.id %>"><%= category.category_name %></option>
+                            <% end %>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputPassword34" class="col-sm-2 control-label required">Subcategory Name</label>
+                    <div class="col-sm-5">
+                        <%= f.text_field :subcategory_name,:class=> "form-control", :placeholder=>"Subategory Name",:id => "subcategory_name_id"  %>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                         <%= f.submit "Add Subcategory",:class=>"btn btn-info" %>
+                    </div>
+                </div>
+            <% end %>
+
+        </div>
+    </div>
+        <div class="row">
+        <div class="col-sm-12">
+            <h2 class="heading-title text-left">Subcategory Management</h2>
+        </div>
+        <div class="col-sm-12">
+            <h4 class="heading-title text-left">Total Subcategories: <%=@subcategories.count%></h4>
+        </div>
+        <div class="col-xs-12">
+            <div class="table-responsive">
+
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Subcategory Name</th>
+                            <th>Options</th>
+                        </tr>
+                    </thead>
+                    <tbody>  
+                       <% @subcategories.each do |subcategory|%>
+                        <tr>
+                            <td><%=subcategory.subcategory_name%></td>
+                            <td>
+                            <%= link_to edit_subcategory_path(subcategory), class: 'btn btn-info',  title: 'Edit', 'data-toggle' => 'tooltip', 'data-placement' => 'top' do %>
+                                <span class="glyphicon glyphicon-pencil"></span>
+                            <% end %>
+                                
+                            </td>
+                        </tr>
+                        <%end%>
+                    </tbody>
+                </table>
+            </div>
+            <%= will_paginate @subcategories %>
+        </div>
+    </div>
+    
+    <!--========================   Upload   End  ======================-->
+</div>
+
+
+
+<%= javascript_include_tag 'bootstrap-hover-dropdown.js', 'bootstrap-tabdrop.js', 'ekko-lightbox.js', 'icheck.min.js', 'summernote.min.js', 'admin.js', 'category_subcategory.js' %>

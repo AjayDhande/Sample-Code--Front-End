@@ -1,0 +1,12 @@
+      <div class="row">
+          <div class="col-sm-12">
+              <div class="panel-group" id="accordion">
+                <%= render partial: "questions_list", locals: {questions: @questions } %>
+              </div>
+          </div>
+      </div>
+      <div class="row">
+          <div class="col-sm-12">
+            <%= render partial: "faq_list_ajax_pagination", locals: {questions: @questions, page_params: { search_text: params[:search_text] } } %>
+          </div>
+      </div>

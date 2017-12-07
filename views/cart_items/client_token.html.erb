@@ -1,0 +1,19 @@
+<div class="container container-fix">
+  <div class="form-container radius-box glassy-bg small-10 small-centered medium-8 large-6 columns">
+    <h2 class="mbs">Process Transaction</h2>
+    <%= form_tag url_for(:controller => "cart_items", :action =>"media_payment_transaction", :method => "post") do%>
+      <p>Please enter your payment details:</p>
+      <div id="dropin"></div>
+      <%= hidden_field_tag "amount", @amount %>
+      <%= submit_tag "Pay Now", class: "button mt1 btn btn-info"  %>
+    <% end %>
+  </div>
+</div>
+
+<%= javascript_include_tag  "transactions.js", "braintree.js"%>
+
+
+
+
+
+

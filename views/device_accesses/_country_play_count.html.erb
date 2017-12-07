@@ -1,0 +1,25 @@
+<thead>
+<tr bgcolor="#0e83b2">
+    <th style="width:50%;"><font color="white">Country</font></th>
+    <th style="width:40%;"><font color="white">Play Percentage</font></th>
+    <th style="width:80%;"><font color="white">Play Count</font></th>
+</tr>
+</thead>
+<tbody id="mytable" class = "odd">
+<%total = @listen_medias.count%>
+<%country_lists = @device_accesses.map(&:access_country).uniq.compact%>
+<% sorted_play_hash  = play_count_country_vice(country_lists,@device_accesses,@listen_medias) %>
+<%sorted_play_hash%>
+<%each_count = sorted_play_hash.count%>
+<%for i in 0..(each_count-1)%>
+<tr>
+  <td><%=sorted_play_hash[i][0]%></td>
+  <% if ((sorted_play_hash[i][1].to_f/total.to_f) * 100).round(2).nan? %>
+    <td>0%</td>
+  <%else%>
+    <td><%=((sorted_play_hash[i][1].to_f/total.to_f) * 100).round(2) %>%</td>
+  <%end%>
+  <td><%=sorted_play_hash[i][1]%></td>
+</tr>
+<%end%>
+</tbody>

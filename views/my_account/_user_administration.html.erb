@@ -1,0 +1,76 @@
+    <div class=" well" style="background-color: transparent; border-color: transparent;">
+                                   <p>
+                                       Create a brand new user and give them access to your site based on their different responsibilities
+                                   </p>
+                                   <form accept-charset="UTF-8" action="/create_administration" class="form-horizontal UserAdministration" role="form" id ="create_administration_form" method="post"><div style="display:none"><input name="utf8" type="hidden" value="&#x2713;" /><input name="authenticity_token" type="hidden" value="gEYHqr2kQuhkhjylU1kMkUdq3IqgcriyF81KvVWgt3E=" /></div>
+                                        <fieldset>
+                                       <div class="form-group">
+                                           <label class="col-sm-3 control-label">*Username:</label>
+                                           <div class="col-sm-5">
+                                               <input id="username" name="username" type="text" class="form-control"/>
+                                           </div>
+                                       </div>
+                                       <div class="form-group">
+                                           <label for="inputPassword3" class="col-sm-3 control-label">*Email:</label>
+                                           <div class="col-sm-5">
+                                                <input id="email" name="email" type="text" class="form-control"/>
+                                           </div>
+                                       </div>
+                                       <div class="form-group">
+                                           <label class="col-sm-3 control-label">*Name:</label>
+                                           <div class="col-sm-5">
+                                               <input id="name" name="name" type="text" class="form-control" />
+                                           </div>
+                                       </div>
+                                       <div class="form-group">
+                                           <label class="col-sm-3 control-label">*Password:</label>
+                                           <div class="col-sm-5">
+                                               <input id="password" name="password" type="password" class="form-control" />
+                                           </div>
+                                       </div>
+                                       <div class="form-group">
+                                           <label class="col-sm-3 control-label">*Repeat Password:</label>
+                                           <div class="col-sm-5">
+                                               <input id="confirmPasswordInput" name="password_confirmation" type="password" class="form-control" />
+                                           </div>
+                                       </div>
+                                      <div class="form-group">
+                                           <label class="col-sm-3 control-label"></label>
+                                           <div class="col-sm-6">
+                                               Hint: The password should be at least seven characters long. To make it stronger user upper and lower case letters number and symbols like
+                                           </div>
+                                        </div>
+                                       <div class="form-group">
+                                           <div class="col-sm-3 text-left">
+                                               <b>Send Password?:</b>
+                                           </div>
+                                           <div class="col-sm-6">
+                                               <div class="checkbox">
+                                                   <label>
+                                                       <%=check_box_tag 'mail'%>Send this password to the new user by email
+                                                   </label>
+                                               </div>
+                                           </div>
+                                       </div>
+
+                                       <div class="form-group">
+                                           <label class="col-sm-3 control-label">Role:</label>
+                                           <div class="col-sm-5">
+                                               <%= select_tag :user_role_id, options_for_select([['SUPER ADMIN', get_super_admin_id],['CONTENT MANAGER', get_content_manager_id],['SUBSCRIPTION ADMIN', get_content_manager_id]]), {:prompt => "Select",:class =>"form-control"} %>
+                                           </div>
+                                       </div>
+                                       <div class="form-group">
+                                           <div class="col-sm-offset-3 col-sm-10">
+                                               <%=submit_tag "Add New User",:class => "btn btn-info btn-lg"%>
+                                           </div>
+                                       </div>
+                                      </fieldset>
+                                  </form>
+                                    <div class="col-sm-5">
+                                        <a href="">Cancel or Go Back</a>
+                                    </div>
+                                    <div class="col-sm-5">
+                                      <a href="/home">search registered users</a>  
+                                    </div>
+                               </div>
+                  

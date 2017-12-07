@@ -1,0 +1,253 @@
+    <!--========================   Banner Start   ======================-->
+ <section id="banner" class="container-fix">
+    <div id="carousel-example-captions" class="carousel slide container" data-ride="carousel">
+      <!--<ol class="carousel-indicators">
+        <li data-target="#carousel-example-captions" data-slide-to="0" class="active"></li>
+        <li data-target="#carousel-example-captions" data-slide-to="1"></li>
+        <li data-target="#carousel-example-captions" data-slide-to="2"></li>
+      </ol>-->
+      <div>
+        <!--<div class="item active">
+          <img src="/assets/banner-1.jpg" alt="First slide image">
+          <!--<div class="carousel-caption">
+            <h3>First slide label</h3>
+            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+          </div>-->
+        <!--</div>
+        <div class="item">
+          <img src="/assets/banner-1.jpg" alt="Second slide image">          
+        </div>
+        <div class="item">
+          <img src="/assets/banner-1.jpg" alt="Third slide image">          
+        </div>
+      </div>
+      <a class="left carousel-control" href="#carousel-example-captions" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+      </a>
+      <a class="right carousel-control" href="#carousel-example-captions" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right"></span>
+      </a>-->
+      <video width="620" height="400" autoplay loop>
+        <source src="/video.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </section>
+    <!--========================   Banner End  ======================-->
+    
+    <!--========================   Quick and easy Access Start  ======================-->
+    <section id="quick-easy">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                <h2 class="text-center quick-easy-title">
+                    Quick and Easy access to your church’s media store
+                </h2>
+                </div>
+                <div class="col-sm-12">
+                    <div class="wath-this-video text-center">
+                        <img src="<%= asset_path 'watch-this-video.png'%>" alt="" />
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" placeholder="Your Name">
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" placeholder="Your Email">
+                        </div>
+                        <div class="col-sm-4">
+                            <%= link_to "Get Started Now!", medialist_path, class: 'btn btn-get-started' %>
+                            <div class="already-register">
+                                <p>
+                                    Free plan available. No credit card required
+                                </p>  
+                                <p>
+                                    <b>Already Registered?</b> <%= link_to "Login Now!", new_user_session_path %>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--========================   Quick and easy Access End  ======================-->
+    
+  <!--========================   Quick and easy Access End  ======================-->
+  <section class="word-music">
+      <div class="container">
+          <div class="row">
+              <div class="col-sm-12">
+                  <h2 class="music-title">
+                      <img src="<%=asset_path 'word-ussic.png'%>" alt="" />
+                      The Word That’s Always With You
+                  </h2>
+              </div>
+          </div>
+      </div>
+  </section>
+  <div class="container">
+      <div class="row">
+          <div class="col-sm-12 word-music-text">
+              <p>This is your church, why not have it accessible at all times? your spiritual, Combined with the best technology, delivers the  right message  
+                  to you at the right time</p>
+          </div>
+      </div>
+  </div>
+  <figure class="word-image">
+      <img src="<%= asset_path 'word-music.jpg'%>" alt="" />
+  </figure>
+<!--========================   Quick and easy Access End  ======================-->
+
+<!--========================   The Rigt message for the right moment Start  ======================-->
+<section class="word-music">
+      <div class="container">
+          <div class="row">
+              <div class="col-sm-12">
+                  <h2 class="music-title">
+                      <img src="<%= asset_path 'word-ussic.png'%>" alt="" />
+                      The Word That’s Always With You
+                  </h2>
+              </div>
+          </div>
+      </div>
+  </section>
+  <div class="container">
+      <div class="row">
+          <div class="col-sm-12 word-music-text">
+              <p>This is your church, why not have it accessible at all times? your spiritual, Combined with the best technology, delivers the  right message  
+                  to you at the right time</p>
+          </div>
+      </div>
+  </div>
+  <figure class="word-image">
+      <img src="<%= asset_path 'word-music-2.jpg'%>" alt="" />
+  </figure>
+<!--========================   The Rigt message for the right moment End  ======================-->
+<div style="width:100%; float: left; background-color: #EFF5F5;">
+<div class="container">
+    <div class="row">
+        <div class="col-xs-6 text-center">
+            <img src="<%= asset_path 'heart-2.jpg' %>" alt="0" />
+        </div>
+        <div class="col-xs-6 text-center">
+            <img src="<%= asset_path 'heart-1.jpg' %>" alt="0" />
+        </div>
+    </div>
+</div>
+</div>
+
+<!--========================   Services Delivery Start  ======================-->
+<section class="services-delivery">
+    <div class="container">
+    <div class="row">
+        <div class="col-sm-6">
+            <h3 class="text-uppercase title">
+                A Service that understand you
+            </h3>
+        </div>
+        <div class="col-sm-6">
+            <h3 class="text-uppercase title">
+                A Service that understand you
+            </h3>
+        </div>
+    </div>
+    </div>
+</section>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-5 services-delivery-discriptio">
+            <p>
+            Nothing's better than having the best content at your fingertips. Choose your topics and follow your favorite presenters. Love or dislike a message. It's all about your tastes.
+            </p>
+        </div>
+        <div class="col-sm-2">
+        </div>
+        <div class="col-sm-5 services-delivery-discriptio">
+            <p>
+            Get unlimited access to all the content your church provides. Plus suggestions from other church members to help you pick the right once.
+            </p>
+        </div>
+    </div>
+</div>
+
+<section class="services-delivery-image">
+    <div class="container">
+        <div class="row">
+        <div class="col-sm-5 col-xs-4 text-center">
+            <img class="glob" src="<%= asset_path 'glob.jpg' %>" alt="" />
+        </div>
+        <div class="col-sm-2 col-xs-4 text-center">
+            <figure class="logo-2">
+                <img src="<%= asset_path 'logo-2.png' %>" alt="" />
+            </figure>
+        </div>
+        <div class="col-sm-5 col-xs-4 text-center">
+            <img class="glob" src="<%= asset_path 'star.jpg' %>" alt="" />
+        </div>
+    </div>
+    </div>
+</section>
+
+<section class="services-delivery">
+    <div class="container">
+    <div class="row">
+        <div class="col-sm-6">
+            <h3 class="text-uppercase title">
+                A Service that understand you
+            </h3>
+        </div>
+        <div class="col-sm-6">
+            <h3 class="text-uppercase title">
+                A Service that understand you
+            </h3>
+        </div>
+    </div>
+    </div>
+</section>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-5 services-delivery-discriptio">
+            <p>
+            Nothing's better than having the best content at your fingertips. Choose your topics and follow your favorite presenters. Love or dislike a message. It's all about your tastes.
+            </p>
+        </div>
+        <div class="col-sm-2">
+        </div>
+        <div class="col-sm-5 services-delivery-discriptio">
+            <p>
+            Get unlimited access to all the content your church provides. Plus suggestions from other church members to help you pick the right once.
+            </p>
+        </div>
+    </div>
+</div>
+<!--========================   Services Delivery  End  ======================-->
+
+<!--========================   Experience Start  ======================-->
+<section class="experience">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h3 class="text-uppercase text-center title">
+                    A Completely new way to experience your church's media
+                </h3>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div  class="experience-image text-center">
+<figure>
+    <img src="<%= asset_path 'experience.jpg' %>" alt="" />
+    <figcaption>
+        <a href="#" class="btn btn-get-started">Get Started Now!</a>
+    </figcaption>
+</figure>
+    <p class='text-center'>
+        Free plan available. No credit card required
+    </p>
+</div>
+<!--========================   Experience  End  ======================-->
+<%= notify("Login Unsuccessful", "Incorrect Credential", :notice) %>

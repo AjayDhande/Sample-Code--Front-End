@@ -1,0 +1,35 @@
+<% browser_statistics = get_access_browser(@device_accesses)  rescue nil%>
+       <div class="col-sm-6">
+           <h4>Desktop Browsers</h4>
+           <div class="table-responsive">
+                <table style="width:100%;" class="table table-bordered">
+                    <tbody id="mytable" class="odd">
+                        <tr>
+                        	<td style="width:80%;">Chrome</td>
+                        	<td style="width:90%;"><%=browser_statistics['chrome_percent'] rescue nil%>%</td>
+                            <td style="width:100%;"><%=browser_statistics['chrome_count_data'] rescue nil%></td>
+                        </tr>
+                        <tr>
+                        	<td style="width:80%;">Safari</td>
+                        	  <td style="width:90%;"><%=browser_statistics['safari_percent'] rescue nil%>%</td>
+                              <td style="width:100%;"><%=browser_statistics['safari_count_data'] rescue nil%></td>  
+                        </tr><tr>
+                            <td style="width:80%;">Internet Explorer</td>
+                            <td style="width:90%;"><%=browser_statistics['internet_explorer_percent'] rescue nil%>%</td>
+                            <td style="width:100%;"><%=browser_statistics['internet_explorer_count_data'] rescue nil %></td>
+                        </tr><tr>
+                            <td style="width:80%;">Other</td>
+                            <td style="width:90%;"><%=browser_statistics['other_percent'] rescue nil%>%</td>
+                            <td style="width:100%;"><%=browser_statistics['other_count_data'] rescue nil%></td>  
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+       </div>
+
+
+
+
+
+      

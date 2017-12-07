@@ -1,0 +1,8 @@
+<%= stylesheet_link_tag 'shopping_cart_custom'%>
+<%= form_for cart_item, remote: true do |f| %>
+  <input type="hidden" name="redirect" value="0" />
+  <%= f.hidden_field :item_amount, value: uploaded_media.media_amount %>
+  <%= f.hidden_field :uploaded_media_id, value: uploaded_media.id %>
+  <button class="imgClass alert-link alert alert-add-message2 text-center" name="commit" type="submit" value="Add Message to Cart"><span class="glyphicon glyphicon-shopping-cart"></span>&nbsp; Add Message to Cart</button>
+<% end %>
+

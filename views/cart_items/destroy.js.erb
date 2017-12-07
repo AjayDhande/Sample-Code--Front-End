@@ -1,0 +1,9 @@
+$(".cart-text").html("<%= escape_javascript(render 'layouts/add_to_cart') %>")
+$(".shopping-cart").html("<%= escape_javascript(render 'carts/shopping_cart') %>")
+$(".cart_subtotal").html("<%= escape_javascript(render 'carts/subtotal') %>")
+$("#show_error").next("div").next("div").removeClass("container-fix");
+$.map($('.trunc'),truncate);
+$(".rateit").rateit();
+rate_now();
+window.location.reload();
+notify('<%= flash[:title] %>', '<%= flash[:message] %>', '<%= flash[:type] %>');

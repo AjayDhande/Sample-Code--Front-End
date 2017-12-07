@@ -1,0 +1,5 @@
+$(".useradmin").html('<%= escape_javascript(render "my_account/user_admin") %>');
+hashValue = "AdminControl"
+if (window.location.href.search("/my_account") > 0 && window.location.hash=="") {
+    window.location.href += ("#" + (hashValue));
+};

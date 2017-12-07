@@ -1,0 +1,8 @@
+.cmnt_text{
+  color: red;
+  font-size: 75%;
+  text-align: center;
+}
+#play_pause_button:hover{
+ -webkit-filter: brightness(150%);
+}

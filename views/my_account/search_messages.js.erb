@@ -1,0 +1,18 @@
+$(".update_page").html('<%= escape_javascript(render "my_account/brand_new_messages")%>');
+$("#ajax_pagination").html('<%= escape_javascript(render "my_account/media_list_ajax_pagination")%>');
+back_button = false;
+window.location.hash = "#brand_new_messages;<%= params[:search_by]%>;<%= params[:search_text]%>;<%= params[:order_by]%>;<%= params[:order]%>;<%= params[:page]%>";
+hideLoader();
+back_button = true;
+$(".chosen-select").chosen();
+<% if params[:order_by].present? && (params[:order_by] != "created_at" && params[:order] != "DESC") %>
+  <% if params[:order_by] == "media_file_name" %>
+    $("span[onclick='toggle_message(this])'").click();
+  <% elsif params[:order_by] == "duration" %>
+    $("span[onclick='toggle_duration(this])'").click();
+  <% elsif params[:order_by] == "created_at" %>
+    $("span[onclick='toggle_date(this])'").click();
+  <% elsif params[:order_by] == "presenter_name" %>
+    $("span[onclick='toggle_presenter(this])'").click();
+  <% end %>
+<% end %>

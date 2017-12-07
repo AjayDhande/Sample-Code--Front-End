@@ -1,0 +1,332 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">Colors, Header & Footer</div>
+        <div class="panel-body">
+          <form action="/apply_custom_theme" class="form-horizontal UserAdministration" role="form" enctype="multipart/form-data" method="post" data-remote="true">
+            <!--div class="form-group">                         
+              <h3 style="margin-top: 0px; margin-bottom: 15px; border-bottom: 1px solid #ddd; padding-bottom: 10px; padding-left: 15px;">Logo</h3>
+               <div class="col-sm-4"> 
+                    <div class="checkbox">
+                        <label>
+                            Use Custom Logo
+                        </label>
+                    </div> 
+                </div>
+                <div class="col-sm-6">
+                   <input id="logo_button" type="file" name="theme[logo_image_path]" >
+                </div>
+                <div class="col-sm-6">
+                    <p class = "aspect_ratio">Preferred rectangular image (368:66 as width:height in pixel)</p>
+                </div>
+            </div-->
+            <div class="form-group">
+              <h3 style="margin-top: 0px; margin-bottom: 15px; border-bottom: 1px solid #ddd; padding-bottom: 10px; padding-left: 15px;">Colors</h3>                 
+            </div>
+
+            <div class="col-sm-12">
+              <div class="col-sm-8">
+                <div class="form-group">
+                  <div class="col-sm-4 col-md-4">
+                    <div class="checkbox">
+                      <label class="label-padding1">
+                          Background Color
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-sm-8 col-md-6">
+                    <div class="input-group colorpicker-component demo demo-auto">
+                      <input type="text" value="<%= theme.background_color %>" class="form-control" name="theme[background_color]"/>
+                      <span class="input-group-addon"><i></i></span>
+                    </div>
+                    <script>
+                        $(function(){
+                            $('.demo').colorpicker();
+                        });
+                    </script>
+                  </div>
+                </div>
+
+
+
+                
+
+
+
+
+                      
+                <div class="form-group">
+                  <div class="col-sm-4 col-md-4">
+                    <div class="checkbox">
+                      <label class="label-padding1">
+                          Font Color
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-sm-8 col-md-6">
+                    <div class="input-group colorpicker-component demo demo-auto">
+                      <input type="text" value="<%= theme.subdomain_title_color %>" class="form-control" name="theme[subdomain_title_color]"/>
+                      <span class="input-group-addon"><i></i></span>
+                    </div>
+                    <script>
+                        $(function(){
+                            $('.demo').colorpicker();
+                        });
+                    </script>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="col-sm-4   col-md-4">
+                    <div class="checkbox">
+                      <label class="label-padding1">
+                          Thumbnail/Dropdown Font Color
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-sm-8 col-md-6">
+                    <div class="input-group colorpicker-component demo demo-auto">
+                        <input type="text" value="<%= theme.other_font_color %>" class="form-control" name="theme[other_font_color]"/>
+                        <span class="input-group-addon"><i></i></span>
+                    </div>
+                    <script>
+                        $(function(){
+                            $('.demo').colorpicker();
+                        });
+                    </script>
+                  </div>
+                </div>
+                      
+                <div class="form-group">
+                  <div class="col-sm-4 col-md-4">
+                    <div class="checkbox">
+                      <label class="label-padding1">
+                        Background Image
+                      </label>
+                    </div>
+                  </div>
+
+                  <% if theme[:background_image_path].present? && theme[:theme_name] != "Default" %>
+                    <div class="col-sm-8 col-md-6">
+                      <img class="img" src="/subdomain/background/<%= theme[:background_image_path]%>" style= "max-height:50px;">
+                      <%= link_to "Remove", remove_background_image_path(theme.id) %>
+                      <!-- <label class="lblclass">Image size minimum 1300x900 required</label> -->
+                    </div>
+                   <!--  <small style="color: orange;">Image Size Minimum 1300x900 required</small> -->
+                  <% else %>
+                    <div class="col-sm-8 col-md-6">
+                      <input type="file" name="theme[background_image_path]" style="padding-left: 0px; width:100%;">
+                     <!--  <small class="aspect_ratio">Image size minimum 1300x900 required</small> -->
+                    <!--  <label class="lblclass">Image size minimum 1300x900 required</label> -->
+                    </div>
+                  <% end %>
+                </div>
+              </div> 
+
+          
+              <!-- ==== To change the UI Subdomain admin Eye dropper suggestion Start ==== -->
+              <div class="col-sm-4 tab-pane1" >
+                <div class="form-group">
+                  <div class="col-sm-8 col-xs-6">
+                    <div class="col-sm-12" style="width: 179%;">
+                      <p class="" style="margin-left: -11px;text-align: justify;">
+                        <b>Need Help Matching a Color?</b>
+                      </p>
+                    </div>
+                  </div><br>
+                
+                  <div class="col-sm-12">
+                    <hr style="width: 94%;margin-left: 0px;">
+                  
+                    <div class="panel-body">
+                      <div class="text-allignment" style="text-align: justify;">
+                      <p>Need help finding the exact color number for your website?  Try this eye dropper tool that helps you put your mouse over a color and it will provide you the correct color number for that color.</p>
+                        <p>The website is www.colorzilla.com</p>
+                        <p>How cool is that?</p>
+                      </div>
+                      <div class="col-sm-8 col-xs-6">
+                        <input class="favi form-control" style="color: white!important;font-weight: bold;" TYPE="button" VALUE="Go To Colorzilla" id="colorzilla">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <!-- ==== To change the UI Subdomain admin Eye dropper suggestion End ==== -->
+            </div>
+
+            <div class="form-group">
+              <h3 style="margin-top: 0px; margin-bottom: 15px; border-bottom: 1px solid #ddd; padding-bottom: 10px; padding-left: 15px;">Header and Footer Color</h3>
+            </div>
+
+            <div class="col-sm-12">
+              <div class="col-sm-8">
+                <div class="form-group">
+                  <div class="col-sm-4 col-md-4">
+                    <div class="checkbox">
+                      <label class="label-padding1">
+                        Header Color
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-sm-8 col-md-6">
+                    <div class="input-group colorpicker-component demo demo-auto">
+                      <input type="text" value="<%= theme.header_color %>" class="form-control" name="theme[header_color]"/>
+                      <span class="input-group-addon"><i></i></span>
+                    </div>
+                    <script>
+                        $(function(){
+                            $('.demo').colorpicker();
+                        });
+                    </script>
+                  </div>
+                </div>
+                    
+                <div class="form-group">
+                  <div class="col-sm-4 col-md-4">
+                    <div class="checkbox">
+                      <label class="label-padding1">
+                        Footer Color
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-sm-8 col-md-6">
+                    <div class="input-group colorpicker-component demo demo-auto">
+                      <input type="text" value="<%= theme.footer_color %>" class="form-control" name="theme[footer_color]" />
+                      <span class="input-group-addon"><i></i></span>
+                    </div>
+                    <script>
+                      $(function(){
+                        $('.demo').colorpicker();
+                      });
+                    </script>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="col-sm-4 col-md-4">
+                    <div class="checkbox">
+                      <label class="label-padding1">
+                        Header/Footer Font Color
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-sm-8 col-md-6">
+                    <div class="input-group colorpicker-component demo demo-auto">
+                      <input type="text" value="<%= theme.header_font_color %>" class="form-control" name="theme[header_font_color]"/>
+                      <span class="input-group-addon"><i></i></span>
+                    </div>
+                    <script>
+                      $(function(){
+                        $('.demo').colorpicker();
+                      });
+                    </script>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-sm-4 col-xs-12">
+                    <div class="checkbox">
+                      <label class="label-padding1">Add Gradient</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-6 col-xs-12">
+                    <div class="">
+                      <div class="vertical-center">
+                       
+                         <%=check_box_tag :gradient, '1', theme.gradient %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                    
+                <!--div class="form-group">
+                  <div class="col-sm-4">
+                    <div class="checkbox">
+                      <label class="required">Header</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control" id="header" placeholder="Header" name="theme[header]" value="<%= theme.header%>">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="col-sm-4">
+                    <div class="checkbox">
+                      <label class="required">Your Media Store Welcome Statement</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="col-sm-6">
+                      <textarea style="resize: vertical;" type="text" class="form-control" id="header_description" placeholder="Description" name="theme[header_description]" value="" onkeyup="countChar(this)"><%= theme.header_description%></textarea>
+                      <div id="textarea_feedback"></div>
+                    </div>
+                  </div>
+                </div-->
+              </div>
+              <div class="col-sm-4"></div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-sm-12 text-right">
+                <input type="button" value="Back" class="btn btn-info">
+                <input type="button" onclick="theme2_form();" value="Apply" class="btn btn-info">
+              </div>
+            </div> 
+          </form>
+        </div>
+      </div>
+  </div>
+</div>
+
+<%=javascript_include_tag 'theme.js', 'theme1.js', 'bootstrap-colorpicker.js' %>
+
+<script type="text/javascript">
+  // To add the link on cleck of button
+  $(document).ready(function(){
+    $("#colorzilla").click(function(){
+      window.open("http://www.colorzilla.com/");
+    });
+
+  });
+</script>
+<style type="text/css">
+ .tab-pane1 {
+    border-top: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    border-radius: 0px 0px 5px 5px;
+    padding: 2%;
+    padding-bottom: 0%;
+  }
+  .favi{
+    display:block;
+    font-weight: bold;
+    text-align:center;
+    margin-top:20%;
+    background-color: rgba(115, 173, 33, 0.72);
+    /*border-bottom: 2px solid #688413;*/
+    /*border-left: 2px solid #688413;*/
+    color:white;padding-bottom: 1%;
+    border-radius: 4px;width: 297px;
+    margin-left: -27px;
+    height: 37px;
+    font-size: 16px;
+  }
+
+  .favicon_tab{
+    padding-bottom: 9%;
+    width: 179%;
+    color: white;
+    margin-left: -15%;
+    margin-bottom: 6%;
+  }
+  .lblclass
+  {
+    color: orange;
+    font-size: 14px;
+    font-weight: normal;
+  }
+  </style>

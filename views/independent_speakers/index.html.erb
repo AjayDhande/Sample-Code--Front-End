@@ -1,0 +1,57 @@
+
+    <div class="container container-fix">
+      <!--========================   Heading End  ======================-->
+    
+    <!--========================   Upload  Start   ======================-->
+    <div class="row">
+      <%= render 'layouts/admin_header' %>
+    </div>
+    
+    <div class="row">
+        <div class="col-sm-12">
+            <h2 class="heading-title text-left">Independent Speaker Management</h2>
+        </div>
+        <div class="col-sm-12">
+            <h4 class="heading-title text-left">Total Independent Speakers: <%=@independent_active_users%></h4>
+        </div>
+        <div class="col-xs-12">
+            <div class="table-responsive">
+
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Independent Speaker Name</th>
+                            <th>Options</th>
+                        </tr>
+                    </thead>
+                    <tbody>  
+                       <%@subdomain_names.each do |subdomain_name|%>
+
+                       <%independent_speaker = subdomain_info(subdomain_name) rescue nil%>
+                           <%unless independent_speaker.blank?%>
+                            <tr>
+                                <td><%=independent_speaker.username%></td>
+                                <td>
+                                <%= link_to edit_independent_speaker_path(independent_speaker), class: 'btn btn-info',  title: 'Details' do %>
+                                    <span class="glyphicon glyphicon-eye-open"></span>
+                                <% end %>   
+                                <%id = independent_speaker.id%>
+                                <%= link_to independent_speaker_path(id), method: :delete, data: { confirm: 'You want to delete this' }, class: 'btn btn-danger',  title: 'Remove' do %>
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                <% end %>
+                                </td>
+                            </tr>
+                            <%end%>
+                        <%end%>
+                    </tbody>
+                </table>
+            </div>
+            <%=will_paginate  @subdomain_names%>
+        </div>
+    </div>
+    <!--========================   Upload   End  ======================-->
+</div>
+
+
+<%= javascript_include_tag 'bootstrap-hover-dropdown.js', 'bootstrap-tabdrop.js', 'ekko-lightbox.js', 'icheck.min.js', 'summernote.min.js' %>
+<%= stylesheet_link_tag 'independent_speaker.css'%>

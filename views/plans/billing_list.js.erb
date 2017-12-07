@@ -1,0 +1,16 @@
+$(".pagination").html("<%= escape_javascript(render 'plans/paginate_billing') %>")
+$(".billing_table").html("<%= escape_javascript(render 'plans/billing') %>")
+$(".pointer").click(function(e){
+  $.ajax({
+    // the URL for the request
+    url : '/billing_description',
+    // the data to send
+    // (will be converted to a query string)
+    data : { transaction_id : $(e.target).attr("data-transaction") },
+    // The request type is GET request
+    type : 'GET'
+  })
+  .done(function(response) {
+    $('#update_area').html(response);
+  });
+});

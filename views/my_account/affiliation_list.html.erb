@@ -1,0 +1,57 @@
+<div class="container">
+    <div class="row">
+      <div class="col-xs-12 col-sm-4 col-md-3 custom-width">
+          <img alt="" class="logo-fix" src="<%= cookies[:logo_path] %>" />
+      </div>
+      <div class="col-xs-12 col-sm-8 col-md-9">
+        <h2 class="heading-title text-left subdomain_title">
+          <% if @can_update%>
+            <%= current_user.church_name.titlecase %> Media Store<small>&nbsp;<a href = "/my_account">Update your site's info</a></small>
+          <%else%>
+            <%= current_user.church_name.titlecase %> Media Store
+          <%end%>
+        </h2>
+        <p>
+          Your Online Church Media Site: <a href="<%=request.base_url%>"><%=request.base_url%></a>
+        </p>
+      </div>
+    </div>
+    <%if current_subdomain.is_active? %>
+        <%= render "device_accesses/the_tabs" %>
+    <%else%>
+        <h3 style= "background-color: #FBDADA; font-weight: bold; text-align: center;"class="error-color">Subdomain deactivated, renew your subscription</h3>
+    <%end%>
+
+    <!--===================== Pending Request Table s=================-->
+      <div class="row">
+        <div class="col-sm-12" style="font-size: 14px;">
+          <div class="well">
+            <p>The Affiliate relationship provides a unique way for members of your church or group on Online Church Media to be seen as a part of your network. It could be your church pianist, or a choir singer, or a minister who is a member of your organization that would love to let their congregation know about their exciting projects and efforts.</p>
+            <p>For each qualified sale made for your affiliate's through your site you will earn a commission. We've made it easy for you to connect and support those you know.</p>
+            <p>Add the affiliates you approve by clicking the 'Add' button next to their names below. Once you add them, their site's logo will appear at the bottom left of your Media Page.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-6">
+          <form class="form-search" action="<%=affiliation_list_path%>" role="search" method="get" >
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search for.." name="search_affiliation" value="<%= params[:search_affiliation]%>">
+              <input type="text" hidden value="<%= params[:search_affiliation]%>">
+              <span class="input-group-btn">
+                <button class="btn btn-info" type="submit">Go</button>
+              </span>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="update_page">
+            <%= render "affiliation_table" %>
+      </div>
+</div>
+
+<%= stylesheet_link_tag 'my_account.css', 'tab.css'%>
+<%=javascript_include_tag 'bootstrap-hover-dropdown.js', 'my_account.js'%>
+<%= javascript_include_tag "device_accesses.js" , "bootstrap-colorpicker.js" , "bootstrap-datetimepicker.min.js" , "bootstrap-hover-dropdown.js" ,"bootstrap-tabdrop.js", "bootstrapValidator.js","summernote.min.js", "my_account.js","affiliation_list.js", "manage_user.js" %>

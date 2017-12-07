@@ -1,0 +1,43 @@
+<div class="container container-fix">
+  <!--========================   Heading End  ======================-->
+  <div class="row">
+    <div class="col-xs-12 col-sm-4 col-md-3 custom-width">
+        <img alt="" class="logo-fix" src="<%= cookies[:logo_path] %>" />
+    </div>
+    <div class="col-xs-12 col-sm-8 col-md-9">
+      <h2 class="heading-title text-left subdomain_title">
+
+        <% if @can_update%>
+          <%= current_user.church_name.titlecase %> Media Store<small>&nbsp;<a href = "/my_account">Update your site's info</a></small>
+        <%else%>
+          <%= subdomain_name.titleize%> Media Store
+        <%end%>
+      </h2>
+      <p>
+        Your Online Church Media Site: <a href="<%=request.base_url%>"><%=request.base_url%></a>
+      </p>
+    </div>
+  </div>
+  <%if current_subdomain.is_active? %>
+    <%= render "main_tabs" %>
+  <%else%>
+      <h3 style= "background-color: #FBDADA; font-weight: bold; text-align: center;"class="error-color">Subdomain deactivated, renew your subscription</h3>
+  <%end%>
+  <div class="update_page hide">
+    <%if current_user.can_allocate_role?%>
+      <%= render partial: "tab_menu", locals: {user: @user, upgrade_plans: @upgrade_plans, current_subdomain: current_subdomain} if !current_subdomain.is_ocm? %>
+    <%end%>
+  </div>
+</div>
+
+<%=javascript_include_tag "bootstrap-hover-dropdown.js", "bootstrap-tabdrop.js", "ekko-lightbox.js", "icheck.min.js", "jquery.raty.js", "summernote.min.js", "manage_user.js", "new_indicator.js", "my_account.js", "bootstrap-colorpicker.js", "theme.js", "theme1.js"%>
+<%= stylesheet_link_tag "my_account.css","tab.css"%>
+
+<script type="text/javascript">
+  if (window.location.hash == "") {
+    $(".update_page").removeClass("hide");
+  }
+  else if (window.location.hash != ""){
+    $(".update_page").removeClass("hide");
+  }
+</script>

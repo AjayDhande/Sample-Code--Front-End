@@ -1,0 +1,10 @@
+<div class="row">
+  <div class="col-sm-12">
+    <%= render partial: "royalty", locals: { royalties: royalties } %>
+  </div>                                                        
+</div>
+<div class="row">
+  <div class="col-sm-12">
+    <%= ajax_will_paginate_for_royalty royalties, per_page: 20, params: { ajax: 1} %>
+  </div>
+</div>

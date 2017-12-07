@@ -1,0 +1,105 @@
+<div class="row" style="margin-top: 5px;">
+  <div class="col-sm-12">
+    <div class="table-responsive overflow-hidden">
+      <table class="table table-hover">
+        <thead>
+          <tr bgcolor="#31708f">
+            <th><font color="white">Media Store for Affiliation</font><span onclick="toggle_affiliation(this)" class="glyphicon glyphicon-chevron-down align-right"></span></th>
+            <th colspan="2"><font color="white">Media Store Type</font></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if @subdomains.present? %>              
+            <% @subdomains.each do |subdomain|%>
+              <tr>
+                <td><%= subdomain.subdomain_name %></td>
+                <td><%= SubdomainType.find(subdomain.subdomain_type_id).subdomain_type.gsub("_", " ") %></td>
+                <%if current_subdomain.affiliations.where("affiliator_id =?",subdomain.id).blank? %>
+                  <td><%= link_to "Add", create_affiliation_path(:affiliator_id => subdomain.id), :method => :post %></td>
+                <% elsif current_subdomain.affiliations.where("affiliator_id =?",subdomain.id).present? && current_subdomain.affiliations.where("affiliator_id =?",subdomain.id).last.status == "cancelled"%>
+                  <td><%= link_to "Decline", create_affiliation_path, :method => :post %></td></td>
+                <%else%>
+                  <td><%= link_to "Remove", delete_affiliation_path(:id => current_subdomain.affiliations.where("affiliator_id =?",subdomain.id).last.id), data: { confirm: 'Are you sure?' }, :method => :delete %></td>
+                <%end%>
+              </tr>
+            <%end%>
+          <%else%>
+            <tr>
+              <td>
+                <p class="error-color">No Such Subdomains found</p>
+              </td>
+            </tr>
+          <%end%>
+        </tbody>
+      </table>
+      <%= will_paginate @subdomains %>
+      <br>
+
+            <div class="not_visible">
+              <div id="fixed_div" class="fixed_div">
+                <button  class="buttonstyle go-right">  <img src="<%= asset_path 'r-arrow2.png'%>" class="right_arrow"/> </button>
+             </div>
+           </div>
+        
+    </div>
+  </div> 
+</div>
+
+<script type="text/javascript">
+  $(function(){
+    if ($('a[href*="order_by=subdomain_name"]').length > 0){
+      $('.pagination').find("a").each(function(){
+        $(this).attr("data-remote",true);
+      });
+    }  
+  })
+</script>
+
+
+<script>
+function scrollWin() {
+    window.scrollBy(100, 0);
+}
+</script>
+
+
+<style type="text/css">
+/**/
+  .my-mobile-image {
+    display: none !important;  /*This is how it looks on mobile */
+  }
+  @media only screen and (min-width: 320px) and (max-width: 768px) {
+  
+    .my-mobile-image {
+      display: block !important;
+    }
+  }
+  #target {
+    position: absolute;
+    left: 273px;
+    top: 277px;
+  } 
+
+  .buttonstyle
+  {
+    background-color: transparent;
+    border: none;;
+  }
+   .not_visible {
+    display: none;
+}
+@media  (max-width: 767px) {
+   
+    .not_visible {
+        display: inline;
+    }                                                                                              
+}
+</style>
+
+<script type="text/javascript">
+ $('button.go-right').click(function(event) {
+    var pos = $('div.overflow-hidden').scrollLeft() + 50;
+    $('div.overflow-hidden').scrollLeft(pos);
+});
+
+</script>

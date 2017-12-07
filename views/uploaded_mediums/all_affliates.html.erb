@@ -1,0 +1,68 @@
+<!-- affiliates -->
+<div class="container container-fix"><div class="row">
+  <div class="col-sm-12">
+      <h3 style="margin-bottom: 0px; margin-top: 15px;">Affiliates</h3>
+  </div>
+  <div class="item-group font">
+    <div class="table-responsive1">
+      <table>
+        <tr>
+          <% @affiliates.each do |k, v| %>
+            <%# if device_name.is_mobile? %>
+            <% if device_name.is_mobile? && browser.mobile? %>
+              <td style="padding: 5px;">
+                <div class="item custom-width grid-group-item" style="width:160px;">
+                  <div class="thumbnail" style="min-width: 140px;height: 120px;">
+                    <div class="caption">
+                      <h4 class="group inner list-group-item-heading text-info media_file_name">
+                        <%if File.exist?("#{Rails.root.to_s}/public/subdomain/logo/#{v[0].split('/').last}").present? %>
+                     <a href= "http://<%=v[1]%>.<%=ENV['DOMAIN']%>"  target="_blank">
+                        <img class="img-max-height text-center"  src="<%= v[0] %>" alt="logo" ></a>
+                      <p style="text-align: center;"><a href= "http://<%=v[1]%>.<%=ENV['DOMAIN']%>" target="_blank"><%=v[1]%></a></p>
+                    <% else %>
+                      <a href= "http://<%=v[1]%>.<%=ENV['DOMAIN']%>"  target="_blank">
+                        <img  style="width: 82%; " class="img-max-height text-center"  src="/subdomain/logo/logo.jpg" alt="logo" ></a>
+                      <p style="text-align: center;"><a href= "http://<%=v[1]%>.<%=ENV['DOMAIN']%>" target="_blank"><%=v[1]%></a></p>
+                    <% end %>
+                      </h4>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            <%else%>
+              <div class="item col-xs-6 col-md-2 col-lg-2 custom-width img_width">
+                <div class="thumbnail" style="width: 100%; margin-top: 5px;height: 120px;">
+                  <div class="caption">
+                    <h4 class="group inner list-group-item-heading text-info media_file_name">
+                    <%if File.exist?("#{Rails.root.to_s}/public/subdomain/logo/#{v[0].split('/').last}").present? %>
+                     <a href= "http://<%=v[1]%>.<%=ENV['DOMAIN']%>"  target="_blank">
+                        <img class="img-max-height text-center"  src="<%= v[0] %>" alt="logo" ></a>
+                      <p style="text-align: center;"><a href= "http://<%=v[1]%>.<%=ENV['DOMAIN']%>" target="_blank"><%=v[1]%></a></p>
+                    <% else %>
+                      <a href= "http://<%=v[1]%>.<%=ENV['DOMAIN']%>"  target="_blank">
+                        <img  style="width: 82%; " class="img-max-height text-center"  src="/subdomain/logo/logo.jpg" alt="logo" ></a>
+                      <p style="text-align: center;"><a href= "http://<%=v[1]%>.<%=ENV['DOMAIN']%>" target="_blank"><%=v[1]%></a></p>
+                    <% end %>
+                    </h4>
+                  </div>
+                </div>
+              </div>
+            <%end%>
+          <% end %>
+        </tr>
+      </table>
+    </div>
+  </div> 
+</div>
+
+<div class="row">
+  <div class="col-sm-12">
+      <p style="margin-bottom: 0px; margin-top: 15px;">
+         <a class="btn btn-info" href="/home" >Back</a>
+      </p>
+  </div>
+</div>
+
+
+</div>
+<!-- affiliates -->

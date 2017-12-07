@@ -1,0 +1,97 @@
+    <div class="row">
+       <!--div class="col-sm-12">
+           <h2 class="" style="margin-bottom: 25px;margin-left:15px;">
+               Change Your Plan
+           </h2>
+       </div-->
+       <ul class="list-group" style="padding-left:0px;">
+           <li class="list-group-item1">
+               <div class="row">
+                   <div class="col-sm-4 col-xs-12">
+                       <h3 style="padding-left: 15px; margin-bottom: 20px; margin-top: 0px;"><b>Current Plan </b></h3>
+                       <div class="row">
+                          <div class="col-sm-12">
+                            <div class="Upgradable-plan-change text-center monthly-pricing shadow">
+                              <ul class="list-group" style="padding-left:0px;">
+                                <li class="list-group-item"><p class="message text-success" style="padding-top:15px;"><%= current_user.current_plan.nil? ? "Free" : current_user.current_plan.plan_name %></p></li>
+                              
+                                <%if current_user.current_plan.nil? %>
+                                  <li class="list-group-item background_blue">
+                                    <h4 class="text-success">
+                                      <p class="plan_amount"> $ 0 <br><br><small class="small_text">per month</small></p>
+                                    </h4>
+                                  </li>
+                                  <li class="list-group-item min-height_pp" style="height: 130px;"><p class="desc">Get all free messages of your church</p></li>
+                                  <li class="list-group-item" style="min-height: 56px;"></li>
+                                <%end%> 
+                                <% if current_user.current_plan %>
+                                  <li class="list-group-item background_blue">
+                                    <h4 class="text-success">
+                                      <p class="plan_amount">$ <%= number_with_precision(current_user.current_plan.plan_amount, precision: 0) %><br><br><small class="small_text">per month</small></p>
+                                    </h4>
+                                  </li>
+                                  <li class="list-group-item min-height_pp" style="height: 130px;"><p class="desc"><%= current_user.current_plan.plan_description%></p></li>
+                                  <li class="list-group-item">
+                                  <!--button class="btn btn-default"><a href="<%#= "/#{crypt(current_user.current_plan.id)}/upgrade_plan" %>" style="color: #7B7A78;">Renew</a></button-->
+                                  <a class="btn btn-default" href="<%= "/#{crypt(current_user.current_plan.id)}/upgrade_plan" %>" style="color: #7B7A78;">Renew</a></li>
+                                <% end %>
+                            </ul>
+                            </div>
+                          </div>
+                        </div>
+                   </div>
+                   <div class="col-sm-8 col-xs-12">
+                       <div class="row">
+                           <h3 style="padding-left: 15px; margin-bottom: 20px; margin-top: 0px;"><b>Available Plans </b></h3>
+                           <% upgrade_plans.each do |plan| %>
+                               <div class="col-sm-6 col-xs-12">
+                                  <div class="Upgradable-plan-change text-center monthly-pricing shadow">
+                                  <ul class="list-group" style="padding-left:0px;">
+                                    <li class="list-group-item"><p class="message text-success" style="padding-top:15px; word-wrap: break-word;"><%= plan.plan_name %></p></li>
+                                    <li class="list-group-item background_blue"><h4 class="text-success"><p class="plan_amount">$ <%= number_with_precision(plan.plan_amount, precision: 0) %><br><br><small class="small_text">per month</small></p></h4></li>
+                                    <li class="list-group-item min-height_pp" style="height: 130px;"><p class="desc"><%=plan.plan_description%></p></li>
+                                    <li class="list-group-item">
+                                      <a href="<%= "/#{crypt(plan.id)}/upgrade_plan" %>" class="btn btn-default" style="color: #ffffff; background-color: #5895EB;">Upgrade Now</a>
+                                    </li>
+                                  </ul>
+                                  </div>
+                               </div>
+                           <% end %>
+                       </div>
+                   </div>
+               </div>
+           </li>
+          <%unless current_user.is_free_user?%>
+           <li class="list-group-item1">
+               <div class="row">
+                   <div class="col-sm-12 col-xs-12">
+                       <div class="row">
+                          <h3 style="padding-left: 15px; margin-bottom: 20px; margin-top: 0px;"><b>Addons </b></h3>
+                          <% @addons.each do |addon| %>
+                            <div class="col-sm-4 col-xs-12">
+                              <div class="Upgradable-plan-change text-center monthly-pricing shadow" style="min-height:420px;">
+                                <ul class="list-group" style="padding-left:0px;">
+                                  <li class="list-group-item"><p class="message text-success" style="padding-top:15px; word-wrap: break-word;"><%= addon.plan_name %></p></li>
+
+                                  <li class="list-group-item background_blue"><h4 class="text-success"><p class="plan_amount">$ <%= number_with_precision(addon.plan_amount, precision: 0) %><br><br><small class="small_text">per month</small></p></h4></li>
+                                  <li class="list-group-item min-height_pp" style="height: 130px;"><p class="desc"><%=addon.plan_description%></p></li>
+                                  <% if @added_addons.include?(addon.id) %>
+                                  <li class="list-group-item">
+                                    <button class="btn btn-default" disabled>Added</button>
+                                  </li>
+                                  <% else %>
+                                  <li class="list-group-item">
+                                    <a class="btn btn-default" style="background-color: #5895EB; color: #ffffff;" href="/<%= crypt(addon.id) %>/upgrade_plan">Add Now</a>
+                                  </li>
+                                  <% end %>
+                                </ul>
+                              </div>
+                            </div>
+                          <% end %>
+                       </div>
+                   </div>
+               </div>
+           </li>
+          <%end%>
+       </ul>
+    </div>

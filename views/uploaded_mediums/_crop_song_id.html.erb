@@ -1,0 +1,233 @@
+<!-- <script type="text/javascript" src="jquery.js"></script> -->
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.2.3/jquery-ui.min.js"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<!--========================   Breadcrumb  Start  ======================-->
+<!-- <div class="container container-fix"> -->
+  <div class="row">
+    <div class="col-sm-12">
+       <div class="breadcrumb-outer">
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <% if device_name.is_mobile? && browser.mobile? %>
+        <div class="row" style="margin-bottom:15px;">
+          <div  style="display:none;">
+            <audio id="html_player" controls>
+              <source src="/download/media_with_song_id/<%= params[:uploaded_media_id]%>/<%=song_id%>" type="<%= @uploaded_media.media_content_type%>" preload="auto">
+                  Your browser does not support the audio element.
+            </audio>
+          </div>
+          <div class="col-sm-12">
+            <div id="waveform" class="player_div">
+              <div class="row">
+                <div class="col-sm-12" >
+                  <a href="">
+                    <img id="crop_play_pause_button" class="play_class hide" src="<%= asset_path 'Play_button_128.png'%>" alt="" style="height: 10%; width: 20%;"/>
+                  </a>
+                </div>
+                <div class="col-sm-12"></div>
+              </div>
+
+              <!-- <div class="progress progress-striped active" id="progress-bar">
+                <div class="progress-bar progress-bar-info"></div>
+              </div> -->
+
+              <div id="wave-crop" style="overflow:hidden; opacity: 0.5;"%>
+              </div>
+              <div id="crop_chart_div" style="height: 3em; width:117%; background-color : transparent;  margin-left:-8.59%; z-index:1100; position:relative;"></div>
+              <% if current_user && current_user.is_customer? && (@uploaded_media.can_download_by?(current_user))%>
+                <div class="row" style="height:3em;">
+                  <p class="col-sm-2 cmnt_text" id="comment_anchor1"></p><p class="col-sm-2 cmnt_text" id="comment_anchor2"></p><p class="col-sm-2 cmnt_text" id="comment_anchor3"></p><p class="col-sm-2 cmnt_text" id="comment_anchor4"></p><p class="col-sm-2 cmnt_text" id="comment_anchor5"></p><p class="col-sm-2 cmnt_text" id="comment_anchor6"></p>
+                </div>
+              <%end%>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-9">
+            <p><%= @uploaded_media.subdomain.subdomain_name.capitalize %></p>
+            <% media_name = File.basename(@uploaded_media.media_file_name,File.extname(@uploaded_media.media_file_name)).gsub("_", " ") %>
+            <h3 title="<%= media_name %>" class="trunc" data-size="40" ><%= media_name %></h3>
+            <p><%= @uploaded_media.presenter_name %></p>
+            <p><%= @uploaded_media.release_date.strftime("%B %d, %Y") %></p>
+            <% if (current_user && current_user.is_customer? && (@uploaded_media.can_download_by?(current_user))) || (!current_user && (session[:guest_email].present? && can_download_guest?(@uploaded_media.id, session[:guest_email])))%>
+              <p class = "presenter_name">$<%=number_with_precision(@uploaded_media.media_amount, :precision => 2) %></p> 
+            <% else %>
+              <p class = "presenter_name">$<%=number_with_precision(@uploaded_media.media_amount, :precision => 2) %></p>
+            <% end %>
+          </div>
+        </div>
+      <% else %>
+        <div class="row">
+          <div class="col-sm-3">
+            <img class="thumbnail" src="<%= @uploaded_media.media_art.url(:thumb) %>" alt="" />
+          </div>
+          <div class="col-sm-9">
+            <p><%= @uploaded_media.subdomain.subdomain_name.capitalize %></p>
+            <% media_name = File.basename(@uploaded_media.media_file_name,File.extname(@uploaded_media.media_file_name)).gsub("_", " ") %>
+            <h3 title="<%= media_name %>"><%= media_name %></h3>
+            <p><%= @uploaded_media.presenter_name %></p>
+            <p><%= @uploaded_media.release_date.strftime("%B %d, %Y") %></p>
+            <% if (current_user && current_user.is_customer? && (@uploaded_media.can_download_by?(current_user))) || (!current_user && (session[:guest_email].present? && can_download_guest?(@uploaded_media.id, session[:guest_email])))%>
+             <p class = "presenter_name">$<%=number_with_precision(@uploaded_media.media_amount, :precision => 2) %></p> 
+            <% else %>
+              <p class = "presenter_name">$<%=number_with_precision(@uploaded_media.media_amount, :precision => 2) %></p>
+            <% end %>
+          </div>
+        </div>
+        <div class="row">
+          <div  style="display:none;">
+            <audio id="html_player" controls>
+              <source src="/download/media_with_song_id/<%= params[:uploaded_media_id]%>/<%=song_id%>" type="<%= @uploaded_media.media_content_type%>" preload="auto">
+                  Your browser does not support the audio element.
+            </audio>
+          </div>
+          <div class="col-sm-12">
+            <div id="waveform">
+              <div class="row">
+                <div class="col-sm-12">
+                  <a href="">
+                    <img id="crop_play_pause_button" class="play_class hide" src="<%= asset_path 'Play_button_128.png'%>" alt="" style="height: 77px; width: 80px;"/>
+                  </a>
+                </div>
+              </div>
+
+            <!--   <div class="progress progress-striped active" id="progress-bar">
+                <div class="progress-bar progress-bar-info"></div>
+              </div> -->
+
+              <div id="wave-crop" style="overflow:hidden; opacity: 0.5;">
+              </div>
+              <div id="crop_chart_div" style="height: 3em; width:117%; background-color : transparent;  margin-left:-8.59%; z-index:1100; position:relative;"></div>
+              <% if current_user && current_user.is_customer? && (@uploaded_media.can_download_by?(current_user))%>
+                <div class="row" style="height:3em;">
+                  <p class="col-sm-2 cmnt_text" id="comment_anchor1"></p><p class="col-sm-2 cmnt_text" id="comment_anchor2"></p><p class="col-sm-2 cmnt_text" id="comment_anchor3"></p><p class="col-sm-2 cmnt_text" id="comment_anchor4"></p><p class="col-sm-2 cmnt_text" id="comment_anchor5"></p><p class="col-sm-2 cmnt_text" id="comment_anchor6"></p>
+                </div>
+              <%end%>
+            </div>
+          </div>
+         <!--  <div class="col-sm-12">
+            <%# if current_user && current_user.is_customer? && (@uploaded_media.can_download_by?(current_user))%>
+              <%#= form_tag(media_comments_path, :method=> 'get',:id=>'myform',:remote => true, :role =>'form') do %>
+                <div class="input-group">
+                  <input type="text" name="comment" class="form-control" placeholder="Write a comment" disabled="disabled">
+                  <span class="input-group-btn">
+                  <%#= submit_tag 'Save',:class=>"btn btn-primary btn-group",:id=>"save_comment", :disabled => true %>
+                  </span>
+                </div>
+                <input type="hidden" id="audio_timing" name="audio_current_time" value="">
+                <input type="hidden" name="uploaded_media_id" value="<%#=params[:uploaded_media_id]%>">
+              <%#end%>
+            <%#end%>
+          </div> -->
+        </div>
+      <% end %>
+      
+      <%# if !current_user.blank? && current_user.is_customer? %>
+                <div class="row">
+          <div class="col-sm-12">
+            <div class="row music-bar-social">
+              <div class="col-xs-2 col-md-2 custom-width">
+                <div class="like text-uppercase" id="like" style="margin-left:0px;">
+                  <% if current_user && @like %>
+                    <a  href="#" class="underline2 unlike like_unlike">&nbsp;<span class="glyphicon glyphicon-heart"></span>&nbsp;Unlike</a>
+                  <% elsif current_user %>
+                    <a  href="#" class="underline2 like like_unlike">&nbsp;<span class="glyphicon glyphicon-heart-empty"></span>&nbsp;Like</a>
+                  <% end %>
+                </div>
+              </div>
+              <div class="col-xs-8 col-md-8 custom-width">
+                  <div class="share text-uppercase" style="margin-left:0px;">
+                    <div class="sharing-button promotion-sharing">
+                    <!-- Go to www.addthis.com/dashboard to generate a new set of sharing buttons --> 
+                        
+                      <a class="btn btn-info lettercase btn-xs" href="https://api.addthis.com/oexchange/0.8/forward/facebook/offer?url=<%=request.base_url%>/media_details/<%=params[:uploaded_media_id]%>&pubid=ra-51b6ad4b307d7a24&ct=1&title=<%=File.basename(@uploaded_media.media_file_name,File.extname(@uploaded_media.media_file_name)).gsub("_", " ")%>&description=<%="Presenter name- " + @uploaded_media.presenter_name + "  Description- "+ @uploaded_media.description %>&picture=<%=request.base_url%><%=@uploaded_media.media_art.url(:thumb)%>&pco=tbxnj-1.0" target="_blank">Share on Facebook</a>
+
+                      <a class="btn btn-info lettercase btn-xs" href="https://api.addthis.com/oexchange/0.8/forward/twitter/offer?url=<%=request.base_url%>/media_details/<%=params[:uploaded_media_id]%>&pubid=ra-51b6ad4b307d7a24&ct=1&title=Need%20some%20inpiration?%20Listen%20to%20what%20I%20found%20on%20the%20<%=current_subdomain.subdomain_name %>'s%20media%20store%20website!&pco=tbxnj-1.0" target="_blank">Share on Twitter<!-- <img src="https://cache.addthiscdn.com/icons/v2/thumbs/32x32/twitter.png" border="0" alt="Twitter"/> --></a>
+                     
+                      <% if current_user.present? %>
+                      <a class="btn btn-info lettercase btn-xs" href="https://api.addthis.com/oexchange/0.8/forward/email/offer?url=<%= request.base_url%>/media_details/<%=params[:uploaded_media_id]%>&pubid=ra-51b6ad4b307d7a24&ct=1&title=<%=current_user.name%>%20has%20sent%20you%20a%20blessing.%20Listen%20Now!&pco=tbxnj-1.0" target="_blank">Share via email<!-- <img src="https://cache.addthiscdn.com/icons/v2/thumbs/32x32/email.png" border="0" alt="Email"/> --></a>
+                      <% end %>
+                    </div>                    
+                  </div>
+              </div>
+              <% if current_user %>
+                <div class="col-xs-2 col-md-2 custom-width rateit1">
+                  <div class="rateit" id="crop_rateit9">
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <%# end %>
+    </div>
+  </div>
+  <div>
+<button data-dismiss="modal" onclick="window.location.reload();"  class="btn btn-info media-details-back">Back</button>
+
+      <!--   <li><a href="/home">Home</a></li> -->
+  </div>
+  <!--========================   Upload   End  ======================-->
+
+<!-- </div> -->
+<%= javascript_include_tag 'bootstrapValidator.js', 'summernote.min.js','jquery.raty.js', "media_details.js",'jquery.rateit.js', 'wavesurfer.min.js' %>
+<%= stylesheet_link_tag 'bootstrap-tagsinput.css', 'summernote.css', 'uploaded_mediums.css','rateit.css', 'visualizer.css'%>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $(".like").click(function(){
+      if (($(this).find("a")).hasClass("like")){
+        like_now("/<%=params[:uploaded_media_id]%>/like");
+      }
+      else if (($(this).find("a")).hasClass("unlike")){
+        unlike_now("/<%=params[:uploaded_media_id]%>/unlike");
+      }
+    });
+    setTimeout(function(){
+      $(".rateit-reset").css("display", "none");
+    }, 1000);
+  });
+// Get all comments and time instances
+<% comment_instances = get_all_comment_instances(params[:uploaded_media_id]) %>
+
+// Assign comments and time array to respective variable
+window.visualizer = {
+  comments_array: <%= raw comment_instances[1] %>,
+  uploaded_media_id: "<%= params[:uploaded_media_id] %>",
+  song_id: "<%= j song_id %>",
+  points_color: <%= raw get_points_color(comment_instances[0].length) %>,
+  commentsTiming: <%= raw comment_instances[0] %>,
+  total_duration: <%= @uploaded_media.duration %>,
+  lastTimingIndex: 0,
+  readyToPlayFlag: false
+};
+
+$(document).ready(function(){
+  $(".rateit").click(function(){
+    $.ajax({
+      url : '/rate_song',
+      data : { selected_value : $(this).rateit('value'),
+        media_id: <%= @uploaded_media.id %>
+      },
+      type : 'POST'
+    });
+  });
+//set previous rating by same user
+<% if current_user %>
+  $(".rateit").rateit('value', <%= get_rated_value_for_media(@uploaded_media.id,current_user.id) %>)
+<% end %>
+});
+</script>
+
+<%= javascript_include_tag "visualizer_for_crop_song.js" %>
+
+<style>
+  .player_div
+   {
+    background: url(<%= @uploaded_media.media_art.url %>) no-repeat;
+    background-size: cover;
+  } 
+</style>

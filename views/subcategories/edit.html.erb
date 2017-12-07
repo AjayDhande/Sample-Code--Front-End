@@ -1,0 +1,30 @@
+<div class="container container-fix">
+    <div class="row">
+        <div class="col-sm-12">
+            <h2 class="heading-title text-left">Edit SubCategory</h2>
+        </div>
+        <div class="col-sm-12">       
+            <%= form_for @subcategory,:url=> {:controller => 'subcategories', :action => 'update'},:html=>{:class=>"form-horizontal", :role =>"form", :id => "edit_subcategory_form"} do |f| %> 
+            
+                <div class="container">
+                    <div class="form-group">                    
+                        <label class="col-sm-offset-0 col-sm-2 control-label required">SubCategory Name</label>
+                        <div class="col-sm-4">
+                            <%= f.text_field :subcategory_name, :class => "form-control", :disabled =>false  %>
+                        </div>
+                    </div>
+                    <div class="form-group">                    
+                        <div class="col-sm-offset-2 col-sm-8">
+                            <!--<button type="button" class="btn btn-default" onclick="enablePath();" id="edit">Edit</button>
+                            <button type="submit" id="save" disabled class="btn btn-default">Save</button>-->  
+                            <a class="btn btn-info" href="/subcategories/new">Back</a>
+                            <%= f.submit "Save",:class=>"btn btn-info" %>
+                        </div>
+                    </div>
+                </div> 
+            <% end %>
+        </div>
+    </div>
+</div>
+
+<%= javascript_include_tag 'category_subcategory.js' %>

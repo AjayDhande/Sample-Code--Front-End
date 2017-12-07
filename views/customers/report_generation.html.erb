@@ -1,0 +1,203 @@
+<div class="container container-fix">
+    <div class="row">
+      <%= render 'layouts/admin_header'%>
+    </div>
+    <div class="row">
+        <div class="col-sm-3">
+            <h2 class="heading-title text-left">Reports</h2>
+        </div>
+      <!--  <div class="col-sm-3">
+            <div id="datetimepicker2" class="input-group" style="margin-top: 15px;">
+                <input type="text" class="form-control">
+                <span class="input-group-addon add-on">
+                    <i data-time-icon="glyphicon glyphicon-time" data-date-icon="glyphicon glyphicon-calendar"></i>
+                </span>
+                <script type="text/javascript">
+                    $('#datetimepicker2').datetimepicker({
+                      format: 'dd/MM/yyyy hh:mm:ss',
+                      language: 'pt-BR'
+                    });
+                </script>
+            </div>
+        </div>-->
+    </div>
+      <div class="row">
+          <div class="col-lg-4 col-md-4 col-sm-6">
+              <div class="tile">
+                  <div class="tile-heading">Active Subscriptions</div>
+                  <div class="tile-body"><i class="fa fa-user"></i>
+                      <h2 class="pull-right"><%= @active_subscriptions.is_a?(Fixnum) ? @active_subscriptions : @active_subscriptions.length%></h2>
+                  </div>
+                  <div class="tile-footer">
+                    <span>Till Now</span>
+                    <% unless @active_subscriptions.is_a?(Fixnum) %>
+                      <span class="pull-right" onclick="active_subscriber_toggle(this);" title="Toggle subscribers list"><i class="fa fa-plus"></i></span>
+                    <% end %>
+                  </div>
+              </div>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-6">
+              <div class="tile">
+                  <div class="tile-heading">All Time Revenue</div>
+                  <div class="tile-body"><i class="fa fa-usd"></i>
+                      <h2 class="pull-right"><%= number_with_precision(@all_time_revenue.round(2), precision: 2)%></h2>
+                  </div>
+                  <div class="tile-footer">Till Now</div>
+              </div>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-6">
+              <div class="tile">
+                  <div class="tile-heading">Unpaid Invoices Amount</div>
+                  <div class="tile-body"><i class="fa fa-usd"></i>
+                      <h2 class="pull-right"><%= number_with_precision(@unpaid_invoices.round(2), precision: 2)%></h2>
+                  </div>
+                  <div class="tile-footer">Till Now</div>
+              </div>
+          </div>
+      </div>
+    <% unless @active_subscriptions.is_a?(Fixnum) %>
+      <div class="row first-hidden" id="active-subscriptions">
+        <div class="col-sm-12 col-xs-12">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Active Subscriptions</h3>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-bordered active-subscription" style="max-height: 200px;">
+                <thead>
+                  <tr>
+                    <td class="dark-gray"><strong>Username</strong></td>
+                    <td class="dark-gray"><strong>Plan Name</strong></td>
+                    <td class="dark-gray"><strong>Subscription From</strong></td>
+                    <td class="dark-gray"><strong>Subscription To</strong></td>
+                    <td class="dark-gray"><strong>Monthly Amount</strong></td>
+                  </tr>
+                </thead>
+                <tbody>
+                <% @active_subscriptions.each do |user| %>
+                  <tr>
+                    <td><%= user.username %></td>
+                    <% plan = user.current_plan %>
+                    <td><%= plan.plan_name rescue "Free" %></td>
+                    <% subscription = user.current_subscription %>
+                    <td><%= subscription.effective_from.to_date.strftime("%B %d, %Y") rescue "-" %></td>
+                    <td><%= subscription.effective_to.to_date.strftime("%B %d, %Y") rescue "-" %></td>
+                    <td><%= plan.plan_amount rescue "-" %></td>
+                  </tr>
+                <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+      <div class="row">
+        <% unless @payments.blank?%>
+          <div class="col-sm-6 col-xs-12">
+              <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-CMRR"></i> Payment</h3> 
+                  </div>                  
+                  <div class="table-responsive">
+                      <table class="table table-bordered">
+                          <thead>
+                              <tr>
+                                  <td><strong>Month</strong></td>
+                                  <td><strong>Payment($)</strong></td>
+                              </tr>
+                          </thead>
+                          <tbody>
+                            <%@payments.each do |payment| %>
+                              <tr>
+                                  <td class=""><%= (payment.first+"-01").to_date.strftime("%B") if payment.first.present? %></td>
+                                  <td><%= number_with_precision(payment.last.round(2), precision: 2)%></td>
+                              </tr>
+                            <% end %>
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+          </div>
+        <% end %>
+          <div class="col-sm-6 col-xs-12">
+              <div class="panel panel-default">
+                  <div class="panel-heading">
+                      <h3 class="panel-title"><i class="fa fa-CMRR"></i> New Revenue</h3>
+                  </div>
+                  <div class="table-responsive">
+                      <table class="table table-bordered">
+                          <thead>
+                              <tr>
+                                  <td><strong>Month</strong></td>
+                                  <td><strong>New Revenue($)</strong></td>
+                              </tr>
+                          </thead>
+                          <tbody>
+                          <%@new_revenue.each do |revenue| %>
+                              <tr>
+                                  <td class=""><%= (revenue.first+"-01").to_date.strftime("%B") if revenue.first.present? %></td>
+                                  <td><%= number_with_precision(revenue.last.round(2), precision:2) %></td>
+                              </tr>
+                          <% end %>
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+          </div>
+          
+          <div class="col-sm-6 col-xs-12">
+              <div class="panel panel-default">
+                  <div class="panel-heading">
+                      <h3 class="panel-title"><i class="fa fa-CMRR"></i> MRR</h3>
+                  </div>
+                  <div class="table-responsive">
+                      <table class="table table-bordered">
+                          <thead>
+                              <tr>
+                                  <td><strong>Month</strong></td>
+                                  <td><strong>MRR($)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></td>
+                              </tr>
+                          </thead>
+                          <tbody>
+                          <%@mrr.each do |mrr| %>                          
+                              <tr>
+                                  <td class=""><%= (mrr.first+"-01").to_date.strftime("%B") if mrr.first.present? %></td>
+                                  <td><%= number_with_precision(mrr.last.round(2), precision: 2) %></td>
+                              </tr>
+                          <% end %>
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+          </div>
+          
+          <div class="col-sm-6 col-xs-12">
+              <div class="panel panel-default">
+                  <div class="panel-heading">
+                      <h3 class="panel-title"><i class="fa fa-CMRR"></i> CMRR</h3>
+                  </div>
+                  <div class="table-responsive">
+                      <table class="table table-bordered">
+                          <thead>
+                              <tr>
+                                  <td><strong>Month</strong></td>
+                                  <td><strong>CMRR($)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></td>
+                              </tr>
+                          </thead>
+                          <tbody>
+                            <% Hash[*@cmrr.first].each do |cmr|%>
+                              <tr>
+                                  <td class=""><%= (cmr.first+"-01").to_date.strftime("%B") if cmr.first.present? %></td>
+                                  <td><%= number_with_precision(cmr.last.round(2), precision: 2)%></td>
+                              </tr>
+                            <% end %>
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+          </div>
+      </div>   
+</div>
+
+<%=javascript_include_tag 'bootstrap-hover-dropdown.js', 'jquery.floatThead.min.js', 'reports.js', 'my_account.js' %>

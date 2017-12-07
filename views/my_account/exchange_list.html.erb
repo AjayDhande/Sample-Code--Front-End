@@ -1,0 +1,117 @@
+<div class="container container-fix">
+  <div class="row">
+    <div class="col-xs-12 col-sm-4 col-md-3 custom-width">
+      <img alt="" class="logo-fix" src="<%= cookies[:logo_path] %>" />
+    </div>
+      <div class="col-xs-12 col-sm-8 col-md-9">
+        <h2 class="heading-title text-left subdomain_title">
+          <% if @can_update%>
+            <%= current_user.church_name.titlecase %> Media Store<small>&nbsp;<a href = "/my_account">Update your site's info</a></small>
+          <%else%>
+            <%= subdomain_name.titleize%> Media Store
+          <%end%>
+        </h2>
+        <p>
+          Your Online Church Media Site: <a href="<%=request.base_url%>"><%=request.base_url%></a>
+        </p>
+      </div>
+  </div>
+
+    <%if current_subdomain.is_active? %>
+      <%= render "device_accesses/the_tabs" %>
+    <%else%>
+      <h3 style= "background-color: #FBDADA; font-weight: bold; text-align: center;"class="error-color">Subdomain deactivated, renew your subscription</h3>
+    <%end%>
+
+    <!--===================== Pending Request Table s=================-->
+      <div class="row">
+        <div class="col-sm-6">
+          <form class="form-search" action="<%=exchange_list_path%>" role="search" method="get" id="eligible_subdomains" >
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search for.." name="search_exchange" value="">
+              <span class="input-group-btn">
+                <button class="btn btn-info" type="submit">Go</button>
+              </span>
+            </div><!-- /input-group -->
+          </form>
+        </div>
+      </div>
+    
+      <div class="row" style="margin-top: 5px;">
+        <div class="col-sm-6">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr bgcolor="#31708f">
+                  <th colspan="2"><font color="white">Eligible Subdomains</font></th>
+                </tr>
+              </thead>
+                <tbody>
+                  <% if @subdomains.present? %>              
+                    <% @subdomains.each do |subdomain|%>
+                      <tr>
+                        <td><%= subdomain.subdomain_name %></td>
+                        <td><%= link_to "Add", create_exchange_path(:connection_id => subdomain.id), :method => :post %></td>
+                      </tr>
+                    <%end%>
+                  <%else%>
+                    <tr><td><p class="error-color">No Eligible Subdomains found</p></td></tr>
+                  <%end%>
+                </tbody>
+            </table>
+            <%= will_paginate @subdomains %><br>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr bgcolor="#31708f">
+                  <th colspan="2"><font color="white">Your Exchange Partner</font></th>
+                </tr>
+              </thead>
+                <tbody>
+                  <% @connections.each do |connection|%>
+                  <% exchange = connection.exchanges.where("subdomain_id =? or connection_id =?",current_subdomain.id,current_subdomain.id).first %>
+                  <% if exchange.blank? %>
+                    <% exchange = connection.inverse_exchanges.where("subdomain_id =? or connection_id =?",current_subdomain.id,current_subdomain.id).first %>
+                  <% end %>
+                  <% next if exchange.blank? %>
+                    <tr>
+                      <td><%= connection.subdomain_name %></td>                        
+                      <td><%= link_to "Remove", destroy_exchange_path(exchange), :method => :delete %></td>
+                    </tr>
+                  <%end%>
+                </tbody>
+            </table>
+            <!-- <div id="target" class="my-mobile-image">
+              <img src="<%#= asset_path 'r-arrow1.png'%>" class="right_arrow"/> 
+            </div> -->
+          </div>
+        </div>
+      </div>    
+</div>
+
+<%= stylesheet_link_tag 'my_account.css', 'tab.css'%>
+<%= javascript_include_tag "device_accesses.js","bootstrap-colorpicker.js","bootstrap-datetimepicker.min.js","bootstrap-hover-dropdown.js","bootstrap-tabdrop.js", "bootstrapValidator.js", "summernote.min.js", "my_account.js", "exchange_list.js" %>
+
+
+<style type="text/css">
+
+  .my-mobile-image {
+    display: none !important; /* This is how it looks on mobile */
+  }
+
+  @media only screen and (min-width: 320px) and (max-width: 768px) {
+  
+    .my-mobile-image {
+      display: block !important;
+    }
+  }
+
+  #target {
+    position: absolute;
+    left: 150px;
+    top: 70px;
+  } 
+</style>

@@ -1,0 +1,12 @@
+<p>Hi <%=@email%>,</p>
+<p align = "justify">You recently requested for your Username. </p> 
+<p align = "justify">Use following Username to Login.</p> 
+<p align = "justify">Your email associated with the below username:</p>
+<!-- <p align = "justify"> <b><%#=@user.name%><br> -->
+<% @users.each do |user| %>
+  <p align = "justify"> <b><%= user.username %><b></p>
+<% end %>
+<br>
+
+<p>Thanks,</p>
+<p>AutoMail</p>

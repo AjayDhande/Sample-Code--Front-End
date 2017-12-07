@@ -1,0 +1,681 @@
+<%= javascript_include_tag "bootstrap-hover-dropdown.js", "bootstrap-tabdrop.js", "ekko-lightbox.js", "jquery.raty.js", "jquery.videoBG.js", "jquery.dlmenu.js", "jquery.smooth-scroll.min.js", "jquery.scrolly.js", "wow.min.js", "video.js", "bigscreen.min.js", "jquery.confirm.js", "jquery.confirm.min.js" %>
+<script src="http://code.jquery.com/jquery-migrate-1.2.1.js"></script>
+<%= stylesheet_link_tag "video-js.css", "video.css", "welcome_index.css"%>
+<!--========================   Banner Start   ======================-->
+<div class="container-fix">
+ <div class="row">
+     <div class="col-sm-12 col-xs-12">
+    <section id="banner">
+    <div id="video-container">
+        <video id="example_video_1" class="video-js vjs-default-skin the_video height" height="" controls data-setup="{}" poster="ocm_video_shot.png" preload >
+        <source src="ocm-video-latest.mp4" type='video/mp4' />
+        <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
+       </video>  
+
+
+      <div id="custom-message" class="custom-message1" onclick="click_video1();">
+        <p class= "message text-uppercase" style="line-height: normal;"><span id="video_span"><strong>Create an Online Store</strong><br> & Increase Revenue <br>For Your Church<br>
+          <a class="btn btn-warning" href="/SignUp" id="signup_button" style="z-index: 100; font-size: 16px; margin-top: 20px;">Signup</a></span>
+        </p>
+      </div>
+    </div>
+  </section>
+ </div>
+</div>
+</div>
+    <!--========================   Banner End  ======================-->
+    <!--========================   Text Start  ======================-->
+    <div class="container-fix">
+      <div class="container">
+        <div class="row vdivide">
+          <div class="col-sm-6 parastyle">
+           <!--  <h3>Online Church Media is a subscription based service for your digital media needs.</h3> --> 
+            <h3>
+              A Subscription Based Service for Your Digital Media</h3>
+            <p>Part of making good decisions for your church involves knowing how much revenue you can expect from month to month. We help by automating the buying process for you and your listeners. Listeners love it when most of the work is taken out of the buying process, and nothing makes it easier than a subscription. 
+            <a  class="linkstyle" href="/signup?name=&email=&user%5Brole%5D=BUSINESS">Click to Create an Online Store</a></p>
+          </div>
+         <!--  <div class="col-sm-2">
+          </div> -->
+          <div class="col-sm-6 parastyle">
+       <!--   <h3>We not only provide value for the organization, but for the listeners too.</h3> -->
+
+
+          <h3> 
+               We Put Listeners First</h3>
+            <p>Faithful listeners will enjoy the most convenience at the best value. No more standing in line every week just to buy a tape or CD. Everything arrives to your phone or website so you can listen or download as soon as it’s made available. 
+              <a class="linkstyle" href="/signup?name=&email=&user%5Brole%5D=CUSTOMER"> Sign Up to Listen Today!</a></p>
+
+          </div>
+      </div>
+    </div>
+    <!--========================   Text End  ======================-->
+    <!--========================   Quick and easy Access Start  ======================-->
+    <div id="about">
+    <section id="quick-easy">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 col-xs-12">
+                <h2 class="text-center quick-easy-title wow">
+                    <!-- Quick and easy access to your church’s media store -->
+                    Watch Our Video to Learn More
+                </h2>
+                </div>
+                
+                <div class="col-sm-12 col-xs-12">
+                    <div class="wath-this-video text-center wow"> 
+                        <a href="#" data-toggle="modal" class="video" data-video="Online_Church_Media.mp4" data-target="#myModal1">
+                        <img src="<%= asset_path 'watch-this-video.png'%>" alt="" /></a>
+                      <!-- <button class="btn btn-success btn-lg video" data-video="Online_Church_Media.mp4" data-toggle="modal" data-target="#myModal1">Play Video 1</button> -->
+                   </div> 
+                </div>
+
+                <div class="col-sm-12 col-xs-12 wow">
+                    <div class="row">
+                        <div class="col-sm-4 col-xs-12">
+                            <input type="text" class="form-control" placeholder="Your Name" id="name" name="name">
+                        </div>
+                        <div class="col-sm-4 col-xs-12">
+                            <input type="text" class="form-control" placeholder="Your Email" name="email" id="email">
+                        </div>
+                        <div class="col-sm-4 col-xs-12" style="padding-top:1px;">
+                          <% if current_subdomain.is_ocm? %>
+                            <a href="#" onclick="sign1();" class="btn btn-get-started button-border">
+                                Get Started Now!
+                            </a>
+                          <%else%>
+                            <a href="#" onclick="sign();" class="btn btn-get-started button-border">
+                                Get Started Now!
+                            </a>
+                          <%end%>
+                            <div class="already-register">
+                                <p>
+                                    Free plan available. No credit card required
+                                </p>  
+                                <p>
+                                    <!--<b>Already Registered?</b> <a href="#"> Login Now!</a>-->
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+   <!--  <button class="btn btn-success btn-lg video" data-video="Online_Church_Media.mp4" data-toggle="modal" data-target="#videoModal">Play Video 1</button> -->
+ 
+  <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+    <!--   <div class="modal-content" style="background-color:transparent;"> -->
+
+        <div class="modal-body"  style="padding:0px;">
+    <!--       <button type="button" id="vid_effect" class="close" data-dismiss="modal" aria-label="Close"  
+          style="color:white;margin-left:95%;position:absolute;">
+          <span aria-hidden="true">&times;</span></button>
+ -->
+        <%if device_name.is_mobile? && browser.mobile? %>
+         <button type="button"  id="vid_effect" class="close close1" data-dismiss="modal" aria-label="Close" style="margin-top: -3px; margin-left: 551px">  
+          <span aria-hidden="true">CLOSE X</span></button>
+        <%else%>
+          <button type="button"  id="vid_effect" class="close close1" data-dismiss="modal" aria-label="Close" style="margin-top: -3px; margin-left: 513px">  
+          <span aria-hidden="true">CLOSE X</span></button>
+        <%end%>  
+          <iframe  id='iframe' width="100%" height="350"
+           src="" frameborder="0" allowfullscreen style="padding-top: 20px;"></iframe>
+        </div>
+     <!--  </div> -->
+    </div>
+  </div>
+         <!-- Modal -->
+  <!-- <div class="modal fade" id="myModal1" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <!--  <div class="modal-content">
+          <div class="modal-header">  
+                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">X</span></button> 
+          </div>  
+         -->
+   <!--  <div class="modal-body" style="padding:0px;">
+         
+        <video id="videopop" controls style="height: 337px;position:absolute!important;
+          width: 100%;">
+         <source src="Online_Church_Media.mp4" preload frameborder="0" allowFullScreen="true" type="video/mp4">
+         </video>
+           </div>
+        </div> 
+      </div>
+    </div> -->
+   
+
+         <!--  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal_window">
+              <form class="form-horizontal" role="form">
+          <div class="modal-content">  
+           <div class="modal-header"> 
+                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">X</span></button> 
+         </div>        
+            <div class="modal-body" style="padding-top: 0px;"> 
+                  <div class="row">
+                 
+                    <iframe id="video_iframe" class="video-js vjs-default-skin the_video" src="Online_Church_Media.mp4" preload frameborder="0" allowFullScreen="true"></iframe>
+                   <!--  <iframe width="1280" height="720" src="https://www.youtube.com/embed/cckrDFqRNhU?autoplay=1&rel=0&amp;controls=0&showinfo=0&?autohide=1&color=white&modestbranding=1" frameborder="0" allowfullscreen></iframe> -->
+                <!--   </div>
+             </div>
+            </div> 
+              </form>
+            </div>
+          </div>  -->
+
+           <!-- <div class="modal-body" style="padding: 0px;">
+                <div class="modal-header" style="border-bottom: 4px solid #000;background-color: black;">
+                  <button type="button" class="close" data-dismiss="modal" style="color:white;opacity: 1;"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                </div>                
+                <div class="row">
+                  <div class="row" style="margin:0px;">
+                    <div class="col-lg-12  col-sm-12 col-xs-12" style="padding:0px">
+                      <div class="glyphicon glyphicon-remove" style="cursor: pointer;outline:0px;background-color:rgb(87,182,243);color:black;z-index:2000;"  onclick="closemodal();">
+                      </div>
+                      <div class="embed-responsive embed-responsive-16by9" style="margin-top: -23px;height: 100px;border:0px solid lightgray;">
+                        <iframe width="560" height="315" src="http://www.youtube.com/embed/cckrDFqRNhU?autoplay=1" frameborder="0" allowfullscreen>
+                        </iframe>  
+                      </div>
+                    </div>
+                  </div> -->
+                    <!-- <div id="video-container">
+                      <video id="example_video_1" class="video-js vjs-default-skin the_video height" height="" controls data-setup="{}" poster="ocm_video_shot.png" preload >
+                        <source src="ocm-video-latest.mp4" type='video/mp4' />
+                        <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
+                      </video>
+                      <div id="custom-message" class="custom-message1" onclick="click_video1();"><p class= "message text-uppercase" style="line-height: normal;"><strong>Create an Online Store</strong><br> & Increase Revenue <br>For Your Church</p></div>
+                    </div> -->
+                    <!--<iframe id="video_iframe" class="video-js vjs-default-skin the_video" src="ocm-video-latest.mp4" preload frameborder="0" allowFullScreen="true"></iframe>-->
+
+                    
+                    <!-- <iframe width="1280" height="720" src="https://www.youtube.com/embed/cckrDFqRNhU?autoplay=1&rel=0&amp;controls=0&showinfo=0&?autohide=1&color=white&modestbranding=1" frameborder="0" allowfullscreen></iframe> -->
+    </section>
+    </div>
+
+    <!--========================   Quick and easy Access End  =====================-->
+    
+  <!--========================   Quick and easy Access End  ======================-->
+  <section class="word-music experience">
+      <div class="container">
+          <div class="row">
+              <div class="col-sm-12 wow">
+                  <h3 class="text-uppercase text-center title">
+                      <img src="<%= asset_path 'word-ussic.png'%>" alt="" />
+                      THE RIGHT MESSAGE FOR THE RIGHT MOMENT
+                  </h3>
+              </div>
+          </div>
+      </div>
+  </section>
+  <div class="container">
+      <div class="row">
+          <div class="col-sm-12 word-music-text text-center wow">
+              <p>What if you could always have the perfect message for each situation you encounter? Search your church’s media store or filter by category for the right message that fits your situation perfectly.</p>
+          </div>
+      </div>
+  </div>
+  <figure class="word-image wow">
+      <div class="bottle">
+        <div class="parallax" data-velocity="-100"></div>
+    </div>
+  </figure>
+
+<!--========================   Quick and easy Access End  ======================-->
+
+<!--========================   The Rigt message for the right moment Start  ======================-->
+  <section class="word-music word-music-fix experience margin5">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 wow">
+                    <h3 class="text-uppercase text-center title">
+                        <img src="<%= asset_path 'word-ussic.png' %>" alt="" />
+                        THE WORD THAT'S ALWAYS WITH YOU
+                    </h3>
+                </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 word-music-text text-center">
+                  <p>This is your church, why not have it accessible at all times? Your spiritual speakers, combined with the best technology, delivers the right message to you at the right time.</p>
+              </div>
+            </div>
+        </div>
+  </section>
+<!--========================   Asian girl image removed   ======================-->
+<!--<figure class="word-image wow">
+    <div class="bottle2">
+        <div class="parallax" data-velocity="-100"></div>
+    </div>
+</figure>-->
+<!--========================   The Rigt message for the right moment End  ======================-->
+  <div style="width:100%; float:left; background-color: #EFF5F5;">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-5 text-center wow">
+                <img src="<%= asset_path 'heart-2.jpg'%>" alt="0" />
+            </div>
+            <div class="col-xs-2">
+            </div>
+            <div class="col-xs-5 text-center wow">
+                <img src="<%= asset_path 'heart-1.jpg'%>" alt="0" />
+            </div>
+        </div>
+    </div>
+  </div>
+
+<!--========================   Services Delivery Start  ======================-->
+  <section class="services-delivery">
+      <div class="container p-center">
+      <div class="row">
+          <div class="col-sm-6 wow ">
+              <h3 class="text-uppercase title">
+                  STRENGTHEN YOUR CHURCH
+              </h3>
+          </div>
+          <div class="col-sm-5 col-sm-offset-1 wow">
+              <h3 class="text-uppercase title">
+                  INSPIRE YOUR LISTENERS
+              </h3>
+          </div>
+      </div>
+      </div>
+  </section>
+  <div class="container">
+      <div class="row p-center">
+          <div class="col-sm-5 services-delivery-discriptio wow fadeIn">
+              <p>
+              Generate a reliable and steady subscription income from your church’s messages.
+              </p>
+          </div>
+          <div class="col-sm-2">
+          </div>
+          <div class="col-sm-5 services-delivery-discriptio wow fadeIn">
+              <p>
+              Extend your church’s words of inspiration to last long after the end of the Sunday service.
+              </p>
+          </div>
+      </div>
+  </div>
+
+  <section class="services-delivery-image">
+      <div class="container">
+          <div class="row">
+          <div class="col-sm-5 col-xs-4 text-center wow">
+              <img class="glob" src="<%= asset_path 'glob.jpg' %>" alt="" />
+          </div>
+          <div class="col-sm-2 col-xs-4 text-center wow flash">
+              <figure class="logo-2">
+                  <img src="<%= asset_path 'logo-2.png' %>" alt="" />
+              </figure>
+          </div>
+          <div class="col-sm-5 col-xs-4 text-center wow">
+              <img class="glob" src="<%= asset_path 'star.jpg' %>" alt="" />
+          </div>
+      </div>
+      </div>
+  </section>
+
+  <section class="services-delivery">
+      <div class="container">
+      <div class="row p-center">
+          <div class="col-sm-6 wow">
+              <h3 class="text-uppercase title">
+                  REACH PEOPLE WHERE THEY ARE
+              </h3>
+          </div>
+          <div class="col-sm-5 col-sm-offset-1 wow">
+              <h3 class="text-uppercase title">
+                USE THE LATEST TECHNOLOGY
+              </h3>
+          </div>
+      </div>
+      </div>
+  </section>
+  <div class="container">
+      <div class="row p-center">
+          <div class="col-sm-5 services-delivery-discriptio wow fadeIn">
+              <p>
+              Offer your congregation a way to listen to the Good News on their own time and on their own devices.
+              </p>
+          </div>
+          <div class="col-sm-2">
+          </div>
+          <div class="col-sm-5 services-delivery-discriptio wow fadeIn">
+              <p>
+              Rely on our technological expertise to offer the latest innovation in church media delivery.
+              </p>
+          </div>
+      </div>
+  </div>
+<!--========================   Services Delivery  End  ======================-->
+<!--========================   Experience Start  ======================-->
+  <!-- <section class="experience">
+      <div class="container">
+          <div class="row">
+              <div class="col-sm-12">
+                  <h3 class="text-uppercase text-center title  wow">
+                      A Completely new way to experience your church's media
+                  </h3>
+              </div>
+          </div>
+      </div>
+  </section>
+ -->
+
+  <div style="z-index:auto;">
+    <figure class="word-image wow"  style="float: right; position:relative; z-index:auto;">
+      <div class="bottle3">
+
+ <% if !device_name.is_mobile? && !browser.mobile? %> 
+
+        <div class="col-sm-12 experience-image">
+            <figcaption  style="z-index:auto;">
+              <% unless current_user.present? %>
+                <a href="<%= signup1_path %>" style="font-size:18px" class="btn btn-get-started">Start Building Your Church’s Store<br>
+                  <span> No credit card required </span>
+                </a>
+              <%else%>
+                <a href="<%= medialist_path %>" style="font-size:18px" class="btn btn-get-started">Start Building Your Church’s Store<br>
+                  <span> No credit card required </span>
+                </a>
+              <%end%>
+            </figcaption>
+        </div>
+           <% else %>
+        <div class="col-sm-12 experience-image">
+            <figcaption  style="z-index: 100;">
+              <% unless current_user.present? %>
+                <a href="<%= signup1_path %>" style="font-size:18px; z-index: 100;" class="btn btn-get-started">Start Building Your Church’s Store<br>
+                  <span> No credit card required </span>
+                </a>
+              <%else%>
+                <a href="<%= medialist_path %>" style="font-size:18px; z-index: 100;" class="btn btn-get-started">Start Building Your Church’s Store<br>
+                  <span> No credit card required </span>
+                </a>
+              <%end%>
+            </figcaption>
+        </div>
+          <% end %>
+          <!--div class="parallax" data-velocity="-100"></div>
+          <figcaption>
+          <a href="<%= signup_path %>" class="btn btn-get-started">Get Started Now!<br>
+              <span> Free plan available. No credit card required </span>
+          </a>
+          </figcaption-->
+      </div> 
+    </figure>
+    <div class="col-sm-12 col-xs-12"></div><br>
+    <div class="col-sm-12" style="text-align: center;">
+      <span>
+        The heart of the prudent gets knowledge; and the ear of the wise seeks knowledge.
+      </span><br>
+      ~ Proverbs 18:15
+    </div>
+  </div>
+</div>
+<!--========================   Experience  End  ======================-->
+<%= notify("Subdomain created successfully", "Login here to continue", :notice) if params[:created].present? %> 
+<%=javascript_include_tag "detect_tablet.js","video_opacity" %>
+<script>
+  document.createElement("section");
+</script>
+
+<script type="text/javascript">
+  function sign () {
+    var name = $("#name").val();
+    var email = $("#email").val();
+    <% unless current_user.present?%>
+      var url = "/signup";
+    <% else %>
+      var url = "/medialist";
+    <% end %>
+    var params = "?";
+    var flag = false;
+    if (name.length != 0) {
+      params = params + "name=" + name;
+      flag = true;
+    }
+    if (email.length != 0) {
+      if (flag)
+        params += "&"
+      params = params + "email=" + email;
+    }
+    if (params.length > 1)
+      window.location.href = url + params;
+    else
+      window.location.href = url;
+  }
+
+  function sign1 () {
+    var name = $("#name").val();
+    var email = $("#email").val();
+    <% unless current_user.present?%>
+       var url = "/SignUp";
+    <% else %>
+      var url = "/medialist";
+    <% end %>
+    var params = "?";
+    var flag = false;
+    if (name.length != 0) {
+      params = params + "name=" + name;
+      flag = true;
+    }
+    if (email.length != 0) {
+      if (flag)
+        params += "&"
+      params = params + "email=" + email;
+    }
+    if (params.length > 1)
+      window.location.href = url + params;
+    else
+      window.location.href = url;
+  }
+</script>
+
+<script type="text/javascript">
+  // $(document).ready(function(){
+  //   document.getElementsByTagName('video')[0].removeAttribute('autoplay');
+  //   if (screen.width < 768){
+  //     $(".p-center").addClass("text-center");
+  //   }
+  // })
+
+  // function closemodal(){
+  //   $("#myModal").modal('hide');
+  // }
+  // $(document).ready(function(){
+  //   var margin = $("span#video_span").width()/2 -40;
+  //   $("#signup_button").css("margin-left", margin + "px");
+  // });
+</script>
+
+<style type="text/css">
+  .parastyle
+  {
+   /* margin-left: -13px;*/
+    color: #808080;
+    text-align: justify;
+  }
+   .row.vdivide [class*='col-']:not(:last-child):after {
+  background: #e0e0e0;
+  width: 1px;
+  content: "";
+  display:block;
+  position: absolute;
+  top:0;
+  bottom: 0;
+  right: 0;
+  min-height: 70px;
+}
+
+/*@media only screen and (min-width: 1400px) and (max-width: 1650px) {
+  .be_video
+  {
+    margin-top: 2%;
+  }
+}*/
+
+@media only screen and (min-width: 1400px) and (max-width: 1650px) {
+  .height
+  {
+    height: 805px;
+  }
+}
+@media (max-width: 1350px) and (min-width: 1280px){
+  .height {
+   
+    height: 723px;
+}
+}
+
+@media (min-width: 1280px){
+.height {
+    height: 759px;
+}
+}
+
+
+@media only screen and (max-width: 1650px) and (min-width: 1400px){
+.height {
+    height: 843px;
+}
+}
+
+@media (max-width: 1919px) and (min-width: 1620px){
+.height {
+    height: 949px;
+}
+}
+
+@media (max-width: 1919px) and (min-width: 1620px){
+.height {
+    height: 1012px;
+}
+}
+
+@media (max-width: 2100px) and (min-width: 1920px){
+.height {
+    height: 1138px;
+}
+}
+
+
+@media (max-width: 1919px) and (min-width: 1620px){
+.height {
+    height: 963px;
+}
+}
+
+.linkstyle
+{
+  color: orange;
+  margin-left:2%;
+}
+</style>
+
+<script type="text/javascript">
+// Get the modal
+ var modal = document.getElementById('myModal');
+
+// Get the button that opens the modal
+//var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+ var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal 
+// btn.onclick = function() {
+//     modal.style.display = "block";
+// }
+// When the user clicks on <span> (x), close the modal
+ span.onclick = function() {
+//     modal.style.display = "none";
+// }
+
+// When the user clicks anywhere outside of the modal, close it
+ window.onclick = function(event) {
+     if (event.target == modal) {
+         modal.style.display = "none";
+    }
+ }
+</script>
+
+<script> 
+$(document).ready(function()
+{ setInterval(function(){
+$($(iframe.id).contents().find('body')).css("background-color","transparent") },100); });
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#myModal1").on('hide.bs.modal', function(evt){
+    var player = $(evt.target).find('iframe'),
+        vidSrc = player.prop('src');
+    player.prop('src', ''); // to force it to pause
+    // player.prop('src', vidSrc);
+  });
+});
+</script>
+
+   
+<script type="text/javascript">
+  $(document).ready(function(){
+    $(".video").click(function () {
+      // alert("ala")
+      var theModal = $(this).data("target"),
+      videoSRC = $(this).attr("data-video"),
+      videoSRCauto = videoSRC + "?modestbranding=1&rel=0&controls=0&showinfo=0&html5=1&autoplay=1";
+      $(theModal + ' iframe').attr('src', videoSRCauto);
+      // alert("zala")
+      $(theModal + ' button.close').click(function () {
+        // $(theModal + ' iframe').attr('src', videoSRC);
+      });      
+    });
+  });
+</script>
+
+<style type="text/css">
+@media screen and (max-width: 627px) {
+    .modal
+    {
+        width:92%;
+    }
+}
+</style>
+
+
+<style type="text/css">
+@media only screen and (min-width: 300px) and (max-width: 627px){
+    #vid_effect { 
+         color:white;
+         margin-top: 19%!important;
+         margin-left: 76%!important;
+     }  
+}
+</style>
+
+<style type="text/css">
+.close1{
+  color: white;
+  margin-left: 86%;
+  position: fixed;
+  font-size: 11px;
+  margin-top: -3%;
+  background-color: #51BDF2!important;
+  height: 24px;
+  width: 82px;
+  font-weight: normal;
+  border-radius: 3px;
+}
+</style>
+
+
+
+
+
+
+
+
+ 

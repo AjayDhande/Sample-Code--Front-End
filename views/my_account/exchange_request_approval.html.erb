@@ -1,0 +1,99 @@
+<div class="container container-fix">
+
+    <div class="row">
+      <div class="col-xs-12 col-sm-4 col-md-3 custom-width">
+          <img alt="" class="logo-fix" src="<%= cookies[:logo_path] %>" />
+      </div>
+      <div class="col-xs-12 col-sm-8 col-md-9">
+        <h2 class="heading-title text-left subdomain_title">
+          <% if @can_update%>
+            <%= current_user.church_name.titlecase %> Media Store<small>&nbsp;<a href = "/my_account">Update your site's info</a></small>
+          <%else%>
+            <%= subdomain_name.titleize%> Media Store
+          <%end%>
+        </h2>
+        <p>
+          Your Online Church Media Site: <a href="<%=request.base_url%>"><%=request.base_url%></a>
+        </p>
+      </div>
+    </div>
+    <%if current_subdomain.is_active? %>
+        <%= render "device_accesses/the_tabs" %>
+    <%else%>
+        <h3 style= "background-color: #FBDADA; font-weight: bold; text-align: center;"class="error-color">Subdomain deactivated, renew your subscription</h3>
+    <%end%>
+
+    <!--===================== Pending Request Table s=================-->
+    <div class="table-responsive">
+        <% if @subdomains.present? %>
+        <form accept-charset="UTF-8" action="/exchange_approval" method="get" id="exchange_approval_form" class="form-horizontal" role="form">
+          <table class="table table-bordered">
+            <thead>
+                <tr bgcolor="#31708f">
+                    <th><font color="white">No.</font></th>
+
+                    <th><font color="white">Subdomain</font></th>
+
+                    <th><font color="white">Category</font></th>
+
+                    <th><input type="checkbox" value="" id="checkAll"><font color="white">Checkbox</font></th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <% count = 1 %>
+                <% @subdomains.each do |subdomain|%>
+                    <% category = SubdomainType.find(subdomain.subdomain_type_id).subdomain_type%>
+                    <tr>
+                        <td><%= ((@subdomains.current_page.to_i-1)*@subdomains.per_page)+count %></td>
+                        <td><%= subdomain.subdomain_name%></td>
+                        <td><%= category %></td>
+                        <td><input type="checkbox" name="approve_subdomain[]" value="<%= subdomain.id%>" ></td>
+                    </tr>
+                    <% count += 1 %>
+                <% end %>
+            </tbody>
+          </table>
+          <%= will_paginate @subdomains %><br>
+          
+          <div class="col-sm-12">
+            <div class="float_right">
+              <input type="button" value="Back" class="btn btn-info" id="verify_back">
+              <button type="submit" name="approve_exchange_request" class="btn btn-info" id="approve_exchange">Approve</button>
+              <button type="submit" name="reject_exchange_request" class="btn btn-info" id="reject_exchange">Reject</button>
+            </div>
+          </div>
+        </form>
+        <% else %>
+            <div class="container">
+                <p class="error-color">No request for Exchange Approval.</p>
+            </div>
+        <%end%>
+    </div>
+</div>
+
+<%= stylesheet_link_tag 'my_account.css', 'tab.css'%>
+
+<%= javascript_include_tag "device_accesses.js","bootstrap-colorpicker.js","bootstrap-datetimepicker.min.js","bootstrap-hover-dropdown.js","bootstrap-tabdrop.js", "bootstrapValidator.js", "summernote.min.js", "my_account.js" %>
+
+<script type="text/javascript">
+  $('#verify_back').click(function(){
+    window.history.go(-1);
+  });
+
+  $('#checkAll').click(function () {    
+    $('input:checkbox').prop('checked', this.checked);
+  });
+
+  $("#approve_exchange").click(function(event){
+    var clickable = $('input[type="checkbox"]:checked').length;
+    if (clickable >= 1) {
+      return true
+    }
+    else {
+      event.preventDefault();
+    }
+  });
+  
+</script>
+

@@ -1,0 +1,35 @@
+                    <thead>
+                        <tr>
+                            <th>Order Date</th>
+                            <th>Amount</th>
+                            <th>Item</th>
+                            <th>Status</th>
+                            
+                        </tr>
+                    </thead>
+                    <%@transactions.each do |transaction|%>
+                      <% customer_transaction_id = transaction.id %>
+                      <% customer_transaction_details = get_transaction_details(customer_transaction_id) %>
+                    <tbody>
+                      <% customer_transaction_details.each do |customer_transaction| %>
+                        <% media_id = customer_transaction.uploaded_media_id %>
+                        <tr>
+                          <% media_name = File.basename(get_media_name(media_id),File.extname(get_media_name(media_id))).gsub("_", " ") %>
+                            <td><%= customer_transaction.created_at.strftime("%B %d, %Y") %></td>
+                            <td>                  
+                                $<%=number_with_precision(customer_transaction.detail_amount, :precision => 2)  %>
+                            </td>
+                            <td>
+                             <%= link_to media_name, "/media_details/#{ApplicationController.crypt(media_id)}" %>
+                            </td>
+                            <td>
+                              <% if transaction.status == true %>
+                                Successful
+                              <% else %>
+                                Failed
+                              <%end%>
+                            </td>                            
+                        </tr>
+                    </tbody>
+                      <% end %>
+                    <% end %>

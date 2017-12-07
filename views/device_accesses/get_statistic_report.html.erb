@@ -1,0 +1,73 @@
+<div class="container container-fix">
+  <div class="row">
+    <div class="col-xs-12 col-sm-4 col-md-3 custom-width">
+        <img alt="" class="logo-fix" src="<%= cookies[:logo_path] %>" />
+    </div>
+    <div class="col-xs-12 col-sm-8 col-md-9">
+      <h2 class="heading-title text-left subdomain_title">
+        <% if @can_update%>
+          <%= current_user.church_name.titlecase %> Media Store<small>&nbsp;<a href = "/my_account">Update your site's info</a></small>
+        <%else%>
+          <%= subdomain_name.titleize %> Media Store
+        <%end%>
+      </h2>
+      <p>
+        Your Online Church Media Site: <a href="<%=request.base_url%>"><%=request.base_url%></a>
+      </p>
+    </div>
+  </div>
+  <div class="the_tabs">
+      <%= render 'the_tabs' %>
+  <div>
+
+    <!--========================   Upload  Start   ======================-->
+    
+  <div class="row">
+    <div class="col-sm-12">
+      <a href="/get_statistic_overview" class="btn btn-default">Overview</a>
+      <a href="/device_statistic" class="btn btn-info">Devices  </a>
+      <a href="/get_location_report" class="btn btn-default">Location</a>
+    </div>
+  </div>
+  <%if @no_data_avaliable%> 
+    <p class="text-center">
+      There is not data to be shown in statistics.
+    </p> 
+  <%else%>
+    <div class="row">
+      <div class="col-sm-9">
+        <h2 class="" style="margin-bottom: 25px;">
+          Devices
+        </h2>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group" style=" margin-top: 20px;">
+          <label>Devices From</label>
+            <%=select_tag "device_statistics", options_for_select([ "Last 7 Days", "Last 14 Days", "Last 30 Days" ], "Last 7 Days"),:class=>"form-control"%>  
+        </div>
+      </div>
+    </div>
+    <div class="row">   
+      <div class ='access_os_report' >
+        <%= render "access_os_report"%>
+      </div>   
+    </div>
+    <div class="row">
+      <div class ='access_device_report' >
+        <%= render "access_device_report"%>
+      </div>
+      <div class ='access_browser_report' >
+        <%= render "access_browser_report"%>
+      </div>
+    </div> 
+    <!--========================   Upload   End  ======================-->
+  <%end%>
+</div>
+</div>
+</div>
+<script>
+$(".odd").find("tr:odd").css("background-color","#FFF5EB")
+$(".odd1").find("tr:even").css("background-color","#FFF5EB")
+</script>
+
+<%= javascript_include_tag "device_accesses.js","bootstrap-hover-dropdown.js","bootstrap-tabdrop.js" ,"ekko-lightbox.js", "icheck.min.js","summernote.min.js","my_account.js" %>

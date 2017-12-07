@@ -1,0 +1,60 @@
+
+    <div class="container container-fix">
+      <!--========================   Heading End  ======================-->
+    
+    <!--========================   Upload  Start   ======================-->
+    <%#=render "header_admin"%>
+    <div class="row">
+      <%= render 'layouts/admin_header' %>
+    </div>
+    
+    <div class="row">
+        <div class="col-sm-12">
+            <h2 class="heading-title text-left">Customer Management</h2>
+        </div>
+        <div class="col-sm-12">
+            <h4 class="heading-title text-left">Total Customers: <%=@domain_customers.count%></h4>
+        </div>
+        <div class="col-xs-12">
+            <div class="table-responsive">
+
+                <table class="table table-bordered"  style="width:100%;" >
+                    <thead>
+                        <tr bgcolor="#31708f">
+                            <th><font color="white">Customer Name</font></th>
+                            <th><font color="white">Options</font></th>
+                        </tr>
+                    </thead>
+                    <tbody class="odd" id="mytable"> 
+                        <%@domain_customers.each do |user|%>
+                           <% customer = user.first %>
+                         <tr>
+                            <td><%=customer.username%></td>
+                            <td>
+                            <%= link_to edit_customer_path(customer), class: 'btn btn-info',  title: 'Details' do %>
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                            <% end %>  
+                            <%id = customer.id%>
+                            <%= link_to customer_path(id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger',  title: 'Remove' do %>
+                                <span class="glyphicon glyphicon-trash"></span>
+                            <% end %>
+                            </td>
+                        </tr>
+                        <%end%>
+                    </tbody>
+                </table>
+            </div>
+            <%= will_paginate @domain_customers %>
+        </div>
+    </div>
+    <!--========================   Upload End  ======================-->
+</div>
+
+<%= javascript_include_tag 'bootstrap-hover-dropdown.js', 'bootstrap-tabdrop.js', 'ekko-lightbox.js', 'icheck.min.js', 'summernote.min.js', 'my_account.js' %>
+
+<%= stylesheet_link_tag "my_account.css","tab.css" %>
+<script>
+$(".odd").find("tr:odd").css("background-color","#FFF5EB");
+$(".odd").find("tr:even").css("background-color","#ffffff");
+
+</script>

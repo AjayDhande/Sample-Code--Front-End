@@ -1,0 +1,122 @@
+<div class="container">  
+    <div class="row">
+      <div class="col-xs-12 col-sm-4 col-md-3 custom-width">
+        <img alt="" class="logo-fix" src="<%= cookies[:logo_path] %>" />
+      </div>
+        <div class="col-xs-12 col-sm-8 col-md-9">
+            <h2 class="heading-title text-left subdomain_title">
+              <% if @can_update%>
+              <%= subdomain_name.titleize%> Media Store<small>&nbsp;<a href = "/my_account">Update your site's info</a></small>
+              <%else%>
+              <%= subdomain_name.titleize%> Media Store
+              <%end%>
+            </h2>
+            <p>
+             Your Online Church Media Site: <a href="<%=request.base_url%>"><%=request.base_url%></a>
+            </p>
+        </div>
+    </div>
+
+
+  <%if current_subdomain.is_ocm?%>
+    <div class="row">
+      <a class="alert-link tab_link" href="/my_account#theme" class="theme_tab"> 
+        <div class="col-sm-3">
+          <div class="alert alert-add-message text-center myaccount_tab theme_management" value= "theme_management">
+            <h3 style="margin: 0px;">Customize Site<br> <small style="font-size: 12px;">Change Logo, Colors, and Text</small></h3>
+          </div>
+        </div>
+      </a>
+
+      <a class="alert-link tab_link" href="/get_statistic_overview" class="statistics_tab">
+        <div class="col-sm-3">
+          <div class="alert alert-add-message text-center myaccount_tab statistics" value= "statistics">
+            <h3 style="margin: 0px;">Statistics<br> <small style="font-size: 12px;">Analyze your media activity</small></h3>
+          </div>
+        </div>
+      </a>
+      <a class="alert-link tab_link" href="/my_account#brand_new_promotion" class="promotion_tab">
+        <div class="col-sm-3">
+            <div class="alert alert-add-message text-center myaccount_tab brand_new_promotion" value= "brand_new_promotion">
+              <h3 style="margin: 0px;">Promotion<br> <small style="font-size: 12px;">Spread the Word</small></h3>
+            </div>
+        </div>
+      </a>
+      <a class="alert-link tab_link" href="/total_users" class="promotion_tab"> 
+        <div class="col-sm-3">
+          <div class="alert alert-info text-center myaccount_tab promotion_tab">
+            <h3 style="margin: 0px;">Admin Panel<br> <small style="font-size: 12px;">Customers, Reports, and Billing</small></h3>
+          </div>
+        </div>
+      </a>
+    </div>
+  <%else%>
+    <div class="row">
+      <%if current_user.can_upload? %>
+        <a class="alert-link tab_link" href="/my_account#brand_new_messages" class="message_tab">
+          <div class="col-xs-12 col-sm-12 col-md-2 tab_width">
+              <div class="alert alert-add-message text-center myaccount_tab brand_new_messages" value= "brand_new_messages">
+                <h3 class="tab_heading" style="margin: 0px;">Media<br> <small style="font-size: 12px;">Upload New Audio Files</small></h3>
+              </div>
+          </div>
+        </a>
+      <%end%>
+      <%if current_user.can_promote_site%>
+        <a class="alert-link tab_link" href="/my_account#theme" class="theme_tab"> 
+          <div class="col-xs-12 col-sm-12 col-md-2 tab_width">
+            <div class="alert alert-add-message text-center myaccount_tab theme_management" value= "theme_management">
+              <h3 class="tab_heading" style="margin: 0px;">Customize Site<br> <small style="font-size: 12px;">Change Logo, Colors, and Text</small></h3>
+            </div>
+          </div>
+        </a>
+      <%end%>
+      <%if current_user.can_see_statistics%>
+        <a class="alert-link tab_link" href="/get_statistic_overview" class="statistics_tab">
+          <div class="col-xs-12 col-sm-12 col-md-2 tab_width">
+            <div class="alert alert-add-message  text-center myaccount_tab statistics" value= "statistics">
+              <h3 class="tab_heading" style="margin: 0px;">Statistics<br> <small style="font-size: 12px;">Analyze your media activity</small></h3>
+            </div>
+          </div>
+        </a>
+      <%end%>
+      <%if current_user.can_promote_site %>
+        <a class="alert-link tab_link" href="/my_account#brand_new_promotion" class="promotion_tab">
+          <div class="col-xs-12 col-sm-12 col-md-2 tab_width">
+              <div class="alert alert-add-message text-center myaccount_tab brand_new_promotion" value= "brand_new_promotion">
+                <h3 class="tab_heading" style="margin: 0px;">Promotion<br> <small style="font-size: 12px;">Spread the Word</small></h3>
+              </div>
+          </div>
+        </a>
+      <%end%>
+      <%if !current_user.is_content_manager? %>
+        <a class="alert-link tab_link" href="/total_users" class="promotion_tab"> 
+          <div class="col-xs-12 col-sm-12 col-md-2 tab_width">
+            <div class="alert alert-info text-center myaccount_tab promotion_tab">
+              <h3 class="tab_heading" style="margin: 0px;">Admin Panel<br> <small style="font-size: 12px;">Customers, Reports, and Billing</small></h3>
+            </div>
+          </div>
+        </a>
+      <%end%>
+      <%if current_user.is_tenant_owner? && current_subdomain.exchange_status == "approved" %>
+        <a class="alert-link tab_link" href="/exchange_list" class="promotion_tab"> 
+          <div class="col-xs-12 col-sm-12 col-md-2 tab_width">
+            <div class="alert alert-add-message text-center myaccount_tab promotion_tab">
+              <h3 class="tab_heading" style="margin: 0px;">Exchange<br> <small style="font-size: 12px;">Exchange and Media Sharing</small></h3>
+            </div>
+          </div>
+        </a>
+      <%end%>
+      <% if current_user.is_tenant_owner? %>
+        <a class="alert-link tab_link" href="/affiliation_list" class="promotion_tab"> 
+          <div class="col-xs-12 col-sm-12 col-md-2 tab_width">
+            <div class="alert alert-add-message text-center myaccount_tab promotion_tab">
+              <h3 class="tab_heading" style="margin: 0px;">Affiliates<br> <small style="font-size: 12px;">Affiliate to Promote Subdomains</small></h3>
+            </div>
+          </div>
+        </a>
+      <%end%>
+    </div>
+  <%end%>
+</div>
+
+<%= stylesheet_link_tag 'my_account.css', 'tab.css'%>

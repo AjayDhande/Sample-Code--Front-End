@@ -1,0 +1,47 @@
+<div class="col-sm-12">
+    <h4 class="heading-title text-left">Total Subscriptions: <%=@plans.count%></h4>
+</div>
+<div class="col-sm-12 col-xs-12">
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th class="top">Subscription Name</th>
+                    <th class="top">Current Amount($)</th>
+                    <th class="top">Upcoming Amount</th>
+                    <th class="top">Plan Description</th>
+                    <th class="top">User Type</th>
+                    <th class="top">Plan Type</th>
+                    <th class="top">Edit</th>
+                    <th class="top">Destroy</th>
+                </tr>
+            </thead>
+            <%unless @plans.blank?%>
+                <%@plans.each do |plan|%>
+                    <tbody>
+                        <tr>
+                            <td><%=plan.plan_name.titleize%></td>
+                            <td><%= number_with_precision(plan.plan_amount, precision:2) %></td>
+                            <td><%= number_with_precision(plan.new_amount, precision:2) %></td>
+                            <td><%=plan.plan_description%></td>
+                            <td><%=get_subdomain_type(plan).gsub(/_/, " ").titleize%></td>
+                            <td><%=get_plan_type(plan).gsub(/_/, " ").titleize%></td>
+                            <td><a href="" data-toggle="modal" data-target="#EditPlan<%=plan.id%>"><span class="btn btn-info" title="Edit"><span class="glyphicon glyphicon-pencil"></span></span> </a></td>
+                            <%= render partial: "edit_plan", locals: {plan: plan}%>                            
+                            <td>
+                                <% unless plan.plan_subscriptions.present?%>
+                                    <%= link_to plan, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger',  title: 'Remove' do %>
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                <% end %>                            
+                            </td>
+                            <% end %>
+                        </tr>  
+                    </tbody>
+                <%end%>
+            <%end%>
+        </table>  
+    </div>
+</div>
+<style>
+.table > thead > tr > th.top {vertical-align: top;}
+</style>

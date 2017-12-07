@@ -1,0 +1,14 @@
+<section class="row font">            
+  <div id="products" class="col-sm-12 list-group">
+    <div class="table-responsive1">
+      <table>
+        <tr>
+          <%= render partial: 'messages_list', locals: { messages: messages } %>
+        </tr>
+      </table>
+    </div>
+  </div>
+</section>
+<div class="row row_paginate">
+    <%= render partial: 'media_list_ajax_pagination', locals: { messages: messages, page_params: {  controller: "uploaded_mediums", action: "search_messages", home_search_by: params[:home_search_by], home_search_text: params[:home_search_text], last: params[:last] } } %>
+</div>

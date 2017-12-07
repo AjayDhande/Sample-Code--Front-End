@@ -1,0 +1,97 @@
+
+    <!--========================   Breadcrumb  Start  ======================-->
+    <div class="container container-fix">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="breadcrumb-outer">
+              <!--<ol class="breadcrumb">
+                  <li>Home</li>
+                  <li class="active">Shopping Cart </li>
+              </ol>-->
+          </div>
+        </div>
+        <!--========================   Breadcrumb End  ======================-->
+
+        <!--========================   Heading Start  ======================-->
+        <div class="col-sm-12">
+          <h2 class="heading-title text-left">
+            <small class="pull-left"><%=link_to 'Continue Shopping',medialist_path %></small><br> Cart
+          </h2>
+        </div>
+      </div>
+    <!--========================   Heading End  ======================-->
+    
+    <!--========================   Upload  Start   ======================-->
+    <div class="row">
+
+     <!--========================   Extra div  ======================-->
+      <div class = 'shopping-cart'>
+  	   <%= render "shopping_cart" %>
+      </div>
+
+
+    <!--========================   Extra div  ======================--> 
+      <div class = "col-sm-4 cart_subtotal">
+          <%= render "subtotal" %>
+      </div>
+
+    </div>
+<!-- cart -->
+    <% @popular = most_popular2 %>
+    <% if @popular.present? %>
+      <div class="row">
+        <div class="col-sm-8">
+          <ul class="list-group shopping-cart" style="padding-left: 0px;">  
+            <div class="col-sm-9 col-xs-12">
+              <%if most_popular2.map(&:id).include?(current_order.cart_items.map(&:uploaded_media_id)) %>
+                <h4>You might also like these:</h4>
+              <%end%>
+                <div class="row">
+                  <% @popular.each do |message| %>
+                    <% link = "/media_details/#{ApplicationController.crypt(message.id)}"%>
+                    <%if current_order.cart_items.map(&:uploaded_media_id).include?(message.id)%>
+                    <!--div class="col-sm-4"-->
+                    <div class="item col-xs-6 col-md-4 col-lg-3 custom-width">
+                      <div class="thumbnail" style="width: 100%;">
+                        <a href="<%= link %>"><img class="group list-group-image" style="max-width: 100%;" src="<%= message.media_art.url(:thumb) %>" alt=""></a>
+                        <div class="caption">
+                            <h5 class="group inner list-group-item-heading text-info media_file_name">
+                              <% media_name = File.basename(message.media_file_name,File.extname(message.media_file_name)).gsub("_", " ") %>
+                              <a href="<%= link %>" title="<%= media_name %>"><%= media_name %></a>
+                            </h5>
+                          <h5>
+                            <p class="group inner list-group-item-text trunc" data-size="42" title="<%= message.presenter_name %>">
+                            <%= message.presenter_name %></p>
+                            <div class="row">
+                              <div class="col-xs-2 custom-width">
+                                <div class="rateit" id="rateit9" data-rate="<%= get_average_rating(message.id)%>">
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="row">
+                              <div class="col-xs-12 rating">
+                                <p>
+                                  <span class="glyphicon glyphicon-heart"></span>&nbsp;<%= get_number_of_likes(message.id)%> Likes
+                                </p>
+                              </div>
+                            </div>
+                          </h5>
+                        </div>
+                      </div>
+                    </div>
+                  <%end%> <%end%>
+                </div>
+            </div>
+          </ul>
+        </div>
+      </div>
+    <% end %>
+
+    <!--========================   Upload   End  ======================-->
+</div>
+
+
+
+<%= javascript_include_tag 'summernote.min.js' %>
+<%= stylesheet_link_tag 'summernote.css', 'dev_custom.css'%>

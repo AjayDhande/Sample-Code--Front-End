@@ -1,0 +1,32 @@
+
+    <div class="row">
+    <%if !@track_artworks.blank?%>
+        <%= form_tag url_for(:controller => 'track_artworks', :action =>'destroy'), :remote => true do %>
+    	  <%@track_artworks.each do |track_artwork|%>
+            <div class="col-sm-2 col-xs-12 custom-width">
+                <div class="royalty-image thumbnail">
+                    <%= image_tag track_artwork.artwork.url(:thumb) %>
+                    <div class="checkbox text-center">
+                        <label>
+                    	   <%= check_box_tag 'track_artwork_ids[]', track_artwork.id -%>
+                        </label>
+                    </div>
+                </div>
+            </div>
+          <%end%>
+          <div class="col-sm-12 col-xs-12 text-center">
+            <input name="Delete" type="submit" value="Delete" class="btn btn-danger" />
+          </div>
+        <%end%>
+    <%else%>
+        <center>No Royalty Images Uploaded</center>
+    <%end%>
+    </div>
+
+
+
+
+
+
+
+

@@ -1,0 +1,21 @@
+
+<% country_list = @device_accesses.pluck(:access_country).uniq.compact.reject(&:empty?) %>
+<%total_records =  @device_accesses.pluck(:access_country).compact.reject(&:empty?).count%>
+<% country_stat_hash = get_country_statistics_report(country_list,@device_accesses) rescue nil%>
+ <table style="width: 100%;" class="table table-bordered">
+    <% country_hash_lenght = country_stat_hash.length rescue nil%>
+      <% co = 0 %>
+      <% co_num = 5 %>
+      <tbody id="mytable" class="odd1">
+         <% while (co < co_num && co < country_hash_lenght)  do %>
+          <tr>
+            <%unless country_stat_hash.keys[co] == ""%>
+              <td style="width: 50%;"><%= country_stat_hash.keys[co] %></td>
+              <td style="width: 80%;"><%= ((country_stat_hash.values[co].to_f * 100) / total_records).round(2)  %>%</td>
+              <td style="width: 100%;"><%= country_stat_hash.values[co] %></td>
+            <%end%>
+          </tr>
+            <% co +=1 %>
+      <% end %>
+      </tbody>
+  </table>

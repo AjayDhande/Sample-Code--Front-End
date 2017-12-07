@@ -1,0 +1,83 @@
+
+    <div class="row">
+        <div class="col-sm-12 text-center">
+            <h2 class="" style="margin-bottom: 5px;">
+                Promotions Overview
+            </h2>
+            <p>
+                Online Church Media offers a few ways to help you promote your media.
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <h3>Spread The Word!</h3>
+            <p>
+                Creating your online store, recording your messages, and uploading them is the first step to you adding
+                value to your ministry. Now it’s time to tell the world to subscribe, listen, stream, and download your media.
+                Getting the word out is important, but isn’t always the easiest thing to do. Online Church Media helps by
+                giving you some tools to help you promote your online store more effectively.
+            </p>    
+            <h3>Get Social!</h3>
+            <p>
+                One of the easiest ways to promote your online media is to share it with your church, in your social media
+                networks, and with your friends. All Online Church Media accounts include a webpage url that you can copy
+                and paste anywhere. You can also encourage your listeners to login and comment on your media files and
+                share them with their social media networks. The more, the merrier!<br />
+                If you enter your Facebook URL or your Twitter URL in the fields to the right we will add these social media
+                links to the footer of your media page. Go ahead, give it a try.
+            </p>
+        </div>
+        
+        <div class="col-sm-6">
+            <div class="well">
+                <h3>
+                    Your Online Church Media Site URL
+                </h3>
+                <p>
+                    You can copy and paste this link to send to all your listeners
+                </p>
+                <h3 class="text_size">
+                    <!--a class="small-text" href="<%= medialist_path%>">http://<%#= current_subdomain.subdomain_name rescue nil%>.OnlineChurchMedia.com</a-->
+                    <a style="word-wrap:break-word;" href="/home"><%=request.base_url%></a>
+                </h3>
+            </div>
+            <div class="sharing-button promotion-sharing">
+                <!-- Go to www.addthis.com/dashboard to generate a new set of sharing buttons -->  
+                <a href="https://api.addthis.com/oexchange/0.8/forward/facebook/offer?url=<%= request.base_url%>&pubid=ra-51b6ad4b307d7a24&ct=1&title=Online%20Church%20Media%20-%20Your%20Online%20Church%20Media%20Store&description=Click%20here%20to%20stream%20and%20download%20the%20latest%20media%20from%20here.&picture=<%=request.base_url%><%=@logo_path%>&pco=tbxnj-1.0" target="_blank"><img src="https://cache.addthiscdn.com/icons/v2/thumbs/32x32/facebook.png" border="0" alt="Facebook"/></a>
+                <a href="https://api.addthis.com/oexchange/0.8/forward/twitter/offer?url=<%= request.base_url%>&pubid=ra-51b6ad4b307d7a24&ct=1&title=Online%20Church%20Media%20-%20Your%20Online%20Church%20Media%20Store&pco=tbxnj-1.0" target="_blank"><img src="https://cache.addthiscdn.com/icons/v2/thumbs/32x32/twitter.png" border="0" alt="Twitter"/></a>
+                <!-- <a href="https://api.addthis.com/oexchange/0.8/forward/email/offer?url=<%= request.base_url%>&pubid=ra-51b6ad4b307d7a24&ct=1&title=Online%20Church%20Media%20-%20Your%20Online%20Church%20Media%20Store&pco=tbxnj-1.0" target="_blank"><img src="https://cache.addthiscdn.com/icons/v2/thumbs/32x32/email.png" border="0" alt="Email"/></a> -->
+            </div>
+            <form id="promotion_url_form" action="<%= promotion_url_path%>" method="post">
+                <div class="form-group">
+                    <label style="padding-top:10px;">Your Facebook URL</label>&nbsp;&nbsp;<span class="example1">(http://www.facebook.com/stjohnbapistchurch)</span>
+                    <input id = "facebook_url" name="url[facebook]" type="text" class="form-control" placeholder="Enter your site's facebook URL to activate promotion on facebook" value="<%=current_subdomain.facebook_url%>">
+                </div>
+                <div class="form-group">
+                    <label>Your Twitter URL</label>&nbsp;&nbsp;<span class="example1">(http://www.twitter.com/stjohnbapistchurch)</span>
+                    <input id = "twitter_url" name="url[twitter]" type="text" class="form-control"placeholder="Enter your site's twitter URL to activate promotion on twitter" value="<%=current_subdomain.twitter_url%>">
+                </div>
+                <div class="form-group">
+                    <button id="url_save" onclick = "validate_url();" type="button" class="btn btn-info">Save URL</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+  var addthis_config = addthis_config||{};
+  addthis_config.pubid = 'ra-51b6ad4b307d7a24';
+  
+  $(document).load(function(){
+    $(".sharing-button").find('img').click(function(){
+      <% if current_user.is_tenant_owner? %>
+        <% Subdomain.update_or_create_milestone(current_subdomain.id, Subdomain.milestone_for_soft_launch_store)%>
+      <% end %>
+    });
+  }); 
+</script>
+
+
+<%= javascript_include_tag 'bootstrapValidator.js', 'summernote.min.js','jquery.raty.js', "media_details.js",'jquery.rateit.js' %>
+<%= stylesheet_link_tag 'bootstrap-tagsinput.css', 'summernote.css', 'uploaded_mediums.css','rateit.css'%>

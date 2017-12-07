@@ -1,0 +1,249 @@
+
+<%= javascript_include_tag  "braintree.js", "transactions.js"%>
+
+    <!--========================   Breadcrumb  Start  ======================-->
+    <div class="container container-fix">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="breadcrumb-outer">
+                </div>
+            </div>
+        </div>
+
+    <!--========================   Upload  Start   ======================-->
+   <div class="row">
+       <div class="col-sm-7">
+          <!-- <form class="form-horizontal" role="form" style="border: 1px solid #ddd; padding: 12px;"> -->
+            <!-- <div class="form-group">
+                  <div class="col-sm-4">
+                      <h3>Payment Method</h3>
+                  </div>
+              </div> -->
+              <!--  <div class="form-group">
+                  <div class="col-sm-4">
+                      
+                  </div>
+              </div> -->
+
+              <div class="container container-fix">
+  <div class="form-container radius-box glassy-bg small-10 small-centered medium-8 large-6 columns">
+    <%= form_tag url_for(:controller => "transactions", :action =>"create", :method => "post") do%>
+      <div id="dropin" class="dropin_width">
+        <h1 style="color:orange;">Payment</h1>
+        <hr width="567" align="left">
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <%=submit_tag "Submit", class: "btn btn-info"  %>
+        </div>
+      </div>
+      <div class="row" style="margin-top:30px;">
+        <div class="col-sm-1 col-xs-2">
+          <img class ="card_logo" src="<%= asset_path 'AE.jpg' %>" alt="" />
+        </div>
+        <div class="col-sm-1 col-xs-2">
+          <img class ="card_logo" src="<%= asset_path 'Visa.jpg' %>" alt="" />
+        </div>
+        <div class="col-sm-1 col-xs-2">
+          <img class ="card_logo" src="<%= asset_path 'mastero_card.jpg' %>" alt="" />
+        </div>
+        <div class="col-sm-1 col-xs-2">
+          <img class ="card_logo" src="<%= asset_path 'Discover.jpg' %>" alt=""/>
+        </div>
+        <div class="col-sm-1 col-xs-2">
+          <img class ="card_logo" src="<%= asset_path 'jcb_card.jpg' %>" alt=""/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-sm-8">
+          </br><p align="justify">
+          Online Church Media provides true value to your ministry’s bottom line. We equip you with the digital
+          media tools you need to responsibly grow in financial stability through monthly recurring revenue. More
+          importantly, you are able to reach your listener, and people all over the world, with the power of God’s
+          word.
+          We do not store any of your billing details on our servers. The data is encrypted and securely stored by
+          BrainTree. A copy of BrainTree security policy is available <a target="_blank"href="https://articles.braintreepayments.com/reference/security/pci-compliance" style="color: orange;">here</a>.</p>
+          <p align="justify">Subscriptions renew automatically. You can cancel your subscription at any time by visiting the
+          subscriptions area of your account profile.</p>
+          <p align="justify">Having trouble subscribing? Contact us at <a href="mailto:support@onlinechurchmedia.com" style="color: orange;">support@onlinechurchmedia.com</a></p>
+        </div>
+        <div class="col-sm-4"></div>
+      </div>
+    <%end%>
+  </div>
+</div>
+          <!-- </form> -->
+       </div>
+
+
+    <div class="col-sm-5">
+            <ul class="list-group shopping-cart-total" style="padding-left: 0px;">
+                <li class="list-group-item">
+                          <div class="col-sm-12 well text-center">
+                            <b >Your Order</b>
+                       
+
+                            <%if current_user && current_user.is_customer? %>
+                                <a  href="/customer_profile#SubscriptionPlanChange" style="margin-left: 20%;">Edit</a>
+                            <%elsif current_user && (current_user.is_super_admin? or current_user.is_tenant_owner?) %>
+                                <a  href="/my_account#YourChurchPlane" style="margin-left: 20%;">Edit</a>
+                            <%elsif session[:new_user]["acronym"].present? %>
+                                <a  href="/SignUp" style="margin-left: 20%;">Edit</a>
+                            <%else%>
+                                <a  href="/signup?user%5Brole%5D=CUSTOMER" style="margin-left: 20%;">Edit</a>
+                            <%end%>
+                        </div>
+                    <div class="row left">
+                        <div class="col-sm-4 col-xs-4 text-left total-amount font1" >
+                            Item
+                        </div>
+                        <div class="col-sm-3 col-xs-3 text-left total-amount font1" >
+                            Qty
+                        </div>
+                        <div class="col-sm-5 col-xs-5 text-left total-amount font1 break-down">
+                            Total<br>(Purchase Price)
+                        </div>
+                    </div>
+                    <% count = 0 %>
+                    <% unless @plan_amount.nil? %>
+                    <% count += 1 %>
+                    <div class="row left">
+                        <div class="col-sm-4 col-xs-4 text-left total-amount font2">
+                            Monthly Subscription
+                        </div>
+                        <div class="col-sm-3 col-xs-3 text-left total-amount font2" >
+                            1
+                        </div>
+                        <div class="col-sm-5 col-xs-5 text-left total-amount font2 break-down">
+                            $<%= number_with_precision(@plan_amount, precision: 2) %>/month
+                        </div>
+                    </div>
+                    <% end %>
+                  <% unless @setup_fee.nil? %>
+                  <% count += 1 %>
+                    <div class="row left">
+                        <div class="col-sm-4 col-xs-4 text-left total-amount font2 break-down">
+                            One Time Setup Fee
+                        </div>
+                        <div class="col-sm-3 col-xs-3 text-left total-amount font2" >
+                            1
+                        </div>
+                        <div class="col-sm-5 col-xs-5 text-left total-amount font2 break-down">
+                            $<%= number_with_precision(@setup_fee, precision: 2) %>
+                        </div>
+                    </div>
+                  <% end %>
+                  <% @addons.each do |addon_plan| %>
+                  <% count += 1 %>
+                    <div class="row left">
+                        <div class="col-sm-4 col-xs-4 text-left total-amount font2">
+                            <%= addon_plan.plan_name %>
+                        </div>
+                        <div class="col-sm-3 col-xs-3 text-left total-amount font2" >
+                            1
+                        </div>
+                        <div class="col-sm-5 col-xs-5 text-left total-amount font2">
+                            $<%= number_with_precision(addon_plan.plan_amount, precision: 2) %>
+                        </div>
+                    </div>
+                  <% end unless @addons.nil? %>
+                    <div class="row bgcolor">
+                        <div class="col-sm-4 col-xs-4 text-left padding padding1">
+                            Subtotal
+                        </div>
+                        <div class="col-sm-3 col-xs-3 text-left padding padding1">
+                            <%= count %>
+                        </div>
+                        <div class="col-sm-5 col-xs-5 text-left padding padding1">
+                            $<%= number_with_precision(@amount, precision: 2) %>
+                        </div>
+                    </div>
+                    <div class="row bgcolor">
+                        <div class="col-sm-4 col-xs-4 text-left padding padding1">
+                            Tax
+                        </div>
+                        <div class="col-sm-3 col-xs-3 text-left padding padding1">
+                        </div>
+                        <div class="col-sm-5 col-xs-5 text-left padding padding1">
+                            $0.00
+                        </div>
+                    </div>
+                    <div class="row bgcolor">
+                        <div class="col-sm-4 col-xs-4 text-left padding padding1">
+                            Total
+                        </div>
+                        <div class="col-sm-3 col-xs-3 text-left padding padding1">
+                        </div>
+                        <div class="col-sm-5 col-xs-5 text-left padding padding1">
+                            $<%= number_with_precision(@amount, precision: 2) %>
+                        </div>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <!-- <div class="row">
+                        <div class="col-sm-12 text-center buy">
+                            <div class="btn btn-primary" id="PayNow">Pay Now</div>
+                        </div>
+                    </div> -->
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<%= stylesheet_link_tag "bootstrapValidator.css", "chosen.min.css", "font-awesome.min.css", "font-awesome.min.css", "summernote.css" %>
+<%= javascript_include_tag "bootstrapValidator.js", "chosen.jquery.js", "summernote.min.js", "chosen-select.js" %>
+<script>
+  $("#PayNow").click(function(){
+  window.location.href = '/transactions/new';
+  })
+   $(".home_search").css("width", -"35%");
+</script>
+
+
+<style type="text/css">
+@media screen and (max-width: 563px) {
+    .navbar-toggle 
+    {
+        margin-left:-40px!important;
+        float:initial!important;
+    }
+}
+@media screen and (max-width: 463px) {
+    .navbar-toggle 
+    {
+        margin-left:-70px!important;
+        float:initial!important;
+    }
+}
+@media screen and (max-width: 415px) {
+    .navbar-toggle 
+    {
+        margin-left:-130px!important;
+        float:initial!important;
+    }
+}
+@media screen and (max-width: 367px) {
+    .navbar-toggle 
+    {
+        margin-left:-160px!important;
+        float:initial!important;
+    }
+}
+@media screen and (max-width: 640px) {
+    #home_search
+    {
+       width:0%!important;
+    }
+    .form-inline 
+    {
+       margin-right: 43%!important;
+    }
+}
+@media screen and (max-width: 250px) {
+    .navbar-toggle 
+    {
+        margin-left:-200px!important;
+        float:initial!important;
+    }
+}
+</style>

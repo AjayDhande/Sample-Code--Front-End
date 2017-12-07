@@ -1,0 +1,8 @@
+$(".plans_table").html("<%= escape_javascript(render 'plans/plan') %>")
+ notify('<%= flash[:title] %>', '<%= flash[:message] %>', '<%= flash[:type] %>');
+document.getElementById("add_plan_subscriptions").reset();
+$("select[name='plan[plan_type_id]']").val("");
+$("select[name='plan[plan_type_id]']").trigger("chosen:updated");
+$("select[name='plan[subdomain_type_id]']").val("");
+$("select[name='plan[subdomain_type_id]']").trigger("chosen:updated");
+

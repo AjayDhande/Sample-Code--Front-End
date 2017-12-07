@@ -1,0 +1,114 @@
+<div class="container container-fix">
+    <%unless current_user && current_user.is_customer? %>    
+      <div class="row">
+            <div class="col-xs-12 col-sm-4 col-md-3 custom-width">
+                <img alt="" class="logo-fix" src="<%= cookies[:logo_path] %>" />
+            </div>
+            <!--<div class="col-xs-2 custom-width">
+                <img src="<%#= asset_path 'logo-2.png' %>" alt="" class="thumbnail" />
+            </div>-->
+            <div class="col-xs-12 col-sm-8 col-md-9">
+                <h2 class="heading-title text-left subdomain_title">
+                  <% if @can_update%>
+                    <%= current_user.church_name.titlecase %> Media Store<small>&nbsp;<a href = "/my_account">Update your site's info</a></small>
+                  <%else%>
+                   <%= subdomain_name.titleize %> Media Store
+                  <%end%>
+                </h2>
+                <p>
+                  Your Online Church Media Site: <a href="<%=request.base_url%>"><%=request.base_url%></a>
+                </p>
+            </div>
+      </div>    
+      <div class="the_tabs">
+            <%= render 'device_accesses/the_tabs' %>
+      <div>
+    <% end %>
+      <div class="row">
+        <div class="col-sm-12">
+            <h2 class="heading-title text-left" style="margin-bottom: 0px; margin-top: 10px;"> We're here for you.</h2>
+            <p>If you're looking for help using this website, you've come to the right place!<br><br></p>
+        </div>
+      </div>
+      <div class="row">
+        <form action="<%= feedback_path %>" class="form-horizontal UserAdministration" method= "post" id ="feedback_form">
+             <div class="col-sm-12">
+                 <p>1. First, take a second to check out our <%= link_to "FAQs and Help Guides", help_faq_path %></p>
+                 <p>2. Still have a question? Send us an email and we'll be able to get back to you within a few hours(Monday- Friday 9-5 PST)</p>
+                 <div class="form-group">
+                     <label class="col-sm-2 control-label">Submitted By:</label>
+                     <div class="col-sm-8">
+                         <label class="col-sm-4 control-label submitted_by"><%= current_user.name.titleize%></label>
+                     </div>
+                 </div>
+                 
+                 <div class="form-group">
+                     <label class="col-sm-2 control-label">Reply To Email:</label>
+                     <div class="col-sm-5">
+                         <input id ="user_email" name="feedback[email]" type="text" class="form-control">
+                         <input id ="user_id" name="feedback[user_id]" type="hidden" class="form-control" value ="<%= current_user.id%>">
+                     </div>
+                 </div>
+                 
+                 <div class="form-group">
+                     <label class="col-sm-12 control-label">What is your question/comment about?</label>
+                 </div>
+                 
+                 <div class="form-group">
+                     <div class="radio" style="padding-left: 15px;">
+                         <label>
+                             <input type="radio" name="feedback[feedback_type]" value="question" class="feedback_type">
+                             General Question
+                         </label>
+                     </div>
+                     <div class="radio" style="padding-left: 15px;">
+                         <label>
+                             <input type="radio" name="feedback[feedback_type]" value="report_issue" class="feedback_type">
+                             Report an Issue
+                         </label>
+                     </div>
+                     <div class="radio" style="padding-left: 15px;">
+                         <label>
+                             <input type="radio" name="feedback[feedback_type]" value="feature_request" class="feedback_type">
+                             Feature Request
+                         </label>
+                     </div>
+                     <div class="radio" style="padding-left: 15px;">
+                         <label>
+                             <input type="radio" name="feedback[feedback_type]" value="show_love" class="feedback_type">
+                             Show Some Love
+                         </label>
+                     </div>
+                 </div>
+                 
+                 <div class="form-group">
+                     <label class="col-sm-12 control-label">Write Your inquiry/comment below</label>
+                 </div>
+                 
+                 <div class="form-group">
+                     <div class="col-sm-5">
+                         <textarea id ="feedback_text" class="form-control" name="feedback[feedback]" placeholder = "Enter your feedback..."></textarea>
+                     </div>
+                 </div>
+                 
+                 <div class="form-group">
+                     <div class="col-sm-5">
+                       <input type="submit" value="Submit" class="btn btn-info">
+                     </div>
+                 </div>
+             </div>
+         </form>
+      </div>
+    </div>
+  </div>
+</div>
+<%= javascript_include_tag "support.js", "my_account.js" %>
+<%= stylesheet_link_tag "dev_custom.css"%>
+<script>
+$(document).ready(function(){
+  $("#user_email").val("<%=j current_user.email %>")
+});
+element = $(".alert-info")
+$(element).removeClass("alert-info")
+$(element).addClass("alert-add-message")
+</script>

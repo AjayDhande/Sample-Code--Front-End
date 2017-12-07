@@ -1,0 +1,58 @@
+
+<div class="row">
+  <h2 class="text text-left" style="padding-left: 7px;">Order History</h2>
+  <div class="table-responsive">
+    <table class="table">
+      <thead class="border-none">
+        <tr>
+          <th class="border-none">Order Date</th>
+          <th class="border-none">Amount</th>
+          <th colspan="2" class="border-none">Item</th>
+          <th class="border-none">Status</th>
+        </tr>
+      </thead>
+      <% transactions.each do |transaction|%>
+        <% customer_transaction_id = transaction.id %>
+        <% customer_transaction_details = get_transaction_details(customer_transaction_id) %>
+        <tbody>
+          <% customer_transaction_details.each do |customer_transaction| %>
+              <% media_id = customer_transaction.uploaded_media_id %>
+            <% unless media_id.blank? %>
+              <tr>
+                <% media_name = File.basename(get_media_name(media_id),File.extname(get_media_name(media_id))).gsub("_", " ") %>
+
+                <td><%= customer_transaction.created_at.to_date.strftime("%B %d, %Y") %></td>
+                <td>$<%= number_with_precision(customer_transaction.detail_amount, :precision => 2) %></td>
+                <td class="space">
+                  <div class="glyphicon glyphicon-play player-fix media-play-customer"></div>
+                </td>
+                <td>
+                  <!-- <div class="glyphicon glyphicon-play player-fix media-play-customer"></div> -->
+                  <%if (is_active_media?(media_id))%>
+                    <%= link_to media_name, "/media_details/#{ApplicationController.crypt(media_id)}" %>
+                  <%else%>
+                    <%= media_name%>
+                  <%end%>
+                </td>
+                <td>
+                  <% if transaction.status == true %>
+                    Successful
+                  <% else %>
+                    Failed
+                  <%end%>
+                </td>
+              </tr>
+            <%end%>
+          <%end%>
+        </tbody>
+      <% end %>
+    </table>
+    <%= ajax_will_paginate_for_orderlist transactions, params: { controller: "customers", action: "orderlist" } %>
+  </div>
+  <% if transactions.blank? %>
+    <div class="col-sm-12 well">
+      Currently you have not purchased any media.Once you have purchased media, it will be shown below
+    </div>
+  <%end%>
+  
+</div>

@@ -1,0 +1,95 @@
+<!--==== Updated_by: SneWan, On: 25/07/16, update for indentation and functionality of your order on click of plan ====-->                    
+<div class="row">
+  <!--div class="col-sm-12">
+    <h2 class="change_subdomain">
+      Change Your Account Plan
+    </h2>
+  </div-->
+  <div class="col-sm-12">
+    <ul class="list-group">
+      <li class="list-group-item" id="hide_list">
+        <div class="row">
+          <div class="col-sm-4">
+            <h3 style="margin-bottom: 20px; margin-top: 0px;"><b>Current Account Plan</b></h3>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="alert alert-info Upgradable-plan-change text-center">
+                  <h2 class="text-success"><%= current_subdomain.subdomain_type.subdomain_type.sub("_", " ").titleize %></h2>
+                  <button class="btn btn-default btn-lg" id="click_button" data-role="change" data-shot="<%= crypt(current_subdomain.subdomain_type.id) %>" data-id="<%= current_subdomain.subdomain_type.id %>" >Plans</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="col-sm-8">
+            <div class="row">
+              <h3 style="padding-left:15px; margin-bottom: 20px; margin-top: 0px;"><b>Available Plans </b></h3>
+              <%# subdomain_types.each do |subdomain_type| %>
+                <%# unless subdomain_type == current_subdomain.subdomain_type %>
+                  <div class="col-sm-6">
+                    <div class="alert alert-info Upgradable-plan-change text-center">
+                      <h2 class="text-success"><%#= subdomain_type.subdomain_type.sub("_", " ").titleize %></h2>
+                      <button class="btn btn-default btn-lg" data-role="change" data-shot="<%#= crypt(subdomain_type.id) %>" data-id="<%#= subdomain_type.id %>" >Plans</button>
+                    /div>
+                  </div>
+                <%# end %>
+              <% #end %>
+            </div>
+          </div> -->
+        </div>
+      </li>
+      <li class="list-group-item1">
+        <div class="row Monthly-Pricing-two">
+          <div class="col-sm-12">
+            <div class="row">
+              <h3 style="margin-bottom: 20px; margin-top: 0px;"><b>Current Account Plan</b></h3>
+              <h3 class="text-center text-info">Monthly Pricing</h3>
+              <div id="plans"></div> 
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+<script type="text/javascript">
+    subdomain_types_and_plans = {
+        <% @subdomain_types.each do |subdomain_type| -%>
+        "<%= subdomain_type.id %>": [<% subdomain_type.plans.each do |plan| -%><% if plan.type_is?('RENEW') %>"<%= plan.id %>", <% end %><% end %>],
+        <% end if @subdomain_types  %>
+    }
+</script>
+<% @subdomain_types.each do |subdomain_type| -%>
+  <% subdomain_type.plans.each do |plan| -%>
+    <div id="subdomain_plans_<%= subdomain_type.id %>_<%= plan.id %>" class="hide">
+      <div class="col-sm-4">
+        <div class="monthly-pricing text-center shadow">
+          <ul class="list-group" style="padding-left:0px;">
+            <li class="list-group-item"><p class="message text-success" style="padding-top:15px; "><%= plan.plan_name.titleize %> Plan</p></li>
+            <li class="list-group-item background_blue">
+              <h4 class="text-success"><p class="plan_amount">
+                <% if @setup_fee_require %>
+                <% if subdomain_type.has_setup_plan? %>One Time Setup fee $<%= number_with_precision(subdomain_type.setup_amount, :precision => 0) %> + <% end %> $<%= number_with_precision(plan.plan_amount, :precision => 0) %> <br><br><small class="small_text"> per month</small> <%#= plan.currency %>
+                <% else %>
+                  $ <%= number_with_precision(plan.plan_amount, :precision => 0) %> <br><br><small class="small_text"> per month</small> <%#= plan.currency %>
+                <% end %>
+              </p></h4>
+            </li>
+            <li class="list-group-item min-height_pp"><p class="desc"><%= plan.plan_description.capitalize %></p></li>
+            <% if @user.current_plan == plan %>
+              <li class="list-group-item"><button onclick="link_click(this);" data-href="/<%= crypt(plan.id) %>/subdomain_plan" class="btn btn-default" style="color: #7B7A78;">Renew Now</button></li>
+            <% else %>
+              <li class="list-group-item"><button onclick="link_click(this);" data-href="/<%= crypt(plan.id) %>/subdomain_plan" class="btn btn-info" style="background-color: #5895EB; color: #ffffff;">Change Now</button></li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% end if @subdomain_types %>
+
+<script>
+  $(document).ready(function(){
+    $("#click_button").click();
+    $("#hide_list").hide();
+  });
+</script>

@@ -1,0 +1,76 @@
+
+<div class="container container-fix">
+  <div class="row">
+    <!--========================   Heading Start  ======================-->
+    <div class="col-sm-12">
+      <h2 class="heading-title text-left" style="margin-top: 20px;">
+        Edit Lyrics Message
+      </h2>
+    </div>
+  </div>
+  <!--========================   Heading End  ======================-->
+  
+
+  <div class="row">
+    <div class="col-sm-6">
+      <form accept-charset="UTF-8" action="/uploaded_mediums/<%="#{crypt(@uploaded_media.id)}"%>/lyrics_api" method="POST" id="lyrics_api" class="form-horizontal" role="form"><div style="display:none"><input name="utf8" type="hidden" value="&#x2713;" /></div>
+     
+        <div class="form-group">
+          <label class="col-sm-4 control-label required">Message Title</label>
+          <div class="col-sm-8">
+            <input id="media_file_name" name="media_file_name"  type="text" class="form-control" value="<%= File.basename(@uploaded_media.media_file_name,File.extname(@uploaded_media.media_file_name)).gsub("_", " ")%>" disabled/>
+          </div>
+        </div>
+       
+        <div class="form-group">
+          <label class="col-sm-4 control-label required">Lyrics</label>
+          <div class="col-sm-8" style="margin-bottom: 0px;">
+            
+            <%upload_id = @uploaded_media.id%>
+                      
+            <textarea type="text_area" value="" name="lyrics_text" value="" class="ckeditor text-justify" rows = "20" cols="80">
+              <%if @uploaded_media[:song_lyrics].split(".").last == "docx" %>
+                <p><%=raw render html:  "#{@read_file.to_html}".html_safe.gsub("\\n","").html_safe %></p>
+              <%#elsif @uploaded_media[:song_lyrics].split(".").last == "txt"%>
+                <!-- <p><%#= render html: "#{@read_file.gsub("\n\r\n","<br>").to_s.gsub("\n","<br>").to_s}".html_safe %></p> -->
+              <%elsif @uploaded_media[:song_lyrics].split(".").last == "doc"%>
+                <% if (@uploaded_media.created_at == @uploaded_media.updated_at) %>
+                  <p><%=raw render html: "#{@read_file.gsub("\\n","").gsub("\n\r\n","<br>").to_s.gsub("\n","<br>").to_s}".html_safe %></p>
+                <%else%>
+                  <p><%=raw render html: "#{@read_file.to_s}".html_safe %></p>
+                <%end%>
+              <%else%>
+                <%= @show_text.html_safe %>
+              <%end%>
+          </textarea>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <div class="col-sm-offset-4 col-sm-8">
+            <a class="btn btn-info" href="/uploaded_mediums/<%=crypt(@uploaded_media.id)%>/edit">Cancel</a>&nbsp;
+            <input type="submit" value="Update Lyrics" class="btn btn-info"/>
+          </div>
+        </div>
+      <%#end%>
+      </form>     
+    </div>
+  </div>
+  <!--========================   Upload   End  ======================-->
+</div>
+<%#= stylesheet_link_tag 'bootstrapValidator.css', 'chosen.min.css', 'bootstrap-tagsinput.css', 'summernote.css','dev_custom.css' %>
+<%#= javascript_include_tag "extension.js","bootstrapValidator.js", "chosen.jquery.js", 'summernote.min.js', 'bootstrap-tagsinput.min.js', 'chosen-select.js', 'jquery.loadTemplate-1.4.4.min.js' %>
+<%#= tinymce_assets %>
+<!-- <script type="text/javascript">
+  tinyMCE.init({
+    selector: 'textarea.editor'
+  });
+</script>
+ -->
+
+<!-- <> -->
+<!-- ===== added the ckeditor cdn link and js to add ckeditor plugin for text editing ===== -->
+<script src="//cdn.ckeditor.com/4.5.3/full/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace( 'lyrics_text' );
+</script>

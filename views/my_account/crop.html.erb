@@ -1,0 +1,38 @@
+<% content_for (:head) do %>
+<% end %>
+<script type="text/javascript">
+  $(document).ready(function(){
+  	$('#cropbox').Jcrop({
+    	onChange: update_crop,
+    	onSelect: update_crop,
+    	setSelect: [50, 50, 150, 150],
+    	// aspectRatio: 1
+      aspectRatio: 8.5/9.6
+  	});
+		function update_crop(coords){
+		  var ratio = <%= Paperclip::Geometry.from_file(@custom_theme.logo_image_physical).width.to_i %> / 500 ; 
+		  $('#crop_x').val(Math.floor(coords.x * ratio));
+		  $('#crop_y').val(Math.floor(coords.y * ratio));
+		  $('#crop_w').val(Math.floor(coords.w * ratio));
+		  $('#crop_h').val(Math.floor(coords.h * ratio)); 
+		}		
+  });
+</script>
+
+<div class="container">
+  <div class="container container-fix" style="width:260px; height:260px;">
+    <%= image_tag @custom_theme.logo_image_url,:id => "cropbox", :style=>"width:260px; height:260px;"%>
+  </div>
+  <div class="container container-fix" style="text-align: center;">
+    <%= form_for Theme.new, :url=>{:controller => "my_account", :action =>"update_cropping_image"}, :method => "post" do |form| %>
+      <% for attribute in [:crop_x, :crop_y, :crop_w, :crop_h] %>
+        <%= form.hidden_field attribute, :id => attribute %>
+      <% end %>
+      <%= form.hidden_field :theme_id, :value=> @custom_theme.id %>
+      <div style="padding-right: 3%; margin-top: 5%;">
+        <%= form.submit "Crop", class: "button mt1 btn btn-info"  %>
+        <%= form.submit "Don't Crop", class: "button mt1 btn btn-info"  %>
+      </div>
+    <% end %>
+  </div>
+</div>

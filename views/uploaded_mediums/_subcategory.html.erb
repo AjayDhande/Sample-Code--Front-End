@@ -1,0 +1,7 @@
+<% subcategory_id = @subcategory_id%>
+<%= select_tag("uploaded_mediums[subcategory_id]", options_from_collection_for_select(@subcategories, "id", "subcategory_name", subcategory_id.to_i), { :class => "form-control chosen-select" }) %>
+
+
+
+
+                  

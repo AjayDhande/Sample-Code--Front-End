@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+    <style type="text/css">
+      body, td { color:#000000; font-size:18px; font-family:Helvetica Neue,Helvetica,Arial,sans-serif; }
+      .divider { background-color:#555555; height:2px; }
+      .episode h2 { margin-top:0; margin-bottom:8px; font-size:18px; }
+      .episode p { margin:8px 0; }
+      .episode img { border:solid 1px #777777; }
+      .episode .duration { font-size:11px;color:#555555; }
+      #footer { font-size:11px; color:#555555; }
+      #footer a { color:#555555;}
+      #labels { font-weight: bold;}
+      #btn{width: 100%;
+          /*float: left;*/
+          background-color: #FF6600 !important;
+          border-radius: 0px;
+          color: #fff;
+          /* font-family: 'Cooper'; */
+          font-size: 28px;
+          border: 2px solid;
+          padding: 10px;
+          border-bottom-left-radius: 2em;
+          border-bottom-right-radius: 2em;
+          border-top-left-radius: 2em;
+          border-top-right-radius: 2em;}
+    </style>
+  </head>
+
+  <body>
+    <table width="100%" id="background" border="0" cellpadding="0" cellspacing="0">
+      <tr>
+      <td align="center" valign="top">
+        <table width="60%" id="main" border="0" cellpadding="0" cellspacing="20">
+          <tr>
+            <td id="header" colspan="2" align="left">
+              <h4>Dear <%= @user_name%></h4>
+              <tr>
+                <td colspan="2" align="left">
+                  <h4>Welcome to Online Church Media.</h4>
+                </td>
+              </tr>
+            </td>
+          </tr>
+          <tr>
+            <td class="divider" colspan="2" bgcolor="#555555" height="2"></td>
+          </tr>
+          <tr>
+            <!-- <td>
+              <img src="http://www.onlinechurchmedia.com/images/heart-2.jpg" width="50%" height="100%" alt="ocm">
+            </td> -->
+            <td>
+              <p colspan="2" align="left">
+                Now you can begin strengthening your church with reliable and steady income from your messages. Not only that, you can empower the members of your congregation to listen to your words of inspiration on their own time and their own devices.
+              </p>
+
+              <p colspan="2" align="left">
+                We are here to handle all of your digital asset sales and management so you can focus on doing good work.
+              </p>
+              <p>Your first step will be customizing your store.</p>
+              <p>
+                <a href="http://www.onlinechurchmedia.com/" id="btn" role="button" target="_blank"><span>LET’S GET STARTED</span></a>
+              </p>
+              <p>Yours in Christ,</p>
+              <p>The Online Church Media Team<br>
+                <a href="http://www.onlinechurchmedia.com/" style="text-decoration: blink;">http://www.onlinechurchmedia.com</a>
+              </p>
+              <p>PS. If you have any questions, please reply to this email and we’ll get you sorted out.</p>
+            </td>
+          </tr>
+          <!-- <tr>
+            <td class="divider" colspan="2" bgcolor="#555555" height="2"></td>
+          </tr>
+          <tr>
+            <td id="footer" colspan="2" align="center">
+              <p><a href="http://www.onlinechurchmedia.com">www.onlinechurchmedia.com</a></p>
+            </td>
+          </tr> -->
+        </table>
+      </td>
+      </tr>
+    </table>
+  </body>
+</html>

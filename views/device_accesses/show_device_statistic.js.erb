@@ -1,0 +1,7 @@
+$(".access_browser_report").html("<%= escape_javascript(render 'device_accesses/access_browser_report') %>")
+$(".access_device_report").html("<%= escape_javascript(render 'device_accesses/access_device_report') %>")
+$(".access_os_report").html("<%= escape_javascript(render 'device_accesses/access_os_report')%>")
+$(".country").html("<%= escape_javascript(render 'device_accesses/country_stats')%>")
+$(".city").html("<%= escape_javascript(render 'device_accesses/city_stats')%>")
+$(".play_count").html("<%= escape_javascript(render 'device_accesses/country_play_count')%>")
+hideLoader();

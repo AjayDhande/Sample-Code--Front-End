@@ -1,0 +1,20 @@
+<table class="table table-bordered text-center">
+<% unless current_user %>
+  <tr>
+    <td>Free</td>
+    <td>Purchase amount after subscribe $<%= number_with_precision(media.media_amount, precision: 2) %></td>
+    <td><a href="<%= "#{signup_path}?user%5Brole%5D=CUSTOMER&name=&email=&plan=0&uploaded_media_id=#{params[:uploaded_media_id]}" %>" class="btn btn-success">Subscribe</a></td>
+  </tr>
+<% end %>
+<% plans.each do |plan| -%>
+    <tr>
+        <td>$<%= number_with_precision(plan.plan_amount, :precision => 2) %>/month</td>
+        <td>Purchase amount after subscribe $<%= number_with_precision(media.purchase_amount_by_plan(plan), precision: 2) %></td>
+      <% if current_user %>
+        <td><a href="<%= "/upgrade_plan/#{ApplicationController.crypt(plan.id)}/#{params[:uploaded_media_id]}" %>" class="btn btn-success">Upgrade</a></td>
+      <% else %>
+      <td><a href="<%= "#{signup_path}?user%5Brole%5D=CUSTOMER&name=&email=&plan=#{plan.id}&uploaded_media_id=#{params[:uploaded_media_id]}" %>" class="btn btn-success">Subscribe</a></td>
+      <% end %>
+    </tr>
+<% end %>
+</table>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Online Church Media - Your Online Church Media Store</title>
+  <meta charset="utf-8">
+  <%= include_gon %>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+  <%= javascript_include_tag "bootstrap.min.js", "jquery.blockUI.js", "chosen.jquery.js", "jquery-ui.min.js" %>
+  <%= stylesheet_link_tag 'font-awesome.min.css', 'bootstrap.css', 'jquery-ui.css', "chosen.min.css", "dev_custom.css" %>
+  <link href="/custom.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+  <!--========================   Header Start  ======================-->
+  <% if !flash[:type].blank? %>
+    <%= notify(flash[:title], flash[:message], flash[:type]) %>
+  <% else %>
+    <%= notify(flash[:title], flash[:message], :notice) %>
+  <% end %>
+<!--========================   Header Start    ======================-->
+    <header>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 col-xs-12 header-search-area2">
+                    <div class="logo">
+                        <a href="<%= home_path %>">
+                            <img src="/assets/logo.jpg" alt="Logo" />
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-9 col-xs-12 header-search-area">
+                            <div class="row">
+                                <div class="col-md-5 col-xs-12 custom-width">
+                                    <form role="search" id="search-form" class="navbar-form header-search">
+                                        <div class="input-group">
+                                            <select data-placeholder="" name="home_search_by" class="chosen-select" tabindex="2" id="home_search_by">
+                                                <!--<option value="all">All</option>
+                                                <option value="organization">Organization</option>
+                                                <option value="individual">Individual Speaker</option> 
+                                                <option value="church">Church</option>
+                                                <option value="musician">Church Musician</option>-->
+                                            <% if params[:search_by] %>
+                                              <option <%= "selected" if params[:search_by] == "all" %> value="all">All</option>
+                                              <option <%= "selected" if params[:search_by] == "artist" %> value="artist">Artist</option>
+                                              <option <%= "selected" if params[:search_by] == "tag" %> value="tag">Tag</option>
+                                              <option <%= "selected" if params[:search_by] == "file" %> value="file">File</option>
+                                            <% else %>
+                                              <option selected value="all">All</option>
+                                              <option value="artist">Artist</option>
+                                              <option value="tag">Tag</option>
+                                              <option value="file">Message</option> 
+                                            <% end %>
+                                            </select>
+                                            <input type="text" name="home_search_text" placeholder="Search Media" class="search" value="<%= params[:search_text] if params[:search_text] && params[:search_by] %>">
+                                            <div class="input-group-btn">
+                                                <button type="submit" name="go" class="btn btn-info">Go</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col-md-7 col-xs-12 pull-right">
+                                <% unless user_signed_in? %>
+                                    <div class="row header-login">
+                                        <%= form_for User.new, url: user_session_path, html: { method: :post, onsubmit: "return validateForm();", class: "form-inline", role: 'form' } do |f| %>
+                                            <div class="form-group">
+                                                <label class="sr-only">Username</label>
+                                                <%= f.text_field :username, placeholder: "Username", class: "form-control" %>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="sr-only" for="exampleInputPassword2">Password</label>
+                                                <%= f.password_field :password, placeholder: "Password", class: "form-control" %>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="sr-only">Login</label>
+                                                <%= f.submit "Login", class: "btn btn-default login-new" %>
+                                            </div>
+                                            <div class="form-group">
+                                                <%= link_to "Signup", signup_path, class: "btn btn-login signup-new", id: "signup" %>
+                                            </div>
+                                            <div class="form-group">
+                                                <a class="btn-gray-bor btn btn-login"><img alt="Cart" src="/assets/cart.png"> <span class="badge cart-text" id="cart-total"><%= render 'layouts/cart_text' %></span></a>
+                                            </div>
+                                            <a href="<%=new_user_password_path%>" class="header-forget" name="forget_password">Forget Password?</a> 
+                                        <%- end %>
+                                    </div>
+                                <% else %>
+                                    <div class="row header-login header-after-login">
+                                        <form class="form-inline" role="form">
+                                            <div class="form-group">
+                                                    <a href="#" class="btn btn-login">My Account</a>
+                                            </div>
+                                            <div class="form-group">
+                                            <%= link_to "Support", support_path, class: "btn btn-login" %>
+                                            </div>
+                                            <div class="form-group">
+                                                <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "btn btn-login" %>
+                                            </div>
+                                 <div class="form-group">                                                
+                                                <div class="btn-group btn-block" id="cart">
+                                                   <p class="btn-gray-bor btn btn-login"><img alt="Cart" src="/assets/cart.png"> <span class="badge cart-text" id="cart-total"><%= render 'layouts/cart_text' %></span></p>
+
+                                                    <ul role="menu" class="dropdown-menu pull-right"><li>
+                                                            <table class="table table-striped">
+                                                                <tbody><tr>
+                                                                        <td class="text-center">            
+                                                                            <a href="#">
+                                                                                <img class="img-thumbnail" alt="" src="/assets/music-list.jpg" width="60">
+                                                                            </a>
+                                                                        </td>
+                                                                        <td class="text-left"><a href="#">Bison Tank Off White</a>
+                                                                        </td>
+                                                                        <td class="text-right">x 1</td>
+                                                                        <td class="text-right">0.00€</td>
+                                                                        <td class="text-center"><button class="btn btn-danger btn-xs" title="Remove" type="button"><i class="glyphicon glyphicon-remove"></i></button></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="text-center">            
+                                                                            <a href="#">
+                                                                                <img class="img-thumbnail" alt="" src="/assets/music-list.jpg" width="60">
+                                                                            </a>
+                                                                        </td>
+                                                                        <td class="text-left">
+                                                                            <a href="#">Lennart bombs Black</a>
+                                                                        </td>
+                                                                        <td class="text-right">x 1</td>
+                                                                        <td class="text-right">0.00€</td>
+                                                                        <td class="text-center"><button class="btn btn-danger btn-xs" title="Remove" type="button"><i class="glyphicon glyphicon-remove"></i></button></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="text-center">            
+                                                                            <a href="#">
+                                                                                <img class="img-thumbnail" alt="" src="/assets/music-list.jpg" width="60">
+                                                                            </a>
+                                                                        </td>
+                                                                        <td class="text-left">
+                                                                            <a href="#">Steal</a>
+                                                                        </td>
+                                                                        <td class="text-right">x 1</td>
+                                                                        <td class="text-right">0.00€</td>
+                                                                        <td class="text-center"><button class="btn btn-danger btn-xs" title="Remove" type="button"><i class="glyphicon glyphicon-remove"></i></button></td>
+                                                                    </tr>
+                                                                </tbody></table>
+                                                        </li>
+                                                        <li>
+                                                            <div>
+                                                                <table class="table table-bordered">
+                                                                    <tbody><tr>
+                                                                            <td class="text-right"><strong>Sub-Total</strong></td>
+                                                                            <td class="text-right">0.00€</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="text-right"><strong>Total</strong></td>
+                                                                            <td class="text-right">0.00€</td>
+                                                                        </tr>
+                                                    </tbody></table>
+                                                                <p class="text-right"><a href="#"><strong><i class="glyphicon glyphicon-shopping-cart"></i> View Cart</strong></a>&nbsp;&nbsp;&nbsp;<a href="#"><strong><i class="glyphicon glyphicon-share"></i> Checkout</strong></a></p>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            
+                                        </form>
+                                    </div>
+                                <% end %>
+                                </div>
+                                
+                            </div>
+                    
+                    </div>
+                </div>
+        </div>
+    </header>
+    <!--========================   Header End  ======================-->
+<%= yield %>
+
+<!--========================   Footer Start  ======================-->
+<footer class=" wow rollIn">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="col-sm-12 link-one">
+                <p>
+                    <a href="#">
+                        Visit us on Facebook
+                    </a>
+                    &nbsp;&nbsp; |&nbsp;&nbsp;
+                    <a href="#">
+                        Follow us on Twitter
+                    </a>
+                </p>
+            </div>
+            <div class="col-sm-12 link-two">                
+                <ol class="breadcrumb breadcrumb-menu" style="background-color: transparent; padding-left: 0px;">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="<%= help_faq_path %>">Help/FAQ</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">How it Works?</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                         <li><a href="#">Legal Notices</a></li>
+                    </ol>
+                <p>
+                    @2014 All right reserved Please read our Terms Of Service and Privacy Policy
+                </p>
+            </div>
+            </div>
+            <div class="col-sm-4">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <h4 class="text-info">Subscribe the Newsletter</h4>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-4 control-label">Full Name</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="inputEmail3" placeholder="Full Name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPassword3" class="col-sm-4 control-label">Email</label>
+                        <div class="col-sm-8">
+                            <input type="email" class="form-control" id="inputPassword3" placeholder="Email">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-4 col-sm-8">
+                            <button type="submit" class="btn btn-default">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</footer>
+<!--========================   Footer  End  ======================-->
+<%=javascript_include_tag "custom.js", "login.js", "subdomain_autocomplete.js" %>
+
+</body>
+</html>

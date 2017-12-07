@@ -1,0 +1,31 @@
+
+.my-alert-info{
+  color: #31708f;
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+}
+
+.onload-message{
+  padding-top: 1px; 
+  width:100%
+}
+
+.alert-info1 {
+	color: #31708f;
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+  height: 54px;        
+}
+
+@media(max-width: 350px){
+	.alert-info1 {
+		color: #31708f;
+	  background-color: #d9edf7;
+	  border-color: #bce8f1;
+	  height: 64px;        
+	}
+}
+
+#ui-id-1{
+  z-index: 999999;
+}

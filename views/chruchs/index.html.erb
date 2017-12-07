@@ -1,0 +1,54 @@
+
+    <div class="container container-fix">
+      <!--========================   Heading End  ======================-->
+    
+    <!--========================   Upload  Start   ======================-->
+    <div class="row">
+      <%= render 'layouts/admin_header' %>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <h2 class="heading-title text-left">Church Management</h2>
+        </div>
+        <div class="col-sm-12">
+            <h4 class="heading-title text-left">Total Churches: <%=@church_active_users%></h4>
+        </div>
+        <div class="col-xs-12">
+            <div class="table-responsive">
+
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Church Name</th>
+                            <th>Options</th>
+                        </tr>
+                    </thead>
+                    <tbody>  
+                       <%@subdomain_names.each do |subdomain_name|%>
+                           <%chruch = subdomain_info(subdomain_name) rescue nil%>
+                           <%unless chruch.blank?%>
+                            <tr>
+                                <td><%=chruch.username%></td>
+                                <td>
+                                <%= link_to edit_chruch_path(chruch), class: 'btn btn-info',  title: 'Details' do %>
+                                    <span class="glyphicon glyphicon-eye-open"></span>
+                                <% end %>   
+                                <%id = chruch.id%>
+                                <%= link_to chruch_path(id), method: :delete, data: { confirm: 'You want to delete this' }, class: 'btn btn-danger',  title: 'Remove' do %>
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                <% end %>
+                                </td>
+                            </tr>
+                            <%end%>
+                        <%end%>
+                    </tbody>
+                </table>
+            </div>
+            <%=will_paginate  @subdomain_names%>
+        </div>
+    </div>
+    <!--========================   Upload   End  ======================-->
+</div>
+
+
+<%= javascript_include_tag 'bootstrap-hover-dropdown.js', 'bootstrap-tabdrop.js', 'ekko-lightbox.js', 'icheck.min.js', 'summernote.min.js' %>

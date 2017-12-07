@@ -1,0 +1,41 @@
+
+    <!--========================   Breadcrumb  Start  ======================-->
+    <div class="container container-fix">
+        <div class="row">
+            
+            <!--========================   Breadcrumb End  ======================-->
+
+            <!--========================   Heading Start  ======================-->
+            <div class="col-sm-12">
+                <h2 class="heading-title text-left">
+                    Order History 
+                </h2>
+            </div>
+        </div>
+      <!--========================   Heading End  ======================-->
+    
+    <!--========================   Upload  Start   ======================-->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="table-responsive">
+                <table class="table table-bordered order_list">
+                  <%=render "order_list"%>
+                </table>
+                
+            </div>
+        </div>
+        
+    </div>
+    <div class="row">
+        <div class="col-sm-8">
+            <ul class="pagination">
+               <%=render "paginate_order"%>
+            </ul>
+        </div>
+        <div class="col-sm-4">     
+        </div>
+    </div>
+    
+    <!--========================   Upload   End  ======================-->
+</div>
+<%=javascript_include_tag  "bootstrap-hover-dropdown.js", "bootstrap-tabdrop.js", "ekko-lightbox.js ", "icheck.min.js", "jquery.raty.js","summernote.min.js", "will_paginate.js" %>

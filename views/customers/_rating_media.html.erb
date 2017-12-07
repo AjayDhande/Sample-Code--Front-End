@@ -1,0 +1,49 @@
+
+                  <div class="row">
+                      <% if ratings.blank?%>
+                          <div class="col-sm-12 well">
+                                Currently you have no rated media.<br>
+                                Once you have some rated media, it will be shown in the tabular format below.
+                           </div>
+                      <% else %>
+                           <div class="col-sm-12">
+                              <h2 class="text text-left">Media You Rated</h2>
+                               <div class="table-responsive">
+                                   <table class="table">
+                                       <thead class="border-none">
+                                           <tr>
+                                               <th colspan="2" class="border-none">Media</th>
+                                               <th style="border: none; padding-left: 25px;">Rating</th>
+
+                                           </tr>
+                                       </thead>
+                                       <tbody>
+                                        <% ratings.each do |rating| %>
+                                          <%if !(rating.uploaded_media.deactive?) && (rating.uploaded_media.subdomain.is_active?)%>
+                                            <tr>
+                                              <% media_name = File.basename(rating.uploaded_media.media_file_name,File.extname(rating.uploaded_media.media_file_name)).gsub("_", " ") %>
+                                              <td class="space">
+                                                <a href="/media_details/<%= ApplicationController.crypt(rating.uploaded_media.id) %>"><span class="glyphicon glyphicon-play media-play-customer"></span></a>
+                                              </td>
+                                              <td>
+                                                <a href="/media_details/<%= ApplicationController.crypt(rating.uploaded_media.id) %>"><span class="text-play-customer"><%#= rating.uploaded_media.media_file_name %>
+                                                <%=media_name %></span></a>
+                                              </td>
+                                              <td>
+                                                <div class="col-xs-2 custom-width">
+                                                  <div class="rateit" id="rateit9" data-rate="<%= get_average_rating(rating.uploaded_media.id)%>">
+                                                  </div>
+                                                </div>
+                                              </td>
+                                            </tr>
+                                          <%end%>
+                                        <%end%>
+                                      </tbody>
+                                   </table>
+                               </div>
+                               <%= ajax_will_paginate_for_rating ratings, params: { controller: "customers", action: "customer_ratings" } %>
+                           </div>
+                      <% end %>
+                  </div>
+<%= javascript_include_tag 'jquery.rateit.js', 'rate.js' %>
+<%= stylesheet_link_tag 'rateit.css'%>

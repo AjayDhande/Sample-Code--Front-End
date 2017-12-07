@@ -1,0 +1,10 @@
+<div class="comment-list">
+	<table class="table">
+	<%Comment.where(uploaded_media_id: @uploaded_media.id).each do |comment|%>
+	  <%user_id = comment.user_id%>
+      <font size="2">Commented By: <%=get_user_name(user_id) rescue nil%></font><br />
+      <font size="2">Commented On: <%= comment.created_at.strftime("%a %b %Y  %H:%M:%S")%></font>
+      <textarea  name="comment" form="usrform" disabled = true class="form-control" style = "width:50%"><%= comment.comment%></textarea><br />
+	<%end%>
+	</table>
+</div>

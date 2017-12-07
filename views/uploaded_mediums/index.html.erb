@@ -1,0 +1,355 @@
+<!-- <div class="container" id="flash">
+  <%# flash.each do |name, msg| %>
+    <a class="close" data-dismiss="alert">&#215;</a>
+    <%#= content_tag :div, msg,:id => "flash_#{name}", class: "alert alert-info" %>
+  <%# end %>
+</div>
+<div id="flash">
+  <a class="close" data-dismiss="alert">&#215;</a>
+  <%#= content_tag :div, msg, :id => "flash_#{name}" %>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+  setTimeout(function(){
+    $('#flash').remove();
+  }, 15000);
+ })
+</script> -->
+<div class="container container-fix">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="breadcrumb-outer">
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+      <%if !current_subdomain.is_ocm? && @exchange_media.present? %>
+      <div class="col-sm-10 col-xs-12">
+      <%end%>
+        <div class="row">
+         <!--  <div class="col-md-3 col-sm-4 col-xs-12"> -->
+         <div class="col-sm-3  col-xs-12">
+            <div class="content"> 
+              <form method="post" role="form">
+                  <input type="hidden" name="search_by" value="<%= params[:home_search_by] %>">
+                  <input type="hidden" name="search_text" value="<%= params[:home_search_text] %>">
+                   <!--div class="row"-->
+
+                    <!--div class="col-md-3 col-sm-4 col-xs-12"-->
+                        <form class="form-inline" role="form">                    
+                            <div class="form-group">
+                               <label class="control-label" id="category_select_label">Category</label>
+                               <select id = "category_select" data-placeholder="Select category" class="chosen-select" tabindex="2" onchange="fetch_subcategories(this); media_by_category(this)">
+                                  <option value="">All</option>
+                                  <%= @categories.each do |category| %>
+                                    <option value="<%= category.id %>"><%= category.category_name%></option>
+                                  <% end %>
+                                </select> 
+                            </div>                    
+                            <div class="form-group">
+                              <label class="control-label" id="subcategory_select_label">Subcategory</label>
+                                 <select data-placeholder="Select Subcategory" class="chosen-select" tabindex="2" id="subcategory" disabled>
+                                 </select>
+                            </div>
+                            <div class="form-group">
+                                <h4 class="">
+                                    Show Results For
+                                </h4>
+                            </div>
+                            <div class="form-group">
+                                <p> New Arrivals</p>
+                                <div class="checkbox checkbox-default">
+                                    <input type="checkbox" onchange="withLast(this);" value="30" name="last30" class="two checkbox-fix"> 
+                                    <label for="last">Last 30 days</label>
+                                </div>
+                                <div class="checkbox checkbox-default">
+                                    <input type="checkbox" onchange="withLast(this);" value="90" name="last90" class="two checkbox-fix"> 
+                                    <label for="last">Last 90 days</label>
+                                </div>
+                            </div>
+                        </form>
+                    <!--/div-->
+                <!--/div-->             
+              </form>
+            </div>  
+            <% if !current_subdomain.is_ocm? && @theme_for_affiliated_subdomains.present? %>
+             
+            <%end%> 
+          </div>
+
+          <!--   <div class="col-md-9 col-sm-8 col-xs-12"> -->
+            <div class="col-sm-8  col-xs-12">
+              <% if @uploaded_medias.count > 10 %>
+                <div class="col-sm-12">
+                    <h3 style="margin-bottom: 0px; margin-top: 15px;">Most Popular</h3>
+                </div>
+                <div class="item-group font">
+                  <div class="table-responsive1">
+                    <table>
+                      <tr>
+                        <%= render partial: 'popular', locals: {messages: @popular} %>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              <% end %>
+              
+              <div class="col-sm-12">
+                  <h3 style="margin-bottom: 0px; margin-top: 15px;">New &amp; Noteworthy</h3>
+              </div>
+              <div class="item-group font">
+                <div class="table-responsive1">
+                  <table>
+                    <tr>
+                      <%= render partial: 'noteworthy', locals: {messages: @new_noteworthy_messages} %>
+                    </tr>
+                  </table>
+                </div>
+              </div> 
+            </div>
+        </div>
+     <!--  <div>&nbsp;</div> -->
+      <!--===================   Breadcrumb End  ======================-->
+
+  <% if !device_name.is_mobile? && !browser.mobile? %> 
+        <div class="row">
+        <!--   <%# if !device_name.is_mobile? && !browser.mobile? %> -->
+          <!--   <div class="col-md-3 col-sm-4 col-xs-12"> -->
+          <div class="col-sm-3  col-xs-8">
+              <% if !current_subdomain.is_ocm? && @theme_for_affiliated_subdomains.present? %>
+                <fieldset class="scheduler-border">
+                  <legend class="scheduler-border" style="color: gray;">Affiliates</legend>
+                  <% @theme_for_affiliated_subdomains.first(5).each do |k, v| %>
+                    <div class="block_1" style="padding-left: 26%;">
+                  <%if File.exist?("#{Rails.root.to_s}/public/subdomain/logo/#{v[0].split('/').last}").present? %>
+                     <a href= "http://<%=v[1]%>.<%=ENV['DOMAIN']%>"  target="_blank">
+                        <img class="img-max-height text-center"  src="<%= v[0] %>" alt="logo" ></a>
+                      <p style="padding-left: 18%;"><a href= "http://<%=v[1]%>.<%=ENV['DOMAIN']%>" target="_blank"><%=v[1]%></a></p>
+                    <% else %>
+                      <a href= "http://<%=v[1]%>.<%=ENV['DOMAIN']%>"  target="_blank">
+                        <img  style="width: 100%; margin-left: -16%;" class="img-max-height text-center"  src="/subdomain/logo/logo.jpg" alt="logo" ></a>
+                      <p style="padding-left: 14%;"><a href= "http://<%=v[1]%>.<%=ENV['DOMAIN']%>" target="_blank"><%=v[1]%></a></p>
+                    <% end %>                        
+                    </div>          
+                   <!--  <div class="bet"></div> -->
+                    <hr style="border-top: 1px solid #ddd;">  
+                    <br>    
+
+                  <% end %>
+                  <% if @theme_for_affiliated_subdomains.count > 5 %>
+                    <a href="/all_affliates" style="padding-left:25%;">More Affiliates</a> 
+                  <% end %>
+                </fieldset> 
+                <% end %>
+                 </div>
+
+
+       <div class="col-sm-8  col-xs-12">
+            <div class="" style="margin-top: -15px;">
+              <strong><span><h3 class="text-uppercase" style="padding-left:2%; word-wrap:break-word;"><%= current_theme.header rescue nil %></h3></span></strong>
+              <hr style="margin-left:2%;">
+              <p style="padding-left:2%; word-wrap:break-word;"><%= current_theme.header_description rescue nil %></p>
+            </div>
+            <div class="well well-sm align">
+              <strong><span><%= params[:home_search_text].blank? ? "FEATURED MEDIA" : "FEATURED MEDIA" %></span></strong>
+            </div>
+  
+              <div id="update_list">
+                <section class="row font">          
+                  <div id="products" class="col-sm-12 list-group">
+                    <div class="table-responsive1">
+                      <table>
+                        <tr>
+                          <%= render partial: 'messages_list', locals: { messages: @uploaded_medias } %>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </section>
+                  <div class="row row_paginate">
+                    <%= render partial: 'media_list_ajax_pagination', locals: { messages: @uploaded_medias, page_params: { controller: "uploaded_mediums", action: "search_messages", home_search_by: params[:home_search_by], home_search_text: params[:home_search_text], last: params[:last] } }%>
+                  </div>
+              </div>
+            </div>
+        </div>
+         <% else %>
+           <div class="row">
+         <div class="col-sm-8  col-xs-12">
+            <div class="" style="margin-top:-15px;">
+              <strong><span><h3 class="text-uppercase" style="padding-left:2%; word-wrap:break-word;"><%= current_theme.header rescue nil %></h3></span></strong>
+              <hr style="margin-left:2%;">
+              <p style="padding-left:2%; word-wrap:break-word;"><%= current_theme.header_description rescue nil %></p>
+            </div>
+            <div class="well well-sm align">
+              <strong><span><%= params[:home_search_text].blank? ? "FEATURED MEDIA" : "FEATURED MEDIA" %></span></strong>
+            </div>
+              <div id="update_list">
+                <section class="row font">          
+                  <div id="products" class="col-sm-12 list-group">
+                    <div class="table-responsive1">
+                      <table>
+                        <tr>
+                          <%= render partial: 'messages_list', locals: { messages: @uploaded_medias } %>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </section>
+                  <div class="row row_paginate">
+                    <%= render partial: 'media_list_ajax_pagination', locals: { messages: @uploaded_medias, page_params: { controller: "uploaded_mediums", action: "search_messages", home_search_by: params[:home_search_by], home_search_text: params[:home_search_text], last: params[:last] } }%>
+                  </div>
+              </div>
+            </div>
+
+             <div class="col-sm-2  col-xs-8 make_center">
+              <% if !current_subdomain.is_ocm? && @theme_for_affiliated_subdomains.present? %>
+                <fieldset class="scheduler-border" style="border: 1px solid #ddd !important;">
+                  <legend class="scheduler-border fonts"> Affiliates </legend>
+                  <% @theme_for_affiliated_subdomains.first(5).each do |k, v| %>
+                    <div class="block_1" style="padding-left: 26%;">
+                      <%if File.exist?("#{Rails.root.to_s}/public/subdomain/logo/#{v[0].split('/').last}").present? %>
+                     <a href= "http://<%=v[1]%>.<%=ENV['DOMAIN']%>"  target="_blank">
+                        <img class="img-max-height text-center"  src="<%= v[0] %>" alt="logo" ></a>
+                      <p style="padding-left: 18%;"><a href= "http://<%=v[1]%>.<%=ENV['DOMAIN']%>" target="_blank"><%=v[1]%></a></p>
+                    <% else %>
+                      <a href= "http://<%=v[1]%>.<%=ENV['DOMAIN']%>"  target="_blank">
+                        <img  style="width: 100%; margin-left: -16%;" class="img-max-height text-center"  src="/subdomain/logo/logo.jpg" alt="logo" ></a>
+                      <p style="padding-left: 14%;"><a href= "http://<%=v[1]%>.<%=ENV['DOMAIN']%>" target="_blank"><%=v[1]%></a></p>
+                    <% end %>
+                    </div>          
+                    <hr style="border-top: 1px solid #ddd;">
+                    <br>
+
+                  <% end %>
+                  <% if @theme_for_affiliated_subdomains.count > 5 %>
+                    <a href="/all_affliates" style="padding-left: 25%;">More Affiliates</a> 
+                  <% end %>
+              </fieldset> 
+              <% end %>
+            </div>
+        </div>
+          <% end %>
+
+      <%if !current_subdomain.is_ocm? && @exchange_media.present?%></div><%end%>    
+      <%if !current_subdomain.is_ocm? && @exchange_media.present? %>
+        <div class="col-sm-2 col-xs-8">
+          <fieldset class="scheduler-border">
+            <legend class="scheduler-border" style="color: #6f6f6f;">Exchange</legend>
+            <% @exchange_media.each do |message| %>
+              <div class="block_1">
+                <% link = "/media_details/#{ApplicationController.crypt(message.id)}"%>
+              
+                <a href="<%= link %>"><img class="img-max-height1" src="<%= message.media_art.url(:thumb) %>" alt=""></a>
+                  <h4 style="white-space: normal;" class="group inner list-group-item-heading text-info media_file_name">
+                    <% media_name = File.basename(message.media_file_name,File.extname(message.media_file_name)).gsub("_", " ") %>
+                    <a href="<%= link %>" title="<%= media_name %>"><%= media_name %></a>
+                  </h4>
+                  <p class="group inner list-group-item-text trunc" data-size="42" title="<%= message.presenter_name %>">
+                    <%= message.presenter_name %>
+                  </p>
+                  <div class="row">   
+                    <div class="col-xs-2 custom-width">
+                      <div class="rateit" id="rateit9" data-rate="<%= get_average_rating(message.id)%>">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-xs-12 rating">
+                      <p>
+                      <% if get_number_of_likes(message.id) == 0 %>
+                        <span class="glyphicon glyphicon-heart-empty"></span>
+                      <% else %>
+                        <span class="glyphicon glyphicon-heart"></span>&nbsp; 
+                        <%= get_number_of_likes(message.id)%> Likes
+                      <% end %>
+                      </p>
+                    </div>
+                  </div>
+                </div> 
+                <hr style="border-top: 1px solid #a8a3a3;"> 
+ 
+            <%end%>   
+          </fieldset> 
+        </div>
+      <%end%>
+    </div>   
+<!-- </div> -->
+<%= notify(flash[:file_count], flash[:file_uncount], :success) %>
+
+<%= javascript_include_tag "summernote.min.js", "music_list.js"%>
+<link href="<%= asset_path 'summernote.css'%>" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript">
+    subcategories = {
+        "":[]<% @categories.each do |category| -%>,
+        "<%= category.id %>": [["","Select Subcategory"]<% category.subcategories.each do |subcategory| -%>, ["<%= subcategory.id %>", "<%= subcategory.subcategory_name %>"]<% end %>]
+        <% end %>
+    }
+</script>
+
+<style type="text/css">
+  .borderless table 
+  {
+    border-top-style: none;
+    border-left-style: none;
+    border-right-style: none;
+    /*border-bottom-style: none;*/
+  }
+  fieldset.scheduler-border 
+  {
+    border: 1px solid #ddd !important;
+    padding: 0 1.4em 1.4em 1.4em !important;
+    margin: 0 0 1.5em 0 !important;
+    -webkit-box-shadow:  0px 0px 0px 0px #000;
+            box-shadow:  0px 0px 0px 0px #000;
+  }
+  legend.scheduler-border 
+  {
+    width:inherit; /* Or auto */
+    /*  padding:0 10px;*/ /* To give a bit of padding on the left and right */
+    border-bottom:none;
+    color: gray;
+    font-size: 97% !important;
+    padding-left: 5px;
+    padding-right: 5px; 
+  }
+
+  .bet { border: 1px solid #ddd; }
+  .fstyle
+  {
+    font-size: 14px;
+  }
+  .img-max-height1 {
+    max-height: 80px;
+  }
+
+  .logostyle
+  {
+    width: 82%;
+    margin-left: -9%;
+  }
+  
+   .font
+  {
+    font-size: 11px;
+  }
+
+
+  @media only screen and (max-width: 767px) {
+  .make_center {
+       margin-left: 16%;          
+  }
+
+  @media only screen and (max-width: 767px) {
+  .fonts {
+    color: gray;
+    font-size: 100%;
+    padding-left: 5px;
+    padding-right: 5px;          
+  }
+}
+
+
+</style>

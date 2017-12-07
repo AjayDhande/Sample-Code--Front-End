@@ -1,0 +1,58 @@
+
+    <!--========================   Breadcrumb  Start  ======================-->
+<div class="container container-fix">
+        
+        <div class="row">
+            <%= render 'layouts/admin_header' %>
+        </div>
+            <!--========================   Breadcrumb End  ======================-->
+
+            <!--========================   Heading Start  ======================-->
+        <div class="row">
+            <div class="col-sm-12">
+                <h2 class="heading-title text-left">
+                    Royalty Images
+                </h2>                
+                <h4 class="heading-title text-left">Total Royalty Images: <%=@track_artworks.count%></h4>
+            </div>
+        </div>
+      <!--========================   Heading End  ======================-->
+    
+    <!--========================   Upload  Start   ======================-->
+    <div class="row">
+        <div class="col-sm-12 text-center">
+            <%= form_for @track_artwork ,:url => track_artworks_path, :html => { :multipart => true,:id=>"royalty_image_form",:class=>"form-inline",:style=>"margin:0 0 18px 0;" } do |f| %>
+              <div class="form-group" style="display: inline-block;">
+                <button type="button" class="btn btn-info" onclick="$(this).next().click();">Browse</button>
+                <%= f.file_field :artwork, class: "hide", onchange: "$(this).next().html('<i class=\"glyphicon glyphicon-file\" style=\"font-size: x-small;\">'+this.files[0].name+'</i>');" %>
+                <span></span>
+              </div>
+              <div class="form-group" style="display: inline-block;">
+                <%= f.submit 'Upload', :class => 'btn btn-default' %>
+              </div>
+            <% end %>
+        </div>
+        <div class="container">
+            <div class="col-sm-12 royalty_images" style="border: 1px solid #ddd; padding: 15px;">
+              <%= render "royalty_images" %>
+            </div>
+        </div>     
+    </div>
+    <div class="row">
+        <div class="col-sm-8">
+            <ul class="pagination">
+                <%=will_paginate @track_artworks%>
+            </ul>
+        </div>
+        <div class="col-sm-4">
+            
+        </div>
+    </div>
+    
+    <!--========================   Upload   End  ======================-->
+</div>
+
+
+
+
+<%= javascript_include_tag  "extension.js","bootstrap.file-input.js", "bootstrap-hover-dropdown.js", "bootstrap-tabdrop.js", "ekko-lightbox.js", "icheck.min.js", "jquery.raty.js", "summernote.min.js","track_artworks.js" %>

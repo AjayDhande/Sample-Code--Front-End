@@ -1,0 +1,28 @@
+<%access_device_statistics = get_access_device(@device_accesses) rescue nil%>
+     <div class="col-sm-6">
+           <h4>Mobile And Tablet</h4>
+           <div class="table-responsive">
+                <table style="width:100%;" class="table table-bordered"> 
+                    <tbody id="mytable" class="odd">
+                        <tr>
+                        	<td style="width:70%;">Apple(iPhone,iPod)</td>
+                        	<td style="width:90%;"><%= access_device_statistics['iphone_ipod_percent'] rescue nil%>%</td>
+                            <td style="width:100%;"><%= access_device_statistics['iphone_ipod_count_data'] rescue nil%></td>
+                        </tr>
+                        <tr>
+                        	<td style="width:70%;">Android(Phone & Tablet)</td>
+                        	<td style="width:90%;"><%= access_device_statistics['android_percent'] rescue nil%>%</td>
+                            <td style="width:100%;"><%= access_device_statistics['android_count_data'] rescue nil%></td>           
+                        </tr><tr>
+                            <td style="width:70%;">Apple(iPad)</td>
+                            <td style="width:90%;"><%= access_device_statistics['ipad_percent'] rescue nil%>%</td>
+                            <td style="width:100%;"><%= access_device_statistics['ipad_count_data'] rescue nil%></td>
+                        </tr><tr>
+                            <td style="width:70%;">Other</td>
+                            <td style="width:90%;"><%= access_device_statistics['other_percent'] rescue nil%>%</td>
+                            <td style="width:100%;"><%= access_device_statistics['other_count_data'] rescue nil%></td>                    
+                    </tbody>
+                </table>
+            </div>
+
+       </div>

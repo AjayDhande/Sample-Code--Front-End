@@ -1,0 +1,67 @@
+
+<div class="row">
+  <% if downloads.blank? %>
+    <div class="col-sm-12 well">
+      Currently you have no downloaded media.<br>
+      Once you have some media downloaded, it will be shown in the tabular format below.
+    </div>
+  <% else %>
+    <h2 class="text text-left" style="padding-left: 6px;">Downloaded Media
+    </h2>
+    <div class="table-responsive">
+      <table class="table">
+        <thead style="border: none;">
+          <tr>
+            <th colspan="2" style="border: none;">Media </th>
+            <th style="border: none;">Duration</th>
+            <th style="border: none;">Date</th>
+            <th style="border: none;">Presenter Name</th>
+            <th style="border: none;">Download Now</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% downloads.each do |download| %>
+            <tr>
+            <%if !(download.uploaded_media.deactive?) && (download.uploaded_media.subdomain.is_active?) %>
+              <% media_name = File.basename(download.uploaded_media.media_file_name,File.extname(download.uploaded_media.media_file_name)).gsub("_", " ") %>
+              <td class="space">
+                <div onclick="toggle_player(this);" style="cursor: pointer;" class="glyphicon glyphicon-play player-fix media-play-customer"></div>
+                <audio id='my_audio' class="hide" controls onended="player_end(this);">
+                  <source src="/download/media/<%= ApplicationController.crypt(download.uploaded_media.id) %>" type="<%= download.uploaded_media.media_content_type %>" preload="auto">
+                    Your browser does not support the audio element.
+                </audio>
+              </td>
+              <td>
+                <!-- <div onclick="toggle_player(this);" style="cursor: pointer;" class="glyphicon glyphicon-play player-fix media-play-customer"></div>
+                <audio id='my_audio' class="hide" controls onended="player_end(this);">
+                  <source src="/download/media/<%= ApplicationController.crypt(download.uploaded_media.id) %>" type="<%= download.uploaded_media.media_content_type %>" preload="auto">
+                    Your browser does not support the audio element.
+                </audio> -->
+                <a href="/media_details/<%= ApplicationController.crypt(download.uploaded_media.id) %>"><%= media_name %></span></a>
+              </td>
+              <td>
+                <%= calculate_sec_to_time(download.uploaded_media.duration) %>
+                <%#- file_duration = download.uploaded_media.media.path %>
+                <%#= calculate_duration("#{file_duration}") %>
+              </td>
+              <td>
+                <%= download.uploaded_media.created_at.to_date.strftime("%B %d, %Y") %>
+              </td>
+              <td>
+                <%= download.uploaded_media.presenter_name %>
+              </td>
+              <td>
+                <div class="download text-uppercase" style="width: 140px;">
+                  <a href="/download/media/<%= ApplicationController.crypt(download.uploaded_media.id)%>?mode=download"><span class="glyphicon glyphicon-download-alt" style="margin-left:55px;"></span></a>
+                </div>
+              </td>
+             <%end%>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <%= ajax_will_paginate_for_download downloads, params: { controller: "customers", action: "customer_downloads" } %>
+    </div>
+  <% end %>
+</div>
+<%=javascript_include_tag "my_account.js", "media_details.js"%>

@@ -1,0 +1,51 @@
+<div class="container container-fix">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="breadcrumb-outer">
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="bs-example-tabs">
+        <ul class="nav nav-tabs" id="myTab">
+          <li class="customer_profile_tab" name="SubscriptionPlanChange"><a data-toggle="tab" href="#SubscriptionPlanChange">Your Subscription Plan</a></li>
+          <li class="active customer_profile_tab" name="ProfileInformation"><a data-toggle="tab" href="#ProfileInformation">Profile Information</a></li>
+          <li class="customer_profile_tab" name="DownloadMedia"><a data-toggle="tab" href="#DownloadMedia">Your Downloads</a></li>
+          <li class="customer_profile_tab" name="LikedFavouriteMedia"><a data-toggle="tab" href="#LikedFavouriteMedia">Media You Liked / Favorited</a></li>
+          <li class="customer_profile_tab" name="RatingForMedia"><a data-toggle="tab" href="#RatingForMedia">Your Media Ratings</a></li>
+          <!--<li class=""><a data-toggle="tab" href="#RatingForMedia">Rating For Media</a></li>-->
+          <li class="customer_profile_tab" name="OrderlistForMedia"><a data-toggle="tab" href="#OrderlistForMedia">Order History</a></li>
+        </ul>
+        <div class="tab-content" id="myTabContent" style=" background: #ffffff;">
+          <div id="SubscriptionPlanChange" class="tab-pane fade">
+            <%= render partial: "plan_change", locals:{ upgrade_plans: @upgrade_plans } %>
+          </div>
+          <%= render partial: "customer_profile", locals:{customers: @customers} %>
+          <div id="DownloadMedia" class="tab-pane fade">
+            <%= render partial: "download_media", locals:{downloads: @downloads} %>
+          </div>
+          <div id="LikedFavouriteMedia" class="tab-pane fade">
+            <%= render partial: "liked_media", locals:{likes: @likes} %>
+          </div>
+          <div id="RatingForMedia" class="tab-pane fade">
+            <%= render partial: "rating_media", locals:{ratings: @ratings} %>
+          </div>
+          <div id="OrderlistForMedia" class="tab-pane fade">
+            <%= render partial: "orderlist", locals:{transactions: @transactions} %>
+            <p style="font-size: small; color:green; margin-left: -6px;">
+            Note: If items are disabled it means they have been deleted by the website admin.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<%=javascript_include_tag  "bootstrap-hover-dropdown.js", "bootstrap-tabdrop.js", "ekko-lightbox.js ", "icheck.min.js", "jquery.raty.js","summernote.min.js", "will_paginate.js" %>
+<%if request.referrer.present? && request.referrer.include?("client_token") && params["payment_method_nonce"].present?%>
+  <script>
+    $(document).ready(function(){
+      $("a[href='#OrderlistForMedia']").click();
+    })
+  </script>
+<% end %>  

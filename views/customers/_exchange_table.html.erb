@@ -1,0 +1,37 @@
+       <div class="row" style="margin-top: 5px;">
+        <div class="col-sm-12">
+          <div class="table-responsive">
+            <table class="table table-hover" id = "sortingTable">
+              <thead>
+                <tr bgcolor="#31708f">
+                  <th><font color="white">Eligible Subdomains</font></th>
+                  <th><font color="white">Subdomain Type</font></th>
+                  <th><font color="white">Action</font><span onclick="toggle_exchange(this)" class="glyphicon glyphicon-chevron-down align-right"></span></th>
+
+                </tr>
+              </thead>
+              <tbody>
+              <% if @show_exchanges.present? %>
+                <% @show_exchanges.each do |subdomain|%>
+                  <tr>
+                    <td><%= subdomain.subdomain_name %></td>
+                      <td><%= SubdomainType.find(subdomain.subdomain_type_id).subdomain_type.gsub("_", " ") %></td>
+                      <td ><%= link_to delete_show_exchanges_path(:exchange_id => subdomain), method: :delete, data: { confirm: 'You want to delete this' },class: 'btn btn-danger',  title: 'Remove' do %>
+                      <span class="glyphicon glyphicon-trash" ></span></td>
+              <% end %>
+                  </tr>
+                <%end%>
+              <% else %>
+                    <tr><td><p class="error-color">No Eligible Subdomains found</p></td></tr>
+              <% end %>
+              <tboby>
+            </table>
+            <%= will_paginate @show_exchanges %><br> 
+        </div>
+        </div>
+      </div>
+
+<%= javascript_include_tag 'bootstrap-colorpicker.js', 'bootstrap-hover-dropdown.js', 'bootstrap-tabdrop.js', 'ekko-lightbox.js', 'icheck.min.js', 'jquery.raty.js', 'summernote.min.js', 'will_paginate.js','admin_tab.js', 'my_account.js' %>
+<%= stylesheet_link_tag 'my_account.css', 'tab.css'%>
+<%=javascript_include_tag 'bootstrap-hover-dropdown.js', 'my_account.js'%>
+<%= javascript_include_tag "device_accesses.js" , "bootstrap-colorpicker.js" , "bootstrap-datetimepicker.min.js" , "bootstrap-hover-dropdown.js" ,"bootstrap-tabdrop.js", "bootstrapValidator.js","summernote.min.js", "my_account.js","affiliation_list.js", "manage_user.js" %>

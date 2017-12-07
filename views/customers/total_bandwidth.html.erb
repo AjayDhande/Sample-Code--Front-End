@@ -1,0 +1,70 @@
+<div class="container container-fix">
+    <!--========================   Upload  Start   ======================-->
+    <%#=render "header_admin"%>
+    <%=render "dashboard_tabs"%>
+    <div class="row">
+        <div class="col-sm-12">
+            <h4 class="heading-title text-left">Total Bandwidth Used: 
+            <% if @total_bandwidth > 1000000000 %>
+                <%= Filesize.from("#{@total_bandwidth} B").to_s('GiB')%>
+            <% else %>
+                <%= Filesize.from("#{@total_bandwidth} B").to_s('MiB')%>
+            <% end %>
+            </h4>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" style="width:100%;">
+                            <thead>
+                                <tr bgcolor="#31708f">
+                                <% if current_subdomain.is_ocm? %>
+                                    <th><font color="white">Subdomain</font></th>
+                                <% else %>
+                                    <th><font color="white">Users</font></th>
+                                <% end %>
+                                    <th><font color="white">Month</font></th>
+                                    <th><font color="white">Bandwidth</font></th>
+
+                                </tr>
+                            </thead>
+                            <tbody class="odd" id="mytable">
+                            <% @subdomain_bandwidth.each do |subdomain_bandwidth|%>
+                                <tr>
+                                    <td>
+                                    <% if current_subdomain.is_ocm? %>
+                                      <%= get_subdomain_name_by_subdomain_id(subdomain_bandwidth.first)%>
+                                    <% else %>
+                                      <%= get_username_by_user_id(subdomain_bandwidth.first)%>
+                                    <% end %>
+                                    </td>
+                                    <td><%= DateTime.now.end_of_month.strftime("%B")%></td>
+                                    <td>
+                                    <% if @total_bandwidth > 1000000000 %>
+                                      <%= Filesize.from("#{subdomain_bandwidth.last} B").to_s('GiB') %>
+                                    <% else %>
+                                      <%= Filesize.from("#{subdomain_bandwidth.last} B").to_s('MiB') %>
+                                    <% end %>
+                                    </td>                         
+                                </tr>                                
+                            <% end %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        <%= will_paginate @subdomain %>
+        </div>
+    </div>
+    <!--========================   Upload   End  ======================-->
+</div>
+
+<%=javascript_include_tag 'bootstrap-hover-dropdown.js', 'my_account.js'%>
+
+<%= javascript_include_tag 'bootstrap-hover-dropdown.js', 'bootstrap-tabdrop.js', 'ekko-lightbox.js', 'icheck.min.js', 'summernote.min.js', 'my_account.js' %>
+
+<%= stylesheet_link_tag "my_account.css","tab.css" %>
+<script>
+$(".odd").find("tr:odd").css("background-color","#FFF5EB");
+$(".odd").find("tr:even").css("background-color","#ffffff");
+
+</script>

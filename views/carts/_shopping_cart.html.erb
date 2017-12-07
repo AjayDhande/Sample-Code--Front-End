@@ -1,0 +1,36 @@
+
+<!--div class="col-sm-8">
+    <ul class="list-group shopping-cart" style="padding-left: 0px;">
+      <%# if !@cart_item.nil? && @cart_item.errors.any? %>
+        <%# @cart_item.errors.full_messages.each do |msg| %>
+          <%#= msg %>
+        <%# end %>
+      <%# end %>
+      <%# if @cart_items.size == 0 %>
+        <p class="text-center">
+          There are no items in your shopping cart.  Please <%#= link_to "go back",medialist_path %> and add some items to your cart.
+        </p>
+      <%# else %>
+        <%# @cart_items.each do |cart_item| %>
+          <%#= render 'carts/cart_row', uploaded_media: get_uploaded_media(cart_item), cart_item: cart_item, show_total: true %>
+        <%# end %>
+      <%# end %>
+    </ul>
+</div-->
+
+<div class="col-sm-8">
+    <ul class="list-group shopping-cart" style="padding-left: 0px;">
+      <% if !@cart_item.nil? && @cart_item.errors.any? %>
+        <% @cart_item.errors.full_messages.each do |msg| %>
+          <%= msg %>
+        <% end %>
+      <% end %>
+      <% if @cart_items.size == 0 %>
+        <p class="text-center">
+          There are no items in your shopping cart.  Please <%= link_to "go back",medialist_path %> and add some items to your cart.
+        </p>
+      <% else %>
+          <%= render 'carts/cart_row', show_total: true %>
+      <% end %>
+    </ul>
+</div>

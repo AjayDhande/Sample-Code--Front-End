@@ -1,0 +1,473 @@
+<!--====== Updated By: SneWan, To indent the page, update signup functionality and add image with text  ======-->
+<!--========================   Breadcrumb  Start  ======================-->
+<div class="containerfluid1">
+  <!--==== Updated by: Snewan ====-->    
+  <!--==== Added image and text on image in beneath header Start ====-->
+  <% if current_subdomain.is_ocm? && params[:user][:role] != "CUSTOMER"%>
+    <div id="container" >
+   <!-- <img id="image_new" class="glob" src="<%#= asset_path 'NewSignUp1HeaderImage.jpg' %>"/> -->
+      <img id="image_new" class="glob" src="<%= asset_path 'NewSignUp2HeaderImageC.jpg' %>"/> 
+    </div>
+   <%else%>
+    <div id="container_new" >
+    <!--  <img id="image_new" class="glob" src="<%#= asset_path 'NewSignUpCustomerHeaderImage.jpg' %>"/> -->
+
+    <img id="image_new" class="glob" src="<%= asset_path 'SignUpCustomer_edited_01.jpg' %>"/>
+    </div>
+  <%end%>
+
+<!--====Added image and text on image in beneath header End====-->
+
+<!--========================   Heading End  ======================-->
+
+<!--========================   Sign Up  Start   ======================-->
+<div>
+ <div class="container">   
+   <div>
+    <form action="<%= users_signup2_path %>" class="form-horizontal bv-form" method="post" id="signup" name="form1" >
+      <div class="col-sm-6">
+        <% if current_subdomain.is_ocm? && (params[:user][:role] != "CUSTOMER" rescue nil)%>
+
+        <div class="bs-example"> 
+          <div class="form-group">
+            <label >FIRST A LITTLE ABOUT YOURSELF</label>&nbsp;&nbsp;<span class="example1"></span>
+          </div>
+          <%end%>  
+
+
+
+          <%if current_subdomain && current_subdomain.is_ocm? && !(params[:user][:role]== "CUSTOMER" rescue nil) %> 
+
+          <div class="form-group">
+            <label class="required">Title</label>&nbsp;&nbsp;
+            <span class="example1"></span>
+            <select name="title_id" data-placeholder="" class="chosen-select" tabindex="2">
+              <% Title.all.each do |title| -%>
+              <option value="<%= title.id %>"><%= title.title %></option>
+              <% end %>
+            </select>
+          </div>
+
+          <div class="form-group"><!--==== Added first name and last name ====-->
+            <label class="required">First Name</label>&nbsp;&nbsp;<span class="example1">(First name; no special characters)</span>
+            <input type="text" name="user[name]" class="form-control" id ="name" value="<%#= params[:name] %>">
+          </div>
+
+          <div class="form-group">
+            <label class="required">Last Name</label>&nbsp;&nbsp;<span class="example1">(Last name; no special characters)</span>
+            <input type="text" name="user[last_name]" class="form-control" id ="last_name" value="<%#= params[:name] %>">
+          </div>
+
+          <div class="form-group">
+            <label class="required">Email</label>
+            <input type="text" name="user[email]" class="form-control" id ="email" value="<%= params[:email] %>">
+            <input type="hidden" name="subdomain[plan]" class="form-control" value="">
+            <input type="hidden" name="customer[plan]" class="form-control" value="">
+            <input type="hidden" name="addons" class="form-control" value="">
+            <input type="hidden" name="user[type]" value="<%= params[:user][:role] rescue 'CUSTOMER' %>", id="role1" class="user_role">
+            <input id="customer_plan_id" type="hidden" name="customer_plan_id" value="">
+            <input id="uploaded_media_id" type="hidden" name="uploaded_media_id" value="">
+            <% if @selected_plan_id %>
+            <input type="hidden" name="pricing_plan_id" value="<%= @selected_plan_id %>">
+            <% end %>
+          </div>
+
+          <% else  %>
+
+          <div class="bs-example">
+           <div class="form-group">
+            <label class="required">Title</label>&nbsp;&nbsp;<span class="example1"></span>
+            <select name="title_id" data-placeholder="" class="chosen-select" tabindex="2">
+              <% Title.all.each do |title| -%>
+              <option value="<%= title.id %>"><%= title.title %></option>
+              <% end %>
+            </select>
+          </div>
+        <!-- <div class="form-group">
+          <label class="required">Your Name</label>&nbsp;&nbsp;<span class="example1">(First and last name; no special characters)</span>
+          <input type="text" name="user[name]" class="form-control" id ="name" value="<%#= params[:name] %>">
+        </div> -->
+        <div class="form-group"><!--==== Added first name and last name ====-->
+          <label class="required">First Name</label>&nbsp;&nbsp;<span class="example1">(First name; no special characters)</span>
+          <input type="text" name="user[name]" class="form-control" id ="name" value="<%#= params[:name] %>">
+        </div>
+
+        <div class="form-group">
+          <label class="required">Last Name</label>&nbsp;&nbsp;<span class="example1">(Last name; no special characters)</span>
+          <input type="text" name="user[last_name]" class="form-control" id ="last_name" value="<%#= params[:name] %>">
+        </div>
+        <div class="form-group">
+          <label class="required">Email</label>
+          <input type="text" name="user[email]" class="form-control" id ="email" value="<%= params[:email] %>">
+          <input type="hidden" name="subdomain[plan]" class="form-control" value="">
+          <input type="hidden" name="customer[plan]" class="form-control" value="">
+          <input type="hidden" name="addons" class="form-control" value="">
+          <% if params[:download_media] %>
+          <input type="hidden" name="download_media" class="form-control" value="<%= params[:download_media] %>">
+          <input type="hidden" name="download_media_path" class="form-control" value="<%= params[:download_media_path] %>">
+          <% end %>
+          <input type="hidden" name="user[type]" value="<%= params[:user][:role] rescue 'CUSTOMER' %>", id="role1" class="user_role">
+          <input id="customer_plan_id" type="hidden" name="customer_plan_id" value="">
+          <input id="uploaded_media_id" type="hidden" name="uploaded_media_id" value="">
+          <% if @selected_plan_id %>
+          <input type="hidden" name="pricing_plan_id" value="<%= @selected_plan_id %>">
+          <% end %>
+        </div>
+
+        <div class="form-group col-sm-12">
+          <div class="form-group">
+           <div class="customer_buttons"> 
+            <input type="button" value="Back" class="btn btn-info" id="back">
+            <button type="button" class="btn btn-info" id="next_btn">Next</button>
+          </div> 
+        </div>        
+      </div>
+
+      <!-- Code added by neha for Already registered?Login  -->
+      <button type="button" class="btn btn-link" data-toggle="modal" data-target="#myModal" style="margin-left: -5%;">Already registered? Login</button> 
+
+
+    </div>
+    <% end %>       
+
+    <br />
+    <% if current_subdomain.is_ocm? && params[:user][:role] != "CUSTOMER"%>
+    <div class="form-group">
+      <label >NOW, SOME DETAILS ABOUT YOUR STORE</label>&nbsp;&nbsp;<span class="example1"></span> 
+    </div>
+    <%end%>
+    </div>
+    </div> 
+<!--==== Added business type selection radio buttons ====-->
+      <% if current_subdomain.present? && current_subdomain.is_ocm? && params[:user][:role] != "CUSTOMER"%>   
+      <div class="form-group col-sm-12 userrole" id="radio-button"> 
+        <% if current_subdomain.present? && current_subdomain.is_ocm? && params[:user][:role] != "CUSTOMER"%>
+        <label >What type of store would you like to create?</label>&nbsp;&nbsp;<span class="example1"></span></br>
+        <%if @subdomain_types#@subdomain_types.each do |subdomain_type| %>
+        <div class="form-group col-sm-3 userrole" >  
+          <label class="checkbox-inline userrole">
+            <input type="radio" name="user[role]" value="<%= @subdomain_types[1].subdomain_type %>" data-id="<%= @subdomain_types[1].id %>" class="user_role"> <b><%= @subdomain_types[1].subdomain_type.gsub("_", " ").titleize %></b>
+            <p id="type_text" align="justify"> 
+              You are church leader representing an organized and operated Christian body of believers. You lead regular worship and religious services with ordained ministers and would like to have your church messages easily and digitally accessible to your congregants. We can help.
+            </p>
+          </label>
+        </div>&nbsp;&nbsp;
+        <div class="form-group col-sm-3 userrole" >
+          <label class="checkbox-inline userrole" >
+            <input type="radio" name="user[role]" value="<%= @subdomain_types[3].subdomain_type %>" data-id="<%= @subdomain_types[3].id %>" class="user_role"> <b><%= @subdomain_types[3].subdomain_type.gsub("_", " ").titleize %></b>
+            <p id="type_text" align="justify"> 
+              You are an independent minister of the gospel. You may or may not be affiliated with a larger church and book speaking engagements separately. Do you want to create and instant store to begin sharing your messages to those who subscribe to your teachings? Select this option.
+            </p>
+          </label>
+        </div>&nbsp;&nbsp;
+        <div class="form-group col-sm-3 userrole" >
+          <label class="checkbox-inline userrole" >
+            <input type="radio" name="user[role]" value="<%= @subdomain_types[2].subdomain_type %>" data-id="<%= @subdomain_types[2].id %>" class="user_role"> <b><%= @subdomain_types[2].subdomain_type.gsub("_", " ").titleize %></b>
+            <p id="type_text" align="justify"> 
+              Are you a musician at your church? Do you create worship, inspirational, or gospel music independently on the side? Select this option so you can create an account, upload your original music, and invite your church body and friends to subscribe and listen.
+            </p>
+          </label>
+        </div>&nbsp;&nbsp;
+        <div class="form-group col-sm-3" style="margin-top: -20px;">
+          <label class="checkbox-inline userrole" style="padding-top: 28px;">
+            <input type="radio" name="user[role]" value="<%= @subdomain_types[0].subdomain_type %>" data-id="<%= @subdomain_types[0].id %>" class="user_role"> <b>Religious <%= @subdomain_types[0].subdomain_type.gsub("_", " ").titleize %></b>
+            <p align="justify" id="type_text"> 
+              Are you a religious organization or other charitable organization that is a part of the worldwide body of believers in Christ but do not necessarily operate under the title of ‘church’? Create a store and share your messages here.
+            </p>
+          </label>
+        </div>&nbsp;&nbsp;
+
+        <div class="form-group col-sm-12 buttonstyle">
+          <div class="form-group">
+            <div class="customer_buttons"> 
+              <input type="button" value="Back" class="btn btn-info" id="back">
+              <button type="button" class="btn btn-info" id="next_btn">Next</button>
+            </div> 
+          </div> 
+
+
+    <!-- Code added by neha for Already registered?Login  -->
+
+
+    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#myModal" style="margin-left: -27px;">Already registered? Login</button>
+
+    <!-- Modal -->
+
+      </div>
+      <% end%>
+      <% end %>
+      <% else %>
+      <label class="checkbox-inline hide" style="padding-left: 15px;">
+        <input type="text" name="user[role]" value="CUSTOMER", id="role4" class="user_role"> Customer
+      </label>
+      <div id="radio" style="float: left;/* margin-bottom: -31px; */margin-top: -41px;"></div>
+      <%end%>
+
+      <% if current_subdomain.is_ocm? && params[:user][:role] != "CUSTOMER"%>
+        <!-- <div class="form-group" >
+          <div class="customer_buttons" style="padding: 487px;padding-left: 0px;padding-bottom: 0px;margin-left: 21px;">
+            <input type="button" value="Back" class="btn btn-primary" id="back">
+            <button type="button" class="btn btn-primary" id="next_btn">Next</button>
+          </div>
+        </div> -->
+        <%else%>
+        <!-- <div class="form-group" style="padding: 254px;padding-left: 0px;padding-bottom: 0px;margin-left: 21px;">
+          <div class="business_buttons" >
+            <input type="button" value="Back" class="btn btn-primary" id="back">
+            <button type="button" class="btn btn-primary" id="next_btn">Next</button>
+          </div>
+        </div> -->
+        <%end%>
+      </div>
+    </form>
+    
+    <div class="modal fade container-fix" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content well">
+          <div class="modal-header">
+              <button type="button" class="close"
+             data-dismiss="modal" aria-hidden="true">
+                &times;
+          </button>
+          <h4 class="modal-title text-primary" id="myModalLabel">
+             Login Now
+          </h4>
+          </div>
+          <div class="modal-body">
+              <div class="row">
+                  <div class="col-sm-6" id="model_error">
+                     <%= form_for User.new, url: user_session_path, html: { method: :post, onsubmit: "return submitForm();", id:"model_login", class: "form-horizontal", role: 'form' } do |f| %>
+                          <div class="form-group">
+                              <label class="sr-only">Username</label>
+                              <%= f.text_field :username, placeholder: "Username", class: "form-control", id: "model_username" %>
+                          </div>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputPassword2">Password</label>
+                              <%= f.password_field :password, placeholder: "Password", type: :password, class: "form-control", id: "model_password" %>
+                          </div>
+                          <div class="form-group">
+                              <label class="sr-only">Login</label>
+                              <%= f.submit "Login", id: "LoginButton", class: "btn btn-info login-new" %>
+                          </div>
+                          <input name="model_login" type="hidden" class="form-control" value ="<%= request.url %>">
+                          <a href="<%=new_user_password_path%>" class="header-forget modal-forgot-password" name="forget_password">Forgot Password?</a>
+                          <a href="<%=forgot_username_path%>" class="header-forget modal-forgot-password" name="forget_password" style="margin-left: 0%;">Forgot Username?</a>
+                      <% end %>
+                  </div>
+              </div>
+          </div>
+          <div class="modal-footer">
+              <button type="button" data-dismiss="modal" class="btn btn-info">Cancel</button>
+          </div>
+      </div>
+  </div>
+
+
+</div>
+
+ </div>
+</div>
+</div>
+<!--========================   Sign Up   End  ======================-->
+</div>
+
+
+
+</div>
+
+<%= javascript_include_tag  "signup1.js", "signup2.js"%>
+<%= stylesheet_link_tag 'signup.css' %>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    var string = window.location.href.split('?')[1];
+    //$("#customer_plan_id").val(string.split('&')[3].split('=')[1]);
+    $("#uploaded_media_id").val(string.split('&').pop().split('=')[1]);
+  });  
+</script> 
+
+<style type="text/css">
+  /*Added for place text on image*/
+  #container{
+    margin-bottom: -57px;
+  }
+
+
+  #text{
+    position: relative;
+    color: white;
+    font-size: 37px;
+    font-weight: bold;
+    bottom: 279px;
+    text-align: center;
+  } 
+  #text2{
+    position: relative;
+    color: white;
+    font-size: 20px;
+    /*font-weight: bold;*/
+    bottom: 279px;
+    text-align: center;
+
+  }
+  #type_text{
+    text-align: left; 
+    padding-top: 6px;
+    margin-left: 19px;
+  }
+
+  #container_new{
+    margin-bottom: -57px;
+  }
+
+  #text_new{
+    position: relative;
+    color: white;
+    font-size: 37px;
+    font-weight: bold;
+    bottom: 279px;
+    text-align: center;
+  } 
+
+  #text_new2{
+    position: relative;
+    color: white;
+    font-size: 20px;
+    /*font-weight: bold;*/
+    bottom: 279px;
+    text-align: center;  
+  }
+  #type_text1
+  {
+
+    text-align: left;
+    padding-top: 6px;
+    margin-left: 12%;
+  }
+  .userrole{
+    padding-left: 15px;
+  }
+
+  .buttonstyle
+  {
+    /*padding-left:50px;*/
+    /*margin-left: 40px;*/
+    /*padding: 250px;*/
+    padding-left: 30px;
+    /* padding-bottom: 0px;*/
+  }
+  .bs-example{
+    margin-top: 70px;
+  }
+
+  .containerfluid1
+  {
+    padding-right: 0px;
+    padding-left: 0px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 90px;
+  }
+@media only screen and (max-width: 767px) {
+  .containerfluid1
+  {
+    padding-right: 0px;
+    padding-left: 0px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 74px !important;
+  }
+}
+  @media only screen and (min-width: 300px) and (max-width: 627px) {
+   .textsize
+   {
+     text-align: left;
+     padding-top: 6px;
+     margin-left: 8%;
+   }
+ }
+ @media only screen and (min-width: 628px) and (max-width: 1200px) {
+   .textsize1
+   {
+     text-align: left;
+     padding-top: 6px;
+     margin-left: 12%;
+   }
+ }
+
+   @media only screen and (min-width: 768px) and (max-width: 890px){
+   #image_new
+   {
+    margin-top: 16%;
+   }
+ }
+
+ @media only screen and (min-width: 891px) and (max-width: 991px){
+   #image_new
+   {
+    margin-top: 14%;
+   }
+ }
+
+ @media only screen and (min-width: 992px) and (max-width: 1100px){
+   #image_new
+   {
+    margin-top: 4%;
+   }
+ }
+
+ @media only screen and (min-width: 1101px) and (max-width: 1200px){
+   #image_new
+   {
+    margin-top: 2%;
+   }
+ }
+
+</style>
+
+<script type="text/javascript">
+
+document.form.signup.elements.user[role][0].defaultChecked
+
+  //$("[name='user[role]']")
+
+
+  $(function(){
+<%if current_subdomain.present? && current_subdomain.is_ocm? %>
+$('form').submit(function(event) {
+  var flag = true;
+  var role = $("[name='user[role]']:checked").prop('checked') || $("[type='text'][name='user[role]']").val();
+  if(role == undefined){
+    var urole = $("[name='user[role]']")
+    var element = $("[name='user[role]']:checked").val()
+    var message = "Please select any role"
+          //$("#radio-button").append("<span>qwqe Appended item</span>");
+          //$("#radio-button").append("<br />")
+          $("#radio").html('<span class="tag_custom_error" style="float: left;">'+ 'Please select any role' + '</span>');
+          //roleError(element,message, urole)
+          flag = false;
+        }
+        if(role != undefined){
+          var element = $("[name='user[role]']:checked").val();
+          removeRoleError(element)
+        }
+        if (!flag && event != undefined){
+          event.preventDefault();
+          return false;
+        }
+        return true;
+      })
+
+function roleError(element,message,role){
+  if(!role){
+    $("#radio").append("<span>qqqqqqqqqqqqqqqqqq</span>");
+  
+  }
+}
+
+function removeRoleError(element){
+ 
+}
+<%end%>
+});
+</script>

@@ -1,0 +1,25 @@
+<!-- === Survey page start === -->
+<div class="container container-fix">
+  <div class="form-container radius-box glassy-bg small-10 small-centered medium-8 large-6 columns">
+    <div class="col-sm-12" style="margin: 12px 0;">
+      <h2 class="heading-title"> Survey For Your Online Media Account</h2><br><br>
+      <h3 align = "justify"><b>You left out the special offer:<b></h3><br>
+      <p align = "justify"> <b>Name: <%= @user.name %> <br><br>Email: <%= @user.email %><br><br> Reason To deactivate Account: <%=@feedback.reason%><br><br> Your Feedback To deactivate Account: <%=@feedback.feedback%><b></p>
+	    <input type="submit" value="Continue" id="deleteAccount" class="btn btn-danger">
+      <a class="btn btn-info" href="<%= medialist_path %>" role="button">Keep Account
+      </a>
+    <!--   <input type="submit" value="Keep Account"   class="btn btn-info"> -->
+	  </div>
+  </div>
+</div>
+<!-- === Survey page end === -->
+<script type="text/javascript">
+  // To add the link on click of button
+  $(document).ready(function(){
+    $("#deleteAccount").click(function(){
+      window.location.href = "/feedback_survey";
+    });
+
+  });
+
+</script>

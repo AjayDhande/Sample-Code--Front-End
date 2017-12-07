@@ -1,0 +1,35 @@
+
+	 <ul class="list-group shopping-cart-total" style="padding-left: 0px;">
+	    <li class="list-group-item">
+	            <div class="col-sm-12 well text-center">
+	                <b>Shopping Cart Summary</b>
+	            </div>
+	        <div class="row">
+	            <div class="col-sm-6 col-xs-6 text-left subtotal padding2">
+	                SubTotal
+	            </div>
+	            <div class="col-sm-6 col-xs-6 text-left subtotal padding2">
+	                <%= number_to_currency(@subtotal ? @subtotal : 0.0, :precision=>2) %>
+	            </div>
+	        </div>
+	        
+	        <div class="row">
+	            <div class="col-sm-6 col-xs-6 text-left total-amount padding2">
+	                Payable Amount
+	            </div>
+	            <div class="col-sm-6 col-xs-6 text-left total-amount padding2">
+	                <%= number_to_currency(@subtotal ? @subtotal : 0.0, :precision=>2) %>
+	            </div>
+	        </div>
+	    </li>
+	    <li class="list-group-item">
+	        <div class="row">
+                <% unless @subtotal.round(2) == 0.0 %>
+	            <div class="col-sm-12 text-center buy">
+	               <%= link_to "Buy",{:controller=> "cart_items", :action=> "buy_media", :id => @customer_cart_id}, :class=>"btn btn-success"%>
+	            </div>
+                <% end if @subtotal %>
+	        </div>
+	        
+	    </li>
+	</ul>

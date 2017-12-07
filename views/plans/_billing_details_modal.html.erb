@@ -1,0 +1,25 @@
+<div class="table-responsive">
+  <table class="table table-bordered text-center">
+    <tr>
+      <th>Plan Name:</th>
+      <td><%= @plan.plan_name rescue "Free"%></td>
+    </tr>
+    <tr>
+      <th>Start Date:</th>
+      <td><%= @subscription.effective_from.to_date.strftime("%B %d, %Y") rescue "-" %></td>
+    </tr>
+    <tr>
+      <th>Status:</th>
+      <td><%= (@user.deactive == nil || @user.deactive == false) ? "Active" : "Deactive" %></td>
+    </tr>
+    <tr>
+      <th>Monthly Amount:</th>
+      <%if @subscription.present?%>
+        <td>$<%= number_with_precision(@plan.plan_amount, precision:2)%></td>
+      <%else%>
+        <td> - </td>
+      <%end%>
+    </tr>
+  </table>
+</div>
+

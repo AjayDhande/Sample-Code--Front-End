@@ -1,0 +1,4 @@
+$(".royalty_images").html("<%= escape_javascript(render 'track_artworks/royalty_images') %>")
+$(".pagination").html("<%= escape_javascript(render 'track_artworks/paginate_track_artwork') %>")
+$("#show_error").next("div").next("div").removeClass("container-fix");
+notify('<%= flash[:title] %>', '<%= flash[:message] %>', '<%= flash[:type] %>');

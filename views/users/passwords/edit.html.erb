@@ -1,0 +1,78 @@
+<!--<h2>Change your password</h2>
+
+<%#= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
+  <%= devise_error_messages! %>
+  <%#= f.hidden_field :reset_password_token %>
+
+  <div class="field">
+    <%#= f.label :password, "New password" %><br />
+    <%#= f.password_field :password, autofocus: true, autocomplete: "off" %>
+  </div>
+
+  <div class="field">
+    <%#= f.label :password_confirmation, "Confirm new password" %><br />
+    <%#= f.password_field :password_confirmation, autocomplete: "off" %>
+  </div>
+
+  <div class="actions">
+    <%#= f.submit "Change password" %>
+  </div>
+<% #end %>
+
+<%#= render "users/shared/links" %>-->
+
+<!--========================   Breadcrumb  Start  ======================-->
+<div class="container container-fix">
+        <div class="row">
+            
+            <!--========================   Breadcrumb End  =====================-->
+
+            <!--========================   Heading Start  =====================-->
+            <div class="col-sm-12">
+                <h2 class="heading-title">
+                    Reset Password
+                </h2>
+            </div>
+        </div>
+      <!--========================   Heading End  ======================-->
+    
+    <!--========================   Sign Up  Start   ======================-->
+    <div class="col-sm-5">
+        <!--form class="form-horizontal bv-form" method="post" id="login" novalidate="novalidate"-->
+        <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put, class: "form-horizontal bv-form", id: "reset_password", novalidate: "novalidate" }) do |f| %>
+
+            <div class="form-group">
+                <!--label>Password</label>
+                <input type="password" placeholder="Password" class="form-control"-->
+                <%#= f.label :password %>
+                <%#= f.email_field :password, autofocus: true, placeholder: "Password", class: "form-control", type: "password" %>
+
+                <label class= "required">New Password</label>
+                <input type="password" name="user[password]" placeholder="Password" class="form-control" id="pwd1">
+                 <input type="hidden" name="user[reset_password_token]"  class="form-control" id="hidden_field_token" value="<%= params[:reset_password_token]%>">
+            </div>
+            
+            <div class="form-group">
+                <!--label>Confirm Password</label>
+                <input type="password" placeholder="Confirm Password" class="form-control"-->
+                <label class= "required">Confirm Password</label>
+                <input type="password" name="user[password_confirmation]" placeholder="Confirm Password" class="form-control" id="confirm_pwd1" >
+
+                <%#= label_tag "Password Confirmation", "Password Confirmation" %>
+                <%#= f.email_field :password_confirmation, autofocus: true, placeholder: "Confirm Password", class: "form-control", type: "password" %>
+            </div>
+            
+            <div class="form-group">
+                       <div class="">
+                          <input type="reset" value="Cancel" class="btn btn-info">
+                          <input type="submit" value="Done" class="btn btn-info">
+                       </div>
+            </div>
+        <% end %>
+    </div>
+    <!--========================   Sign Up   End  ======================-->
+</div>
+
+<%= javascript_include_tag 'forgot_password.js' %>
+
+

@@ -1,0 +1,69 @@
+<!--
+        <%#= form_for cart_item, remote: true do |f| %>
+                <li class="list-group-item">
+                    <div class="col-sm-2 col-xs-2 custom-width"><img class="thumbnail" src="<%#= uploaded_media.media_art.url(:thumb) %>"  alt="" width="110" /></div>
+                    <%# name = File.basename(uploaded_media.media_file_name,File.extname(uploaded_media.media_file_name)).gsub("_", " ")%>
+                    <div class="col-sm-4 col-xs-4 custom-width "><h4 class="text-info trunc" data-size="45" title="<%#= name %>">
+                      <%#= name %>
+                    </h4><a class="remove" href="#"><%#= link_to "Remove", cart_item, { data: { confirm: "Are you sure you wish to delete the Media from your cart?" }, method: :delete, remote: true} %></a></div>
+                    <div class="col-sm-4 col-xs-4 custom-width"><h4 class="text-info"><%#=uploaded_media.presenter_name%></h4></div>
+                   <%# if current_user.blank? %>
+                    <div class="col-sm-2 col-xs-2 custom-width"><h4 class="text-danger"><%#= number_to_currency(cart_item.item_amount, :precision=>2) %></h4></div>
+                   <%#else%>
+                     <div class="col-sm-2 col-xs-2 custom-width"><h4 class="text-danger"><%#= number_to_currency(cart_item.uploaded_medium.purchase_amount(current_user), :precision=>2) %></h4></div>
+                   <%#end%>
+                </li>
+          <%#= f.hidden_field :uploaded_media_id, value: uploaded_media.id %>
+        <%# end %>
+-->
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Media Name</th>
+            <th>Presenter</th>
+            <th>Price</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+      <% @cart_items.each do |cart_item| %>
+        <tbody>
+        <% uploaded_media = get_uploaded_media(cart_item) %>
+        <%= form_for cart_item, remote: true do |f| %>
+          <tr>
+            <td><div class="col-sm-6 col-xs-12 custom-width" style="padding-left: 0px; padding-right:0px;"><img class="thumbnail" src="<%= uploaded_media.media_art.url(:thumb) %>"  alt="" width="100" /></div>
+            </td>
+            <% name = File.basename(uploaded_media.media_file_name,File.extname(uploaded_media.media_file_name)).gsub("_", " ")%>
+            <td>
+              <div class="custom-width "><h4 class="text-info" title="<%= name %>">
+                      <%= name %></h4>
+              </div>
+            </td>
+            <td>
+              <div class="custom-width"><h4 class="text-info"><%=uploaded_media.presenter_name%></h4></div>
+            </td>
+            <td>
+              <% if current_user.blank? %>
+                    <div class="custom-width"><h4 class="text-danger"><%= number_to_currency(cart_item.item_amount, :precision=>2) %></h4></div>
+                 <%else%>
+                     <div class="custom-width"><h4 class="text-danger"><%= number_to_currency(cart_item.uploaded_medium.purchase_amount(current_user), :precision=>2) %></h4></div>
+                 <%end%>
+            </td>
+            <td style="padding-top: 15px;">
+              <%= link_to cart_item, method: :delete, remote: true, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger', id: 'delete_cart_item', title: 'Remove' do %>
+                <span class="glyphicon glyphicon-trash"></span>
+              <% end %>
+            </td>
+          </tr>
+          <%= f.hidden_field :uploaded_media_id, value: uploaded_media.id %>
+        <% end %>
+        </tbody>
+      <%end%>
+      </table>
+    </div>
+  
+
+<%= javascript_include_tag 'bootstrapValidator.js', 'summernote.min.js','jquery.raty.js', 'jquery.rateit.js','rate.js' %>
+
+<%= stylesheet_link_tag 'bootstrap-tagsinput.css', 'summernote.css', 'uploaded_mediums.css','rateit.css'%>

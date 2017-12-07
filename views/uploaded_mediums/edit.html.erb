@@ -1,0 +1,217 @@
+
+<div class="container container-fix">
+  <div class="row">
+    <!--========================   Heading Start  ======================-->
+    <div class="col-sm-12">
+      <h2 class="heading-title text-left" style="margin-top: 20px;">
+        Edit Message
+      </h2>
+    </div>
+  </div>
+  <!--========================   Heading End  ======================-->
+  <div class="row">
+    <div class="col-sm-6">
+      <form accept-charset="UTF-8" action="/uploaded_mediums/<%="#{@uploaded_media.id}"%>" enctype="multipart/form-data" method="post"  class="form-horizontal UserAdministration" role="form" id= "edit_upload_form"><div style="display:none"><input name="utf8" type="hidden" value="&#x2713;" /><input name="_method" type="hidden" value="put" /><input name="authenticity_token" type="hidden" value="5fcjqaiaN9z1ljTMWELtV/svK53MmXx8UUJtkeag+5s=" /></div>
+        <div class="form-group">
+          <label class="col-sm-4 control-label required">Message Title</label>
+          <div class="col-sm-8">
+            <input id="media_file_name" name="media_file_name"  type="text" class="form-control" value="<%= File.basename(@uploaded_media.media_file_name,File.extname(@uploaded_media.media_file_name)).gsub("_", " ")%>"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-4 control-label required">Category</label>
+          <div class="col-sm-8">
+            <% @subcategory_id = @uploaded_media.subcategory_id %>
+            <%get_category(@subcategory_id)%>
+            <%=select_tag "categories", options_for_select(Category.all.map{|name| "#{name.category_name}"}, get_category(@subcategory_id).category_name),:class=>"form-control chosen-select", :id=>"categories_id"%>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-4 control-label required">Subcategory</label>
+          <div class="col-sm-8 subcategory">
+            <%= render "subcategory", locals: @subcategory_id %>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-4 control-label ">Tags</label>
+          <div class="col-sm-8" style="margin-bottom: 0px;">
+            <%upload_id = @uploaded_media.id%>
+            <input id="edit_tag" type="text" data-role="tagsinput" name="tag[tag_name]" class="form-control" value="<%= get_tag(upload_id)%>" style="width: 100%;" />
+          </div>
+        </div>
+        <div class="form-group show-image">
+          <label class="col-sm-4 control-label required">Artwork</label>
+          <div class="col-sm-6">
+          <button type="button" class="btn btn-info" onclick="$(this).next().click();">Browse</button>
+            <input id="media_art" name="media_art" type="file" class="hide" style="padding-left:0px;" onchange="artwork_file_browser(this); readURL(this);"/>
+            <div style="font-size: small;">
+              <a href="" data-toggle="modal" data-target="#myModal" onclick="modal_action(this); revert(this);">Use Our Artwork</a>
+              <input type="hidden" name="artwork" onfocus="revert(this);" onchange="readURLs();"><br>
+            </div>
+            <div class="help tip-text">Square images work best.
+            </div>
+          </div>
+          <div class="col-sm-2 image_view">
+            <img id="blah" class="group list-group-image" src="<%= @uploaded_media.media_art.url(:thumb)+"?#{Time.now.to_s}" %>" alt="No Artwork" style="max-height:50px;">
+          </div>
+        </div>
+        <input type="hidden" id="get_presenter_name" value="<%=@uploaded_media.presenter_name%>" >
+        <div class="form-group" >
+          <label class="col-sm-4 control-label required">Title</label>
+          <div class="col-sm-8">
+            <select name="title" data-placeholder="Title" class="form-control chosen-select-presenter" tabindex="2">
+              <option value="<%=@uploaded_media.title_id%>" id="title">
+              <%=Title.find(@uploaded_media.title_id).title%></option>
+              <% Title.all.each do |title| -%>
+                <option value="<%= title.id %>"><%= title.title %></option>
+              <% end %>
+            </select>
+          </div>
+        </div>
+        <div class="form-group" >
+          <label class="col-sm-4 control-label required">Presenter Name</label>
+          <div class="col-sm-8">
+            <select name="presenter_name" data-placeholder="Presenter Name" class="form-control chosen-select-presenter" tabindex="2">
+              <option value="<%=@uploaded_media.presenter_name%>" id="presenter_name">
+              <%=@uploaded_media.presenter_name%></option>
+              <% @presenter_name.each do |presenter_name| -%>
+                <option value="<%= presenter_name %>"><%= presenter_name %></option>
+              <% end %>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-4 control-label required">Amount</label>
+          <div class="col-sm-8">
+            <input id="media_amount" name="media_amount" type="text" class="form-control" value="<%=number_with_precision(@uploaded_media.media_amount, :precision => 2) %>" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-4 control-label required">Description</label>
+          <div class="col-sm-8">
+            <textarea id="description" name="description" type="text" class="form-control" rows="6" cols="2" value="<%=@uploaded_media.description%>"><%=@uploaded_media.description%></textarea>
+          </div>
+        </div>
+        <!-- If lyrics are not present upload it and if present edit it  -->
+        <div class="form-group">
+          <label class="col-sm-4 control-label required">Lyrics</label>
+          <div class="col-sm-8">
+            <%if @lyrics_file_path.present? %>
+              <a class="btn btn-info" href="/uploaded_mediums/<%=crypt(@uploaded_media.id) %>/edit_lyrics">Edit Lyrics</a>&nbsp;
+            <%else%>
+              <button type="button" class="btn btn-info" onclick="$(this).next().click();">Browse</button>
+              <input id="lyrics_file" type="file" name="upload[lyrics][]" class="hide" onchange="fileName(this);revert(this);">
+              <input type="hidden" name="lyrics[]" onfocus="revert(this);">
+              <div><span class="help tip-text">Upload Your Lyrics. Only .txt, .doc and .docx are allowed.</span></div>
+            <%end%>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-4 col-sm-8">
+           <!-- <button type="submit" class="btn btn-primary">Save Changes</button> -->
+            <a class="btn btn-info" href="/my_account#brand_new_messages">Cancel</a>&nbsp;
+            <input type="submit" value="Save Changes" class="btn btn-info"/>
+          </div>
+        </div>
+      </form>
+      <!--=============    Model Start  ======= -->
+      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog  modal-lg container-fix">
+          <div class="modal-content">
+            <div class="modal-header">
+              <div class="row" style="width: 100%">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+              </div>
+              <div class="row">
+                <div class="col-sm-12 col-xs-12">
+                  <h4 class="text-primary text-center">Stock Images & Recent Artworks</h4>
+                </div>
+              </div>
+            </div>
+          <div class="modal-body">
+            <div class="row">
+              <div id="prepend_error" class="container"></div>
+                <div class="col-sm-6 col-xs-12" id="royalty_ajax">
+                  <h4 class="text-primary" style="padding-left: 15px;">Stock Images</h4>
+                  <%= render partial: "royalty_ajax", locals: {royalties: @royalties}%>
+                </div>
+                <div class="col-sm-6 col-xs-12">
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <h4 class="text-primary" style="padding-left: 15px;">Recent Artworks</h4>
+                      <%= render partial: "royalty", locals: {royalties: @recent_art} %>
+                    </div>
+                  </div>
+                    <!--<div class="row">
+                    <div class="col-sm-12">
+                    <%#= will_paginate @recent_art, per_page: 20 %>
+                    </div>
+                    </div>-->
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" data-role="set_artwork" class="btn btn-info">Ok</button>
+              <button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--=============    Model End  ======= -->
+    </div>
+  </div>
+  <!--========================   Upload   End  ======================-->
+</div>
+<%= stylesheet_link_tag 'bootstrapValidator.css', 'chosen.min.css', 'bootstrap-tagsinput.css', 'summernote.css','dev_custom.css' %>
+<%= javascript_include_tag "extension.js","bootstrapValidator.js", "chosen.jquery.js", 'summernote.min.js', 'bootstrap-tagsinput.min.js', 'chosen-select.js', 'new_upload.js', 'jquery.loadTemplate-1.4.4.min.js', 'edit_media.js' %>
+
+<script type="text/javascript" charset="utf-8">
+  $(function () {
+    // Initialize the jQuery File Upload widget:
+    $('#fileupload').fileupload();
+    //
+    // Load existing files:
+    $.getJSON($('#fileupload').prop('action'), function (files) {
+      var fu = $('#fileupload').data('blueimpFileupload'),
+      template;
+      fu._adjustMaxNumberOfFiles(-files.length);
+      console.log(files);
+      template = fu._renderDownload(files)
+      .appendTo($('#fileupload .files'));
+      // Force reflow:
+      fu._reflow = fu._transition && template.length &&
+        template[0].offsetWidth;
+      template.addClass('in');
+      $('#loading').remove();
+    });
+
+  });
+
+  //Created_by:Rohit Patel
+  //Purpose: Serialize Additional for data for image
+  //created_at:03/02/2015
+  var i = 0;
+  $('#fileupload').bind('fileuploadsubmit', function (e, data) {
+    var inputs = data.context.find(':input');
+    if (inputs.filter(function () {
+      return !this.value && $(this).prop('required');
+    }).first().focus().length) {
+      data.context.find('button').prop('disabled', false);
+      return false;
+    }
+    var partialdata = inputs.serializeArray();
+    if ($('[name="upload[lyrics][]"]').get(i).files[0] != undefined) {
+      partialdata.push({name: "upload[lyrics][]",value: $('[name="upload[lyrics][]"]').get(i).files[0]});
+    }
+    i = i + 1;
+    data.formData = partialdata
+  });
+
+  $('#fileupload').bind('fileuploadstop', function(e, data) {
+    $('#fileupload').submit();
+  });
+
+  $(document).ready(function(){
+    $('.fileinput-button').bootstrapFileInput();
+  });
+</script>

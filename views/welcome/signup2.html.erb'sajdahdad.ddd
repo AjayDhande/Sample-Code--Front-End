@@ -1,0 +1,206 @@
+<!--====== Updated By: SneWan, To indent the page and add image with text  ======-->
+<!--========================   Breadcrumb  Start  ======================-->
+  <div class="container container-fix">
+    <!--==== Added image and place text on image in beneath header Start ====-->
+    <div id="container" >
+      <img id="image" lass="glob" src="<%= asset_path 'WelcomeOnboardHeaderImage.jpg' %>"/>
+      <p id="text">
+        Ready To Get Started?
+        <br />
+      </p>
+      <% if current_subdomain.is_ocm? && params[:user][:type] != "CUSTOMER"%>
+        <p id="text2">You’re one step closer to strengthening your ministry with reliable subscription income from</p>
+      <%else%>
+        <p id="text2">You’re one step closer to enjoying the messages, music, and media that brings you joy, inspiration and hope.</p>
+      <%end%>
+    </div>
+    <!--==== Added image and place text on image in beneath header End ====-->
+    <div class="row">
+      <!-- <div class="col-sm-12">
+          <div class="breadcrumb-outer">
+          </div>
+      </div> -->
+      <!--========================   Breadcrumb End  ======================-->
+
+      <!--========================   Heading Start  ======================-->
+      <div class="col-sm-6">
+        <h2 class="heading-title text-left">
+          Sign Up
+        </h2>
+      </div>
+    </div>
+    <!--========================   Heading End  ======================-->
+    
+    <!--========================   Sign Up  Start   ======================-->
+    <div class="col-sm-6">
+      <form action="/users/pricing" class="form-horizontal bv-form" method="post" id="registration">
+        <input type="hidden" name="user[name]" value="<%= params[:user][:name] %>">
+        <input type="hidden" name="user[last_name]" value="<%= params[:user][:last_name]%>">
+        <input type="hidden" name="user[email]" value="<%= params[:user][:email]%>">
+        <input type="hidden" name="user[title]" value="<%= params[:title_id]%>">
+        <input type="hidden" name="user[role]" value="<%= params[:user][:type] %>">
+        <input type="hidden" name="plan" value="<%= params[:customer_plan_id]%>">
+        <% if @selected_plan_id %>
+            <input type="hidden" name="pricing_plan_id" value="<%= @selected_plan_id %>">
+        <% end %>
+          <!--<input type="hidden" name="user[username]" value="<%#= params[:user][:username]%>">
+          <input type="hidden" name="subdomain[plan]" value="<%#= params[:subdomain][:plan]%>">
+          <input type="hidden" name="customer[plan]" value="<%#= params[:customer][:plan]%>">
+          <input type="hidden" name="addons" value="<%#= params[:addons]%>">
+          <input type="hidden" name="acronym" value="<%#= params[:user][:acronym]%>">-->
+        <div class="form-group">
+          <label class="required">Create a Username</label>&nbsp;&nbsp;
+          <%if params[:user] && params[:user][:type] != "CUSTOMER"%>
+            <span class="example1">(This will appear at the beginning of your store’s unique URL; no spaces allowed)</span>
+          <%else%>
+            <span class="example1">(No spaces allowed)</span>
+          <%end%>
+          <div class="" id="subdomain_add">
+            <input type="text" name="user[username]" class="form-control" id ="username">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="required">Password</label>&nbsp;&nbsp;<span class="example1">(Must be 8 characters long and include one number)</span>
+          <input type="password" name="user[password]" class="form-control" id="pwd">
+        </div>
+            
+        <div class="form-group">
+          <label class="required">Confirm Password</label>
+          <input type="password" name="user[password_confirmation]" class="form-control" id="confirm_pwd" >
+        </div>
+        <%if params[:user] && params[:user][:type] != "CUSTOMER"%>
+          <div id= "acronym_field" class="form-group <% if current_subdomain.present? && !current_subdomain.is_ocm? %>hide<% end %>">
+            <label class="required">Your Site Acronym</label>&nbsp;&nbsp;<span class="example1">(Must be four characters only. e.g: SAND)</span>
+            <div class="" id="acronym_div">
+              <input style="text-transform: uppercase" type="text" name="user[acronym]" class="form-control" id ="acronym">
+            </div>
+          </div>
+          <div id= "business_email" class="form-group <% if current_subdomain.present? && !current_subdomain.is_ocm? %>hide<% end %>">
+            <label class="required">Your Business Email</label>
+            <div class="" id="business_email_div">
+              <input type="text" name="user[business_email]" class="form-control" id ="subdomain_business_email">
+            </div>
+          </div>
+          <div class="form-group <% if current_subdomain.present? && !current_subdomain.is_ocm? %>hide<% end %>">
+            <label class="required">Enter Your Church's Name</label>
+            <select name="user[church_name]" data-placeholder="Presenter Name" class="form-control chosen-select-presenter"> 
+              <option value="">Select</option>
+              <% @church_names.each do |church_name| -%>
+                <option value="<%= church_name %>"><%= church_name %></option>
+              <% end %>
+            </select>
+          </div>
+        <%end%>
+        <div class="form-group" hidden>
+          <label class="required">Country</label>
+          <select name="address[country]" id="country" class="form-control">
+            <option value=""></option>            
+          </select>
+        </div>
+            
+        <div class="form-group" hidden>
+          <label class="required">State</label>
+          <select name="address[state]" id="state" onchange="listOfStatesOrCities(this,'region');" class="form-control">
+            <option value=""></option>
+          </select>
+        </div>
+            
+        <div class="form-group" hidden>
+          <label id="region_label" class="required">Region</label>
+          <select name="address[region]" id="region" onchange="listOfStatesOrCities(this,'city');" class="form-control">
+            <option value=""></option>
+          </select>
+        </div>
+
+        <div class="form-group" id="div_city" hidden>
+          <label class="required">City</label>
+          <select name="address[city]" id="city" class="form-control">
+            <option value=""></option>
+          </select>
+        </div> 
+
+        <div class="form-group" hidden>
+          <label class="required">Postal Code</label>
+          <input name="address[postal_code]" type="text" class="form-control" id="pcode">
+        </div>
+
+        <!--=== Comment the code bacause this button shift in 1st signup page===-->                       
+        <!-- <div class="form-group <%# if (current_subdomain.present? && !current_subdomain.is_ocm?) || (params[:user][:type] == "CUSTOMER") %>hide<%# end %>" id= "radio-button">
+          <label class="required">Business Type</label></br>
+          <%# if current_subdomain.present? && current_subdomain.is_ocm? && params[:user][:type] != "CUSTOMER"%>
+            <%# @subdomain_types.each do |subdomain_type| %>
+              <label class="checkbox-inline" style="padding-left: 0px; margin-left:0px;">
+                <input type="radio" name="user[role]" value="<%#= subdomain_type.subdomain_type %>" data-id="<%#= subdomain_type.id %>" class="user_role"> <%#= subdomain_type.subdomain_type.gsub("_", " ").titleize %>
+              </label>
+            <%# end if @subdomain_types%>
+          <%# else %>
+            <label class="checkbox-inline hide" style="padding-left: 0px;">
+              <input type="text" name="user[role]" value="CUSTOMER", id="role4" class="user_role"> Customer
+            </label>
+          <%# end %>
+        </div> -->
+        <!--=== Comment the code bacause this button shift in 1st signup page===-->   
+        <div class="form-group">
+          <div class="">
+            <input type="reset" value="Reset"  class="btn btn-primary">
+            <input type="button" value="Next"  class="btn btn-info" id="registration_btn">
+          </div>
+        </div>
+    <!-- </div> -->
+      </form>
+    </div>
+    <div class="col-sm-1"></div>
+    <div class="col-sm-5">
+      <%if current_subdomain.is_ocm? && params[:user] && params[:user][:type] != "CUSTOMER" %>
+        Ready to get started? You’re one step closer to strengthening your church with reliable subscription income from your messages and media.
+      <%#elsif !current_subdomain.is_ocm? && params[:user] && params[:user][:type] != "CUSTOMER" %>
+        <!-- Ready to get started? You’re one step closer to strengthening your church with reliable subscription income from your messages and media. -->
+      <%else%>
+        Want to stay connected and inspired? Your account gives you access to <%= current_subdomain.subdomain_name.camelize%>’s messages and other media. In addition, you can comment on messages, track your purchase history and share links on social media.
+      <%end%>
+    </div>
+    <!--========================   Sign Up   End  ======================-->
+  </div>
+<script type="text/javascript">
+//$("p").css("background-color", "yellow");
+    $(document).ready(function () {
+        <% if @selected_subdomain_type_id %>
+        setTimeout(function () {
+            $("input[type='radio'][data-id='<%= @selected_subdomain_type_id %>']").click();
+        }, 1500)
+        <% end %>
+    });
+</script>
+<%= stylesheet_link_tag  'chosen.min.css','bootstrap-tagsinput.css', 'summernote.css',"upload.css", "uploaded_mediums.css","dev_custom.css" %>
+<%= javascript_include_tag 'bootstrap-tagsinput.min.js',"chosen.jquery.js", 'summernote.min.js',  'chosen-select.js',"address.js", "signup2.js", 'jquery.loadTemplate-1.4.4.min.js',"new_upload.js" %>
+<%= javascript_include_tag  "bootstrap.file-input.js"%>
+
+<%#= javascript_include_tag "address.js", "signup2.js","chosen.jquery.js",'chosen-select.js' %>
+<%#= javascript_include_tag  "signup1.js" %>
+<%#= stylesheet_link_tag 'signup.css','chosen.min.css',"dev_custom.css" %>
+<style type="text/css">
+  /*Added for place text on image*/
+  #container{
+    margin-bottom: -57px;
+  }
+
+  #text{
+    position: relative;
+    color: white;
+    font-size: 37px;
+    font-weight: bold;
+    bottom: 279px;
+    text-align: right;
+  } 
+
+  #text2{
+    position: relative;
+    color: white;
+    font-size: 20px;
+    /*font-weight: bold;*/
+    bottom: 279px;
+    text-align: right;
+    margin-right: 14px;  
+  }
+</style>

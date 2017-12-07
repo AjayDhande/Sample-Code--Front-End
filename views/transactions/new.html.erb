@@ -1,0 +1,41 @@
+<div class="container container-fix">
+  <div class="form-container radius-box glassy-bg small-10 small-centered medium-8 large-6 columns">
+    <%= form_tag url_for(:controller => "transactions", :action =>"create", :method => "post") do%> 
+      <div id="dropin" class="dropin_width">
+        <h1 style="color:orange;">PayPal</h1>
+        <hr width="567" align="left">
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <%=submit_tag "Pay", class: "btn btn-info"  %>
+        </div>
+      </div>
+      <div class="row" style="margin-top:30px;">
+        <div class="col-sm-1 col-xs-2">
+          <img class ="card_logo" src="<%= asset_path 'AE.jpg' %>" alt="" />
+        </div>
+        <div class="col-sm-1 col-xs-2">
+          <img class ="card_logo" src="<%= asset_path 'Visa.jpg' %>" alt="" />
+        </div>
+        <div class="col-sm-1 col-xs-2">
+          <img class ="card_logo" src="<%= asset_path 'mastero_card.jpg' %>" alt="" />
+        </div>
+        <div class="col-sm-1 col-xs-2">
+          <img class ="card_logo" src="<%= asset_path 'Discover.jpg' %>" alt=""/>
+        </div>
+        <div class="col-sm-1 col-xs-2">
+          <img class ="card_logo" src="<%= asset_path 'jcb_card.jpg' %>" alt=""/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-sm-8">
+          </br><p align="justify">We do not store any of your billing details on our servers. The data is encrypted and securely stored by BrainTree. A copy of BrainTree security policy is available <a target="_blank"href="https://www.braintreepayments.com/privacy" style="color: orange;">here</a>.</p>
+          <p align="justify">Subscriptions renew automatically. You can cancel your subscription at any time by visiting the subscriptions area of your account profile.</p>
+          <p align="justify">Having trouble subscribing? Contact us at <a href="mailto:support@ocm.com" style="color: orange;">support@ocm.com</a></p>
+        </div>
+        <div class="col-sm-4"></div>
+      </div>
+    <%end%>
+  </div>
+</div>
+<%= javascript_include_tag  "braintree.js", "transactions.js"%>

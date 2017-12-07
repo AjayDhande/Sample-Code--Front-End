@@ -1,0 +1,563 @@
+<div class="containerfluid1">
+  <div class="row">
+   <!--  <div class="col-sm-12">
+      <div class="breadcrumb-outer">
+      </div>
+    </div> -->
+  </div>
+
+  <% if params[:user][:role] == "CUSTOMER" %>
+    <div id="container">
+    <!--   <img id="image" src="<%#= asset_path 'NewPricingCustomerHeaderImage.jpg' %>"/> -->
+
+      <img id="image_new" src="<%= asset_path 'PricingCustomerHeaderImageC.jpg' %>"/>
+     <!--  <p id="text2">
+          Get the right message at the right time, anytime and anywhere
+      </p> -->
+    </div>
+  <%else%>
+    <div id="container">
+   <!--    <img id="image" src="<%#= asset_path 'NewPricingPageHeaderImage.jpg' %>"/> -->
+      <img id="image_new" src="<%= asset_path 'PricingPageHeaderImageC.jpg' %>"/>
+      <!-- <p id="text">
+          Pricing Plans Designed With Your Budget In Mind
+      </p> -->
+    </div>
+    <br />
+</div>
+
+    <div class="container">
+     <div class="col-sm-12">
+      <p id=""><span>
+        <b>At Online Church Media your success is our success.</b> We strive to strengthen your church with a
+        reliable and steady stream of income so you can focus on delivering God’s message to your faithful followers. If
+        you want to try us out first, we have a free plan available for the first 2 months of your enrollment. If you’re
+        ready to select a paid plan today, you’ll benefit even more from the upfront investment.</span>
+      </p>
+    </div>
+    <div class="col-sm-12"></div><br/>
+    <hr> 
+  <%end%>
+   <div class="container">
+  <div class="col-sm-12">
+    <form action="<%= user_registration_path %>" class="form-horizontal bv-form" method="post" id="registration">
+    <div class="form-group">
+      <input type="hidden" name="user[name]" value="<%= params[:user][:name] %>">
+      <input type="hidden" name="user[last_name]" value="<%= params[:user][:last_name] %>">
+      <input type="hidden" name="user[email]" value="<%= params[:user][:email]%>">
+      <input type="hidden" name="user[title_id]" value="<%= params["user"]["title"]%>">
+      <input type="hidden" name="user[role]" value="<%= params[:user][:role] %>">
+      <input type="hidden" name="user[username]" value="<%= params[:user][:username] %>">
+      <input type="hidden" name="user[password]" value="<%= params[:user][:password]%>">
+      <input type="hidden" name="user[password_confirmation]" value="<%= params[:user][:password_confirmation]%>">
+      <!-- <input type="hidden" name="address[country]" value="<%#= params[:address][:country]%>">
+      <input type="hidden" name="address[postal_code]" value="<%#= params[:address][:postal_code]%>"> -->
+      <input type="hidden" name="user[acronym]" value="<%= params[:user][:acronym] %>">
+      <input type="hidden" name="user[business_email]" value="<%= params[:user][:business_email] %>">
+      <input type="hidden" name="user[church_name]" value="<%= params[:user][:church_name] %>">
+      <input type="hidden" name="subdomain[plan]" class="form-control" value="">
+      <input type="hidden" name="customer[plan]" class="form-control" value="">
+      <input type="hidden" name="addons" class="form-control" value="">
+      <% if params[:download_media] %>
+      <input type="hidden" name="download_media" class="form-control" value="<%= params[:download_media] %>">
+      <input type="hidden" name="download_media_path" class="form-control" value="<%= params[:download_media_path] %>">      
+      <% end %>
+    </div>
+    <div class="bckcolor">
+      <div class="nav nav-tabs myAccount_tab5" id="myTab">
+       
+       <!--  <li class="active myAccount_tab5" name="ChurchAccountInfo">
+        <button class="active myAccount_tab5"><a data-toggle="tab" href="#ChurchAccountInfo" style="color: #7B7A78">Monthly Pricing </a></button></li> 
+        <li class="myAccount_tab5" name="AdminControl"><a data-toggle="tab" href="#AdminControl">Yearly Pricing</a></li>
+         -->
+        <!-- ///////////////////// -->
+  <div class="col-sm-4"></div>
+
+  <label class="active new_price" style="margin-left: 40px;"><a data-toggle="tab" href="#ChurchAccountInfo" class="lblclass">
+    <span class="">Monthly Pricing</span></a></label>
+         <label class="active new_price" name="AdminControl" style="margin-top: 10px;"><a data-toggle="tab" href="#AdminControl" class="lblclass1"><span class="">Yearly Pricing</span></a></label>
+        <!-- ////////////////////// -->
+
+      <div class="form-group <% if current_subdomain.present? && !current_subdomain.is_ocm? %>hide<% end %>" id= "radio-button">
+        <% if current_subdomain.present? && current_subdomain.is_ocm?%>
+          <% @subdomain_types.each do |subdomain_type| %>
+            <label class="checkbox-inline" style="padding-left: 0px;">
+              <input type="radio" name="user[role]" value="<%= subdomain_type.subdomain_type %>" data-id="<%= subdomain_type.id %>" class="user_role"> <%= subdomain_type.subdomain_type.gsub("_", " ").titleize %>
+            </label>
+          <% end if @subdomain_types%>
+        <%end%>
+        <% if current_subdomain.present? && current_subdomain.is_ocm? && params[:user][:role] == "CUSTOMER" %>
+          <label class="checkbox-inline hide" style="padding-left: 0px;">
+            <input type="radio" name="user[role]" value="CUSTOMER", id="role4" class="user_role" checked> Customer
+          </label>
+        <%elsif current_subdomain.present? && !current_subdomain.is_ocm? %>
+          <label class="checkbox-inline hide" style="padding-left: 0px;">
+            <input type="radio" name="user[role]" value="CUSTOMER", id="role4" class="user_role" checked> Customer
+          </label>
+        <% end %>
+      </div>
+
+      <div class="tab-content " id="myTabContent" style=" background:#ffffff;">
+        <div id="ChurchAccountInfo" class="tab-pane active">  
+          <div class="form-group <% if current_subdomain.present? && !current_subdomain.is_ocm? %>hide<% end %>" id= "radio-button">
+            <% if current_subdomain.present? && current_subdomain.is_ocm?%>
+              <% @subdomain_types.each do |subdomain_type| %>
+                <label class="checkbox-inline" style="padding-left:0px;">
+                  <input type="radio" name="user[role]" value="<%= subdomain_type.subdomain_type %>" data-id="<%= subdomain_type.id %>" class="user_role"> <%= subdomain_type.subdomain_type.gsub("_", " ").titleize %>
+                </label>
+              <% end if @subdomain_types%>
+            <%end%>
+            <% if current_subdomain.present? && current_subdomain.is_ocm? && params[:user][:role] == "CUSTOMER" %>
+              <label class="checkbox-inline hide" style="padding-left: 0px;">
+                <input type="radio" name="user[role]" value="CUSTOMER", id="role4" class="user_role" checked> Customer
+              </label>
+            <%elsif current_subdomain.present? && !current_subdomain.is_ocm? %>
+              <label class="checkbox-inline hide" style="padding-left: 0px;">
+                <input type="radio" name="user[role]" value="CUSTOMER", id="role4" class="user_role" checked> Customer
+              </label>
+            <% end %>
+          </div>
+          <div class="row">   
+           <div class="col-sm-12">
+              <div class="row Monthly-Pricing-two">
+                <h3 class="text-center text-info required">Monthly Pricing</h3>
+                <div id="plans"></div> 
+                 
+              </div> 
+            </div>
+              <div class="form-group btnpad">
+     <!--    <div class="col-sm-12">
+          <input type="reset" value="Reset"  class="btn btn-info">
+          <input type="button" value="Create Account"  class="btn btn-info" id="registration_btn">
+        </div> -->
+             </div>
+          </div>
+          <div class="row" id="addon-area">
+          </div>
+        </div>
+
+        <div id="AdminControl" class="tab-pane fade">
+          <div class="row">
+            <div class="col-sm-12">
+              <h3 class="text-center text-info required">Yearly Pricing</h3>           
+              <div id="subdomain_plans" >
+                 <div class="col-sm-4"></div>
+                <div class="col-sm-4">
+                  <div class="monthly-pricing text-center shadow" style=";background-color: rgb(234, 237, 236);">
+                    <ul class="list-group" style="padding-left:0px;text-align:left;">
+                      <li class="list-group-item listbcklcolor" style="border: medium none;"><p class="message" style="padding-top:15px; ">
+                        <h4 class="text-success" style="text-align:center">
+                       <!--  <label class="checkbox-inline"> -->
+                          
+                          <input type="radio" name="subdomain_plan" value="Yearly" id="subdomain_plan" style="display:none">Yearly Plan
+                      <!--   </label> -->
+                        </h4>
+                         <p class="plan_amount" style="color: black;text-align:center" > $ 222<span class="small_text" style="color: #7B7A78;">/year</span></p>
+
+                       
+                           <br />
+                           <center>
+               <a class="btn btn-info subdomain_plan_button_not_working" style="width: 50%;" href="javascript:void(0)" ><%#= plan.plan_name %> Create Account</a></center>
+                    </li>
+                       <!--  <p class="desc">Lorem Ipsumasdsdsdsdfsdf</p> -->
+                  
+                   
+                    <li class="list-group-item min-height_pp listbcklcolor" style="border: medium none;">
+                    <p class="desc">You can listen online or download any of these messages. This is THE BEST way to skip the line and get messages you want when you want.</p> 
+                    <p class="desc">This is ocm</p>
+                    <table class="table desc">
+                     <tr>
+                       <td>Firstname</td>
+                       <td>Lastname</td>
+                    </tr>
+                    <tbody>
+                    <tr>
+                       <td>John</td>
+                       <td>Doe</td>
+                    </tr>
+                     <tr>
+                       <td>Mary</td>
+                       <td>Moe</td>   
+                     </tr>
+                     <tr>
+                       <td>July</td>
+                       <td>Dooley</td> 
+                     </tr>
+                   </tbody>
+                   </table>
+                </li>
+                      
+                    <li class="list-group-item min-height_pp listbcklcolor" style="border: medium none;">
+
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="form-group">
+        <div class="col-sm-12">
+          <input type="reset" value="Reset"  class="btn btn-primary">
+          <input type="button" value="Create Account"  class="btn btn-info" id="registration_btn">
+        </div>
+      </div> -->
+    </form>     
+  </div>
+</div>
+
+<%= javascript_include_tag "pricing.js" %>
+<%= javascript_include_tag  "signup1.js" %>
+<%= stylesheet_link_tag 'signup.css' %>
+<%= stylesheet_link_tag "pricing.css" %>
+
+<script type="text/javascript">
+    subdomain_types_and_plans = {
+        <% @subdomain_types.each do |subdomain_type| -%>
+        "<%= subdomain_type.id %>": [<% subdomain_type.plans.each do |plan| -%><% if plan.type_is?('RENEW') || plan.type_is?('ONE_TIME') %>"<%= plan.id %>", <% end %><% end %>],
+        <% end if @subdomain_types  %>
+    }
+</script>
+
+<script type="text/javascript">
+    subdomain_types_and_setup = {
+        <% @subdomain_types.each do |subdomain_type| -%>
+        "<%= subdomain_type.id %>": [<% subdomain_type.plans.each do |plan| -%><% if plan.type_is?('SETUP') %>"<%= plan.id %>", <% end %><% end %>],
+        <% end if @subdomain_types  %>
+    }
+</script>
+
+<% @subdomain_types.each do |subdomain_type| -%>
+    <% subdomain_type.plans.each_with_index do |plan,index| -%>
+        <div id="subdomain_plans_<%= subdomain_type.id %>_<%= plan.id %>" class="hide">
+      <!--     <div class="col-sm-2"></div> -->
+            <div class="<%=index == 0 ? 'col-sm-4 col-md-offset-2' : 'col-sm-4'%>">
+                <div class="monthly-pricing text-center shadow" style="height: 555px;background-color: rgb(234, 237, 236);">
+                <ul class="list-group" style="padding-left:0px;">
+                  <li class="list-group-item listbcklcolor" style="border: medium none;"><p class="message" style="padding-top:15px; ">
+                    <h4 class="text-success">
+                        <!-- <label class="checkbox-inline"> -->
+                            <input type="radio" name="subdomain_plan" value="<%= plan.id %>" id="subdomain_plan" style="display:none"> <%= plan.plan_name.titleize %> Plan
+                      <!--   </label> -->
+                    </h4></p>
+                    <p class="plan_amount" style="color: black;"> $ <%= number_with_precision(plan.plan_amount, :precision => 0) %><span class="small_text" style="color: #7B7A78;">/month</span></p>
+                <br />
+               <a class="btn btn-info subdomain_plan_button" style="width: 50%;" href="javascript:void(0)" ><%#= plan.plan_name %> Create Account</a>
+                    </li>
+                    <!-- <li class="list-group-item background_blue" style="min-height: 135px;"><h4 class=""><p class="plan_amount1">
+                        <%# if subdomain_type.has_setup_plan? %>One Time Setup fee $ <%#= number_with_precision(subdomain_type.setup_amount, :precision => 0) %><%# else %>No Setup Fee<%# end %> + <br> $ <%#=number_with_precision(plan.plan_amount, :precision => 0)%> <br> <span class="small_text">per month <span></p></h4>
+                    </li> -->
+                <li class="list-group-item min-height_pp listbcklcolor" style="border: medium none;">
+                      <!--  <p class="desc"><%= plan.plan_description %></p> -->
+                    <p class="desc"><%= plan.plan_description %></p> 
+                    <p class="desc">This is ocm</p>
+                    <table class="table desc">
+                     <tr>
+                       <td>Firstname</td>
+                       <td>Lastname</td>
+                    </tr>
+                    <tbody>
+                    <tr>
+                       <td>John</td>
+                       <td>Doe</td>
+                    </tr>
+                     <tr>
+                       <td>Mary</td>
+                       <td>Moe</td>   
+                     </tr>
+                     <tr>
+                       <td>July</td>
+                       <td>Dooley</td> 
+                     </tr>
+                   </tbody>
+                   </table>
+                </li>
+                </div>
+            </div>
+
+
+        </div>
+    <% end %>
+<% end if @subdomain_types %>
+
+    <div class="hide customer_plans">
+        <div class="col-sm-4">
+            <div class="monthly-pricing text-center shadow" style="height: 555px;background-color: rgb(234, 237, 236);">
+              <ul class="list-group" style="padding-left:0px;">
+                <li class="list-group-item listbcklcolor" style="border: medium none;"><p class="message" style="padding-top:15px;">
+                <h4 class="text-success">
+                    <label class="checkbox-inline">
+                        <input type="radio" name="customer_plan" value="0" class="plans" id="customer_plan" style="display:none">Free
+                    </label>
+                </h4></p>   
+                <p class="plan_amount" style="color: black;">$ 0<br><br><small class="small_text" style="color: #7B7A78;">/month</span></p></small></p>
+
+              <br />
+               <a class="btn btn-info customer_plan_button" style="width: 50%;" href="javascript:void(0)" ><%#= plan.plan_name %> Create Account</a>
+                    </li>
+
+                <li class="list-group-item min-height_pp listbcklcolor" style="border: medium none;"><p class="desc">Here all the free messages given away from the church here.</p>
+
+                     <table class="table desc">
+                     <tr>
+                       <td>Firstname</td>
+                       <td>Lastname</td>
+                    </tr>
+                    <tbody>
+                    <tr>
+                       <td>John</td>
+                       <td>Doe</td>
+                    </tr>
+                     <tr>
+                       <td>Mary</td>
+                       <td>Moe</td>   
+                     </tr>
+                     <tr>
+                       <td>July</td>
+                       <td>Dooley</td> 
+                     </tr>
+                   </tbody>
+                   </table>
+                </li>
+            </div>
+        </div>
+    </div>
+
+<% @customer_plans.each do |plan| %>
+    <div class="hide customer_plans">
+        <div class="col-sm-4">
+            <div class="monthly-pricing text-center shadow" style="height: 555px;background-color: rgb(234, 237, 236);">
+              <ul class="list-group" style="padding-left:0px;">
+                <li class="list-group-item listbcklcolor" style="border: medium none;"><p class="message" style="padding-top:15px; ">
+                <h4 class="text-success">
+                    <label class="checkbox-inline">
+                        <input type="radio" name="customer_plan" value="<%= plan.id %>" class="plans" id="customer_plan" style="display:none"> <%= plan.plan_name.titleize %> Plan
+                    </label>
+                </h4></p>
+            
+                <p class="plan_amount" style="color: black;"> $ <%= number_with_precision(plan.plan_amount, :precision => 0) %><br><br>
+                 <small class="small_text" style="color: #7B7A78;">/month</span></small></p> <br />
+               <a class="btn btn-info customer_plan_button" style="width: 50%;" href="javascript:void(0)" ><%#= plan.plan_name %> Create Account</a>
+                    </li>
+                <li class="list-group-item min-height_pp listbcklcolor" style="border: medium none;">
+                 <!--  <p class="desc"><%= plan.plan_description %></p> -->
+                    <p class="desc"><%= plan.plan_description %></p>
+
+                     <table class="table desc">
+                     <tr>
+                       <td>Firstname</td>
+                       <td>Lastname</td>
+                    </tr>
+                    <tbody>
+                    <tr>
+                       <td>John</td>
+                       <td>Doe</td>
+                    </tr>
+                     <tr>
+                       <td>Mary</td>
+                       <td>Moe</td>   
+                     </tr>
+                     <tr>
+                       <td>July</td>
+                       <td>Dooley</td> 
+                     </tr>
+                   </tbody>
+                   </table>
+                </li>
+            </div>
+        </div>
+    </div>
+<% end %>
+
+<% @customer_addons.each do |plan| %>
+    <div class="hide customer_addons">
+        <div class="col-sm-12 col-xs-12 add-on">
+            <div class="monthly-pricing text-center shadow" style="background-color: rgb(234, 237, 236);">
+                <ul class="list-group" style="padding-left:0px;">
+                    <li class="list-group-item listbcklcolor" style="border: medium none;">
+                        <h2 class="text-center text-info" style="font-size:25px;">
+                            <label class="checkbox-inline add-on" name="addon">
+                                <input type="checkbox" name="addon" value="<%= plan.id %>"> <%= plan.plan_name.titleize %> : Add On
+                            </label>
+                        </h2>
+                        <p class="text-center">
+                            Optional Add On for any pay plan
+                        </p>
+                        <p class="plan_amount" style="color: black;">
+                            <!--h3 class="text-center text-info"-->
+                            Additional $ <%= number_with_precision(plan.plan_amount, :precision => 0) %> <br><br><small class="small_text" style="color: #7B7A78;">/month</span></p></small>
+                            <!--/h3-->
+                        </p>
+                    </li>
+                    <li class="list-group-item min-height_pp listbcklcolor" style="border: medium none;">
+                        <p class="text-center text-muted">
+                            <%= plan.plan_description %>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+<% end %>
+
+<div class="hide" id="no_plan">
+    <p class="text-center error">No plan found</p>
+</div>
+
+<script>
+  $(document).ready(function(){
+    <% if current_subdomain.present? && !current_subdomain.is_ocm?%>
+      $("#role4").click();
+    <% end %>
+  });
+</script>
+<script type="text/javascript">
+    $(document).ready(function(){
+      <% if current_subdomain.present? && current_subdomain.is_ocm?%>
+        <% if params[:user] && params[:user][:role] == "CUSTOMER" %>
+            $("#role4").click();
+            $("#radio-button").hide();
+            $("#acronym_field").hide();
+        <% else params[:user] && params[:user][:role] == "BUSINESS" %>
+            $("#role41").hide();
+            $("input[name='user[role]'][value='<%= params[:user][:role]%>'][class='user_role']").click();
+        <% end %>
+      <% end %>
+      <% if params[:plan].present? %>
+          $('input[type="radio"][class="plans"][value="<%= params[:plan].to_i %>"]')[0].click();
+      <%end%>
+      <% if @selected_plan_id %>
+        setTimeout(function () {
+          $("input[type='radio'][name='<%= params[:user][:role] == 'CUSTOMER' ? 'customer_plan' : 'subdomain_plan' %>'][value='<%= @selected_plan_id %>']").click();
+        }, 1000)
+      <% end %>
+    });
+</script>
+
+<style type="text/css">
+#text
+{
+  z-index: 100;
+  position: absolute;
+  color: white;
+  font-size: 34px;
+  font-weight: bold;
+  left: 210px;
+  top: 193px;
+}
+#text2
+{
+  z-index: 100;
+  position: absolute;
+  color: white;
+  font-size: 34px;
+  font-weight: bold;
+  left: 118px;
+  top: 193px;
+  width: 100%;
+}
+hr {
+    display: block;
+    margin-top: 67px;
+    margin-bottom: 0.5em;
+    margin-left: auto;
+    margin-right: auto;
+    border-style: inset;
+    border-width: 1px;
+}
+.btnpad
+{
+  padding-left:20px;
+}
+.bckcolor
+{
+background-color:white;
+}
+/*.acolor
+{
+  color:white;
+}
+a:hover 
+{
+  color:white;
+}*/
+
+.listbcklcolor
+{
+background-color:#EAEDEC;
+}
+.lblclass
+{
+  background-color: #369cc5;
+  padding: 10px;
+  border-radius: 4px;
+  color:#d9e0e3;
+  margin-top: 10px;
+}
+.lblclass1
+{
+  background-color: #d9e0e3;
+  padding: 10px;
+  border-radius: 4px;
+ /* color:#d9e0e3;*/
+  margin-top: 10px; 
+}
+/*.lbl
+{
+  margin-top:10px;
+}*/
+/*.new_price{
+  border:1px solid grey;
+}*/
+
+.containerfluid1
+  {
+    padding-right: 0px;
+    padding-left: 0px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 90px;
+  }
+  
+  @media only screen and (max-width: 767px) {
+  .containerfluid1
+  {
+    padding-right: 0px;
+    padding-left: 0px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 74px !important;
+  }
+}
+
+  @media only screen and (min-width: 768px) and (max-width: 890px){
+   #image_new
+   {
+    margin-top: 16%;
+   }
+ }
+
+ @media only screen and (min-width: 891px) and (max-width: 991px){
+   #image_new
+   {
+    margin-top: 14%;
+   }
+ }
+
+ @media only screen and (min-width: 992px) and (max-width: 1100px){
+   #image_new
+   {
+    margin-top: 4%;
+   }
+ }
+
+ @media only screen and (min-width: 1101px) and (max-width: 1200px){
+   #image_new
+   {
+    margin-top: 2%;
+   }
+ }
+
+</style>

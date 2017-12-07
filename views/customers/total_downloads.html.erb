@@ -1,0 +1,49 @@
+<div class="container container-fix">          
+    <!--========================   Upload  Start   ======================-->
+    <%#=render "header_admin"%>
+    <%=render "dashboard_tabs"%>
+    <div class="row">
+        <div class="col-sm-12">
+            <h4 class="heading-title text-left">Total Download: <%= @downloads.count %></h4>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" style="width:100%;">
+                            <thead>
+                                <tr bgcolor="#31708f">
+                                    <th><font color="white">Date</font></th>
+                                    <th><font color="white">Username</font></th>
+                                    <th><font color="white">Media Download</font></th>
+
+                                </tr>
+                            </thead>
+                            <tbody class="odd" id="mytable">
+                            <% @downloads.each do |download| %>
+                                <tr>
+                                    <td><%= download.created_at.to_date.strftime("%B %d, %Y") %></td>
+                                    <td><%= get_username_by_user_id(download.user_id) %></td>
+                                    <td><%= get_media_name_by_uploaded_media_id(download.uploaded_media_id).gsub("_", " ") %></td>
+                                </tr>
+                            <% end %>    
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        <%= will_paginate @downloads %>
+        </div>
+    </div>  
+    
+    <!--========================   Upload   End  ======================-->
+</div>
+
+<%=javascript_include_tag 'bootstrap-hover-dropdown.js', 'my_account.js'%>
+
+<%= javascript_include_tag 'bootstrap-hover-dropdown.js', 'bootstrap-tabdrop.js', 'ekko-lightbox.js', 'icheck.min.js', 'summernote.min.js', 'my_account.js' %>
+
+<%= stylesheet_link_tag "my_account.css","tab.css" %>
+<script>
+$(".odd").find("tr:odd").css("background-color","#FFF5EB");
+$(".odd").find("tr:even").css("background-color","#ffffff");
+
+</script>

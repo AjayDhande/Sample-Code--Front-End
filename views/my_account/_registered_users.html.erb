@@ -1,0 +1,54 @@
+<% if @registered_users.compact.blank? %>
+  <p class="error-color" style="margin-left:35px;">No user found</p>
+<% else%>
+    <!--<div class="row">
+            <div class="col-sm-4 pull-right">
+                <div class="input-group" style="margin-bottom: 12px;">
+                    <input type="text" class="form-control">
+                    <span class="input-group-addon" style="padding: 0px;">
+                        <input type="submit" value="Search" class="btn btn-default" style="border-radius: 0px; border: none;">
+                    </span>
+                </div>
+            </div>
+    </div>-->
+    <div class="col-sm-12">
+        <div class="table-responsive" style="margin-left:19px;">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Name</th>
+                        <th>Role</th>
+                        <th>Option</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <% @registered_users.compact.each do |registered_user|%>
+                    <tr>
+                        <td ><%=registered_user.username%></td>
+                        <td><%=registered_user.email%></td>
+                        <td><%=registered_user.name%></td>
+                        <td><%=registered_user.user_role.role.titleize.gsub("_"," ")%></td>
+                        <td><%= link_to 'Delete', delete_user_path(registered_user.id), method: :delete, data: { confirm: 'Are you sure you want to delete the user?' }%></td>
+                    </tr>
+                <%end%>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="col-sm-12">
+        <a class="btn btn-info" href="" id="admin_back" style="margin-left: 19px;">Go Back</a> 
+    </div>
+<% end %>
+
+<script type="text/javascript">
+    $("#admin_back").click(function(){
+        $.ajax({
+            url : '/registered_user',
+            type : 'POST'
+        });  
+    }); 
+</script>
+

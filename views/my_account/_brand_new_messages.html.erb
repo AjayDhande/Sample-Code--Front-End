@@ -1,0 +1,177 @@
+
+<div class="row">
+    <div class="col-sm-12">
+        <% unless params[:search_text].present? || @uploaded_medias.present? %>
+            <div class="well" style="width: 100%; float: left;">
+                <div class="col-sm-10">
+                        <p><b>Currently, you have no messages uploaded.</b><a href ="/uploaded_media/new"> Upload a new message now.</a> After uploading a message you can see the message in the list of media.</p>
+                </div>
+                <div class="col-sm-2">
+                    <img src="<%= asset_path "logo-2.png"%>" alt="" class="thumbnail" />
+                </div>
+            </div>
+        <%end%>
+    </div>
+</div>
+
+ <!--  <div class="row">
+  <div class="col-sm-6"></div>
+  <div class="col-sm-6">
+    <progress class="progress progress-striped progress-success" value="25" max="100" style="width: 100%;"></progress>
+
+  </div>
+   </div> 
+ -->
+    <div class="row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4">
+            <div class="form-group text-center" style=" margin-top: 20px;">
+                <label class="right-align"><a href="/uploaded_media/new" class="btn btn-info btn-lg" style = "width: 100%">&nbsp;+ Upload New Media&nbsp;&nbsp;</a>
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3 col-xs-6 col-md-3"></div>
+        <div class="col-sm-6 col-xs-12 col-md-6 med_search">
+            <h2 class="text-center" style="margin-bottom: 10px; margin-top:0px; color:#FF6600;">
+                   Media List
+               </h2>
+            <form action="/brand_new_messsages" role="search" method="get" class="navbar-form header-search category-before" data-remote="true">
+                    <div class="input-group">
+                      <span class="dropdown width5" id="form7">
+                        <select data-placeholder="" name="search_by" class="chosen-select chosen-select5" tabindex="2" id="search_by">
+                            <% if params[:search_by] %>
+                                <option <%= "selected" if params[:search_by] == "all" %> value="all">All</option>
+                                <option <%= "selected" if params[:search_by] == "artist" %> value="artist">Presenter</option>
+                                 <option <%= "selected" if params[:search_by] == "file" %> value="file">Message</option>
+                            <% else %>
+                                <option selected value="all">All</option>
+                                <option value="artist">Presenter</option>
+                                <option value="file">Message</option>
+                            <% end %>
+                        </select>
+                      </span>
+                        <input type="text" name="search_text" id="searchmedia" placeholder="Search Media" class="search home_search_text" value="<%= URI.unescape(params[:search_text]) if params[:search_text] && params[:search_by] %>" autocomplete="off">
+                        <input type="hidden" name="page" value="1">
+                        <input type="hidden" name="order_by" value="">
+                        <input type="hidden" name="order" value="">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-info" style="margin-top:-1.7px; height:36px;" onclick="set_search_hash();">Go</button>
+                            <input type="submit" class="btn btn-info go_search hide" name="go" value="Go">
+                        </div>
+                    </div>
+                </form>
+        </div>
+        <div class="col-sm-3 col-xs-6 col-md-3"></div>
+    </div>
+
+    <div class="row">
+        <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-xs-6">
+
+                <p class="">
+                    <%= page_entries_info @uploaded_medias, model: 'Item' if @uploaded_medias.present? %>
+                </p>
+            </div>
+        </div>
+        </div>
+        
+        <div class="col-sm-12">
+            <div class="table-responsive">
+                   <!-- <div id="fixed_div" class="fixed_div">
+                     <img src="<%#= asset_path 'r-arrow.png'%>" class="right_arrow"/> 
+                   </div> -->
+                <% if @uploaded_medias.present? %>
+                  <table style="width:100%;" class="table table-bordered">
+                    <thead>
+                        <tr bgcolor="#31708f">
+                            <th class=""><font color="white">No.</font></th>
+
+                            <th colspan = "2" class="media-bold dropdown-toggle"><font color="white">Messages</font><span onclick="toggle_message(this)" class="glyphicon glyphicon-chevron-<%= params[:order_by] == 'media_file_name' ? (params[:order] == 'ASC' ? 'up' : 'down') : 'down' %> align-right"></span></th>
+
+                            <th class="media-bold1"><font color="white">Duration</font><span href="#" onclick="toggle_duration(this)" class="glyphicon glyphicon-chevron-<%= params[:order_by] == 'duration' ? (params[:order] == 'ASC' ? 'up' : 'down') : 'down' %> align-right"></span></th>
+
+                            <th class="media-bold2"><font color="white">Date</font><span href="#" onclick="toggle_date(this)" class="glyphicon glyphicon-chevron-<%= params[:order_by] == 'created_at' ? (params[:order] == 'ASC' ? 'up' : 'down') : 'down' %> align-right"></span></th>
+
+                            <th class="media-bold3"><font color="white">Presenter Name</font><span href="#" onclick="toggle_presenter(this)" class="glyphicon glyphicon-chevron-<%= params[:order_by] == 'presenter_name' ? (params[:order] == 'ASC' ? 'up' : 'down') : 'down' %> align-right"></span></th>
+
+                            <th class="media-bold4"><font color="white">Edit Uploaded Media</font></th>
+                        </tr>
+                    </thead>
+                    <tbody class="odd" id="mytable">
+                         <% count = 1 %>
+                            <% @uploaded_medias.each do |media|%>
+                              <% media_name = File.basename(media.media_file_name,File.extname(media.media_file_name)) %>
+                                <tr>
+                                  <% edit_link = "/uploaded_mediums/#{ApplicationController.crypt(media.id)}/edit"%>
+
+                                  <% deactivate_link = "/mark_for_deactivation/#{ApplicationController.crypt(media.id)}"%>
+                                    <td><%= ((@uploaded_medias.current_page.to_i-1)*@uploaded_medias.per_page)+count %></td>
+                                    <td style="border-right-color: transparent;" class="space">
+                                        <% link = "/media_details/#{ApplicationController.crypt(media.id)}"%>
+                                        <div onclick="toggle_player(this);" style="cursor: pointer;" class="glyphicon glyphicon-play player-fix media-play-customer"></div>
+                                        <audio id='my_audio' class="hide" controls onended="player_end(this);">
+                                            <source src="/download/media_tmp/<%= ApplicationController.crypt(media.id) %>" type="<%= media.media_content_type %>" preload="auto">
+                                            Your browser does not support the audio element.
+                                        </audio>
+                                    </td>
+                                    <td>
+                                        <% link = "/media_details/#{ApplicationController.crypt(media.id)}"%>
+                                        <a href="<%= edit_link %>"><span class="text-play-customer"><%= truncate(media_name.gsub("_", " "), length: 25)%></span></a>
+                                    </td>
+                                    <!--td><%= calculate_duration(media.media.path) %></td-->
+                                    <td><%= calculate_sec_to_time(media.duration)%></td>
+                                    <td><%= media.created_at.to_date.strftime("%B %d, %Y") %></td>
+                                    <td><%= truncate(media.presenter_name, length: 20) %></td>
+                                    <td>
+                                    <a href="<%= edit_link %>"><span class="btn btn-info" title="Edit"><span class="glyphicon glyphicon-pencil"></span></span> </a>
+                                    <a href="<%=deactivate_link%>" data-confirm= "The media will be deleted after 24 hours."><span class="btn btn-danger" title="Delete"><span class="glyphicon glyphicon-trash"></span></span></a>
+                                    </td>
+                                </tr>
+                                <% count += 1 %>
+                            <%end%>
+                    </tbody>
+                  </table>
+                <% else %>
+                    <p class="error-color">No Message found</p>
+                <%end%>
+            </div>
+        </div>
+        <div id="ajax_pagination" class="row_paginate">
+            <%= render "media_list_ajax_pagination" %>
+        </div>
+    </div>
+    
+<%= javascript_include_tag "manage_user.js" %>
+<%= javascript_include_tag "searchmedia.js" %>
+<%= stylesheet_link_tag "my_account.css","tab.css" %>
+<script>
+$(".odd").find("tr:odd").css("background-color","#FFF5EB");
+$(".odd").find("tr:even").css("background-color","#ffffff");
+<% if params[:page].present? %>
+    window.location.hash = "#brand_new_messages;<%= params[:search_by]%>;<%= params[:search_text]%>;<%= params[:order_by]%>;<%= params[:order]%>;<%= params[:page]%>";
+<% end %>
+</script>
+
+<script type="text/javascript">
+    if(WURFL.form_factor == "Smartphone"){
+       $("#form7").removeClass("chosen-select").addClass("form-control").css({'width' : 'auto'})
+      }
+      else{
+         $("#fixed_div").hide();
+      }
+</script>
+
+    <script>
+  function play() {
+   document.getElementById('player').play();
+  }
+
+  function pause() {
+   document.getElementById('player').pause();
+  }
+</script>
+

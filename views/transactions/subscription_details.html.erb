@@ -1,0 +1,180 @@
+
+    <!--========================   Breadcrumb  Start  ======================-->
+    <div class="container container-fix">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="breadcrumb-outer">
+                </div>
+            </div>
+        </div>
+
+    <!--========================   Upload  Start   ======================-->
+   <div class="row">
+      <!--  <div class="col-sm-7">
+           <form class="form-horizontal" role="form" style="border: 1px solid #ddd; padding: 12px;">
+            <div class="form-group">
+                  <div class="col-sm-4">
+                      <h3>Payment Method</h3>
+                  </div>
+              </div>
+               <div class="form-group">
+                  <div class="col-sm-4">
+                      
+                  </div>
+              </div>
+          </form>
+       </div> -->
+
+<div class="col-sm-3"></div>
+    <div class="col-sm-6">
+
+      <div id="test"><p class="msgclass">Thanks for the Purchase order!!</p>
+          </div>
+            <ul class="list-group shopping-cart-total" style="padding-left: 0px;">
+                <li class="list-group-item">
+                        <div class="col-sm-12 well text-center">
+                            <b>Your Order</b>
+                      
+
+                            <%if current_user && current_user.is_customer? %>
+                                <a  href="/customer_profile#SubscriptionPlanChange" style="margin-left: 20%;">Edit</a>
+                            <%elsif current_user && (current_user.is_super_admin? or current_user.is_tenant_owner?) %>
+                                <a  href="/my_account#YourChurchPlane" style="margin-left: 20%;">Edit</a>
+                            <%elsif session[:new_user]["acronym"].present? %>
+                                <a  href="/SignUp" style="margin-left: 20%;">Edit</a>
+                            <%else%>
+                                <a  href="/signup?user%5Brole%5D=CUSTOMER" style="margin-left: 20%;">Edit</a>
+                            <%end%>
+                        </div>
+                    <div class="row left">
+                        <div class="col-sm-4 col-xs-4 text-left total-amount font1" >
+                            Item
+                        </div>
+                        <div class="col-sm-3 col-xs-3 text-left total-amount font1" >
+                            Qty
+                        </div>
+                        <div class="col-sm-5 col-xs-5 text-left total-amount font1 break-down">
+                            Total<br>
+                        </div>
+                    </div>
+                    <% count = 0 %>
+                    <% unless @plan_amount.nil? %>
+                    <% count += 1 %>
+                    <div class="row left">
+                        <div class="col-sm-4 col-xs-4 text-left total-amount font2">
+                            Monthly Subscription
+                        </div>
+                        <div class="col-sm-3 col-xs-3 text-left total-amount font2" >
+                            1
+                        </div>
+                        <div class="col-sm-5 col-xs-5 text-left total-amount font2 break-down">
+                            $<%= number_with_precision(@plan_amount, precision: 2) %>/month
+                        </div>
+                    </div>
+                    <% end %>
+                  <% unless @setup_fee.nil? %>
+                  <% count += 1 %>
+                    <div class="row left">
+                        <div class="col-sm-4 col-xs-4 text-left total-amount font2 break-down">
+                            One Time Setup Fee
+                        </div>
+                        <div class="col-sm-3 col-xs-3 text-left total-amount font2" >
+                            1
+                        </div>
+                        <div class="col-sm-5 col-xs-5 text-left total-amount font2 break-down">
+                            $<%= number_with_precision(@setup_fee, precision: 2) %>
+                        </div>
+                    </div>
+                  <% end %>
+                  <% @addons.each do |addon_plan| %>
+                  <% count += 1 %>
+                    <div class="row left">
+                        <div class="col-sm-4 col-xs-4 text-left total-amount font2">
+                            <%= addon_plan.plan_name %>
+                        </div>
+                        <div class="col-sm-3 col-xs-3 text-left total-amount font2" >
+                            1
+                        </div>
+                        <div class="col-sm-5 col-xs-5 text-left total-amount font2">
+                            $<%= number_with_precision(addon_plan.plan_amount, precision: 2) %>
+                        </div>
+                    </div>
+                  <% end unless @addons.nil? %>
+                    <div class="row bgcolor">
+                        <div class="col-sm-4 col-xs-4 text-left padding padding1">
+                            Subtotal
+                        </div>
+                        <div class="col-sm-3 col-xs-3 text-left padding padding1">
+                            <%= count %>
+                        </div>
+                        <div class="col-sm-5 col-xs-5 text-left padding padding1">
+                            $<%= number_with_precision(@amount, precision: 2) %>
+                        </div>
+                    </div>
+                    <div class="row bgcolor">
+                        <div class="col-sm-4 col-xs-4 text-left padding padding1">
+                            Tax
+                        </div>
+                        <div class="col-sm-3 col-xs-3 text-left padding padding1">
+                        </div>
+                        <div class="col-sm-5 col-xs-5 text-left padding padding1">
+                            $0.00
+                        </div>
+                    </div>
+                    <div class="row bgcolor">
+                        <div class="col-sm-4 col-xs-4 text-left padding padding1">
+                            Total
+                        </div>
+                        <div class="col-sm-3 col-xs-3 text-left padding padding1">
+                        </div>
+                        <div class="col-sm-5 col-xs-5 text-left padding padding1">
+                            $<%= number_with_precision(@amount, precision: 2) %>
+                        </div>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-sm-12 text-center buy">
+                            <div class="btn btn-info" id="PayNow">Pay Now</div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="col-sm-3"></div>
+    </div>
+</div>
+<%= stylesheet_link_tag "bootstrapValidator.css", "chosen.min.css", "font-awesome.min.css", "font-awesome.min.css", "summernote.css" %>
+<%= javascript_include_tag "bootstrapValidator.js", "chosen.jquery.js", "summernote.min.js", "chosen-select.js" %>
+<script>
+  $("#PayNow").click(function(){
+  window.location.href = '/transactions/new';
+  })
+</script>
+
+<style type="text/css">
+.msgclass
+{
+  text-align: center;
+  font-size: 30px;
+  color: green;
+  font-weight: bold;
+}
+
+</style>
+
+<script type="text/javascript">
+$(function() {
+   $('#flash1').delay(500).fadeIn('normal', function() {
+      $(this).delay(2500).fadeOut();
+   });
+});
+</script>
+
+<script type="text/javascript">
+$(function() {
+ $('#test').delay(3000).fadeOut();
+});
+
+</script>

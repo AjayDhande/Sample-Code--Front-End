@@ -1,0 +1,138 @@
+
+
+
+
+
+<div class="col-sm-12" style="height: 65px;"><!-- <button type="button" id="on_off" class="btn btn-info" data-toggle="collapse" data-target="#media_lyrics">OFF</button>-->
+
+
+<!-- If musician type, then button is Show Lyrics"/"Hide Lyrics" and if other user, button is "Show Words"/"Hide Words" -->
+  
+
+  <% if device_name.is_mobile? && browser.mobile? %>
+    <%if @uploaded_media.subdomain.subdomain_type_id == 3 %>
+      <label class="checkbox-inline" style="padding-left: 66%;">
+        <input id="on_off" type="checkbox" data-style="ios" class="btn btn-success" data-on="Show Lyrics " data-off="Hide Lyrics " data-toggle="toggle"> 
+      </label>
+    <%else%>
+      <label class="checkbox-inline" style="padding-left: 66%;">
+        <input id="on_off" type="checkbox" data-style="ios" class="btn btn-success" data-on="Show Words " data-off="Hide Words " data-toggle="toggle"> 
+      </label>
+    <%end%>
+  <%else%>
+    <%if @uploaded_media.subdomain.subdomain_type_id == 3 %>
+      <label class="checkbox-inline" style="padding-left: 85%;">
+        <input id="on_off" type="checkbox" data-style="ios" class="btn btn-success" data-on="Show Lyrics " data-off="Hide Lyrics " data-toggle="toggle"> 
+      </label>
+    <%else%>
+      <label class="checkbox-inline" style="padding-left: 85%;">
+        <input id="on_off" type="checkbox" data-style="ios" class="btn btn-success" data-on="Show Words " data-off="Hide Words " data-toggle="toggle"> 
+      </label>
+    <%end%>
+  <%end%>
+</div>
+
+
+
+<div class="col-sm-12 collapse in" id="media_lyrics">
+  <div class="zero-clipboard">
+  <!-- To expand lyrics window on clicking glyphicon -->
+    <span class="btn-clipboard glyphicon glyphicon-resize-full" aria-hidden="true" data-toggle="modal" data-target="#lyricsModal">
+  </div>
+  <!-- To show preview lyrics window and expand the lyrics window on clicking anywhere in preview lyrics window  gsub is used to show paragraphs in the content of text file instead of \n-->
+  <div class="crop-vertical" role="document" aria-hidden="true" data-toggle="modal" data-target="#lyricsModal">
+    <%if @ext ==".docx"%>
+      <p><%= render html:  "#{@read_file.to_html}".html_safe.gsub("\\n","").html_safe %></p>
+    <%elsif @ext ==".txt"%>
+      <p><%= render html: "#{@read_file.gsub("\n\r\n","<br>").to_s.gsub("\n","<br>").to_s}".html_safe %></p>
+    <%elsif @ext ==".doc"%>
+      <% if (@uploaded_media.created_at == @uploaded_media.updated_at) %>
+      <p><%= render html: "#{@read_file.gsub("\\n","").gsub("\n\r\n","<br>").to_s.gsub("\n","<br>").to_s}".html_safe %></p>
+      <%else%>
+        <p><%= render html: "#{@read_file.to_s}".html_safe %></p>
+      <%end%>
+    <%end%>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade container-fix" id="lyricsModal" role="dialog">
+  <div class="modal-dialog modal_window">
+
+    <!-- Modal content-->
+    <div class="modal-content lyrics_window">
+      <div class="modal-header">
+        <button type="button" class="close color_white x_opacity" data-dismiss="modal">&times;</button>
+        <!-- Split is used to remove extension of file name -->
+        <h4 class="modal-title text-center color_white"><%#="#{@uploaded_media.song_lyrics.split(".").first}" %>
+          <%=File.basename(@uploaded_media.media_file_name,File.extname(@uploaded_media.media_file_name)).gsub("_", " ") %>
+        </h4>
+        <h5 class="modal-title text-center color_white"><%="By #{@uploaded_media.presenter_name}" %></h5>
+      </div>
+      <div class="col-sm-12 modal_overflow">
+        <div class="modal-body text-justify"> 
+          <%if @ext ==".docx"%>
+            <p><%= render html:  "#{@read_file.to_html}".html_safe.gsub("\\n","").html_safe %></p>
+          <%elsif @ext ==".txt"%>
+            <p><%= render html: "#{@read_file.gsub("\n\r\n","<br>").to_s.gsub("\n","<br>").to_s}".html_safe %></p>
+          <%elsif @ext ==".doc"%>
+            <% if (@uploaded_media.created_at == @uploaded_media.updated_at) %>
+              <p><%= render html: "#{@read_file.gsub("\\n","").gsub("\n\r\n","<br>").to_s.gsub("\n","<br>").to_s}".html_safe %></p>
+              <%else%>
+                <p><%= render html: "#{@read_file.to_s}".html_safe %></p>
+            <%end%>
+          <%end%>
+        </div>
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $($("#on_off").parent()).click(function(){
+      var check_for_true = $("#on_off").parent().hasClass("off");
+      if (check_for_true) {
+        $("#media_lyrics").addClass('hide');
+      }
+      else {
+        $("#media_lyrics").removeClass('hide');
+      }
+    });
+
+
+    <% unless device_name.is_mobile? && browser.mobile? %>
+      $('.lyrics_window').css("margin-left","-106px");
+      $('.modal_overflow').css("height","453px");
+    <%end%>
+    
+  });
+</script>
+
+
+<style type="text/css">
+.toggle-handle {
+    width: 66px;
+}
+.toggle_button{
+      /*width: 123px;*/
+}
+.toggle.ios, .toggle-on.ios, .toggle-off.ios { border-radius: 20px; }
+  .toggle.ios .toggle-handle { border-radius: 20px; }
+
+.tell
+{
+  background-color: green;
+}
+
+</style>
+
+
+</style>
+
+<script src="//cdn.ckeditor.com/4.5.3/full/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace( 'lyrics_text' );
+</script>

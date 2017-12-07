@@ -1,0 +1,397 @@
+
+<div class="container container-fix" id="no_file">
+  <!--========================   Upload  Start   ======================-->
+  <div class="row">
+    <div class="col-sm-12">
+      <div style="padding-left:5px;">
+        <h2 class="text-center">Upload Media</h2>
+        <%= form_for @upload_media,url: {action: "create"}, :html => { :multipart => true, :id => "fileupload", novalidate: true  } do |f| %>
+          <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
+          <div class="row fileupload-buttonbar">
+
+            <div class="col-xs-12 col-md-5 span7">
+              <div class="row">&nbsp;</div>
+              <div class="row margin5">
+              <!-- The fileinput-button span is used to style the file input field as button -->
+                
+                <!-- <span class="fileinput-button btn-info">  
+                  <%= f.file_field :media, multiple: true, name: "uploaded_media[media]", onchange: "css_change(this), $($($('.fileinput-button')[0]).children()[0]).html('Add Another File')" %> 
+                </span> -->
+
+                <span class="btn btn-info btn-file">  
+                  <%= f.file_field :media, multiple: true, name: "uploaded_media[media]", onchange: "css_change(this), $($($('.fileinput-button')[0]).children()[0]).html('Add Another File')" %>Select an Audio file 
+                </span> 
+
+               <!--  <span class="btn btn-info btn-file">
+                 Select an Audio file <input type="file">
+                </span> --> 
+
+                <button type="submit" class="btn btn-info start" id="start_upload" disabled style="visibility: hidden;">
+                  <i class="icon-upload icon-white"></i>
+                  <span id="start_upload">Start upload</span>
+                </button>
+              </div>
+            </div>
+            <script type="text/javascript">$('.fileinput-button').removeClass('btn-default').addClass('btn-primary');</script>
+            <div class="col-xs-12 col-md-5 fileupload-progress fade">
+              <!-- The global progress bar -->
+              <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar progress-bar-success" style="width:0%;background-color:green;"></div>
+              </div>
+              <!-- The extended global progress state -->
+              <div class="progress-extended">&nbsp;</div>
+            </div>
+            <!-- The loading indicator is shown during image processing -->
+            <div class="fileupload-loading"></div>
+          </div>
+          <br>
+          <!-- The table listing the files available for upload/download -->
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th class="required">Message Title / SKU Number</th>
+                  <th class="required">Category / Subcategory</th>
+                  <!-- <th >Tags</th> -->  
+                  <th class="required">Artwork</th>
+                  <th class="required">Title</th>
+                  <th class="required">Presenter Name</th>
+                  <th class="required">Description</th>
+                  <th class="required">Amount</th>
+                  <th>Lyrics</th>
+                  <!-- <th>Progress</th> -->
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery">
+              </tbody>
+            </table>
+          </div>
+          <button type="button" id="button_shown" class="btn btn-info">Upload All</button>
+          <!--<button type="reset" class="btn btn-warning cancel">
+            <i class="icon-ban-circle icon-white"></i>
+            <span>Cancel upload</span>
+          </button>-->
+        <% end %>
+        <br>
+        <div class="row col-xs-12 col-sm-12">
+          <p style="font-size: small;">Important: By uploading, you confirm that your media complies with our <a href="#">Terms of Use</a> and don't infringe on anyone else's rights. If you have questions, check our Copyright Information pages and <a href="/help/faq">FAQs</a> before uploading.</p>
+        </div>
+        <!--=============    Model Start  ======= -->
+        <div class="modal fade container-fix" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog  modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <div class="row">
+                  <button type="button" class="close" data-dismiss="modal" style="margin-right: 10px;"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                </div>
+                <div class="row" style="margin-left: 0px;">
+                  <div class="col-sm-6">
+                    <h4 class="text-primary">Stock Images</h4>
+                  </div>
+                  <div class="col-sm-6" style="padding-left: 30px;">
+                    <h4 class="text-primary">Recent Artworks</h4>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-body">  
+                <div class="row" style="margin-left: 0px;">
+                  <div id="prepend_error" class="container"></div>
+                  <div class="col-sm-6" id="royalty_ajax">
+                    <%= render partial: "royalty_ajax", locals: {royalties: @royalties}%>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <%= render partial: "royalty", locals: {royalties: @recent_art} %>
+                      </div>
+                    </div>
+                    <!--<div class="row">
+                        <div class="col-sm-12">
+                          <%#= will_paginate @recent_art, per_page: 20 %>  
+                        </div>
+                    </div>-->
+                  </div>
+                </div>
+              </div> 
+              <div class="modal-footer">
+                <button type="button" data-role="set_artwork" class="btn btn-info">Ok</button>
+                <button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--=============    Model End  ======= -->
+      </div>
+    </div>
+  </div>
+  <!--========================   Upload   End  ======================-->
+</div>
+
+<%= stylesheet_link_tag  'chosen.min.css','bootstrap-tagsinput.css', 'summernote.css',"upload.css", "uploaded_mediums.css","dev_custom.css" %>
+<%= javascript_include_tag 'bootstrap-tagsinput.min.js',"chosen.jquery.js", 'summernote.min.js',  'chosen-select.js', 'jquery.loadTemplate-1.4.4.min.js',"new_upload.js" %>
+<%= javascript_include_tag  "bootstrap.file-input.js"%>
+
+
+<script>
+  var fileUploadErrors = {
+    maxFileSize: 'File is too big',
+    minFileSize: 'File is too small',
+    acceptFileTypes: 'Filetype not allowed',
+    maxNumberOfFiles: 'Max number of files exceeded',
+    uploadedBytes: 'Uploaded bytes exceed file size',
+    emptyResult: 'Empty file upload result'
+  };
+
+  function baseName(str)
+  {
+     var base = new String(str).substring(str.lastIndexOf('/') + 1); 
+      if(base.lastIndexOf(".") != -1)       
+          base = base.substring(0, base.lastIndexOf("."));
+     return base;
+  }
+  var used_db_skus = <%= raw get_next_sku_number %>
+  new_array=[];
+  function get_sku() {
+    my_final_value = get_final_value();
+    used_skus = used_skus.sort();
+    while (!(used_skus.indexOf(my_final_value)==-1)) {
+      number = "0000"+(parseInt(my_final_value)+1).toString();
+      my_final_value = number.substr(number.length - 4); 
+    }
+    new_array = used_skus;
+    new_array.push(my_final_value);  
+    return my_final_value; 
+  }
+  function get_final_value(){
+    db_skus = <%= raw get_next_sku_number %>
+    if (new_array.length > 0){
+      used_skus = new_array;  
+    }else{
+      used_skus = db_skus;    
+    }
+
+    used = used_skus;
+    var count = used.length;
+    for(var i = 0; i <= count; i++){
+      if (used[0]=="0000"){
+        if (used.length <= parseInt(used[used.length-1])) {
+         used = $(used).not([used[used.length-1]]).get();
+        }        
+      }else{
+        if (used.length < parseInt(used[used.length-1])) {
+         used = $(used).not([used[used.length-1]]).get();
+        }        
+      }
+    }
+
+    last_no = used[used.length-1];
+    number = "0000"+(parseInt(last_no)+1).toString();
+    final_value = number.substr(number.length - 4);
+    return final_value;
+  }
+
+  function check_valid_sku(element){
+    //var value = $(element).val();
+    var sku_element = $(element);
+    var message = "SKU already taken try another";
+    var sku_value = $(element).val();
+    if (!(new_array.indexOf(sku_value) < 0)){
+      addError(sku_element, message);
+      flag = false;
+    }
+    else {
+      removeError(sku_element);
+      flag = false;
+    }
+  }
+</script>
+
+<!-- The template to display files available for upload -->
+<script id="template-upload" type="text/x-tmpl">
+  {% for (var i=0, file; file=o.files[i]; i++) { %}
+  <tr class="template-upload fade">
+    <td class="name" width="15%">
+      <input name="upload[media_file_name][]" value="{%= baseName(file.name) %}" required class="form-control" >
+      <input type="hidden" class="file_full_name" value="{%=file.name%}">
+      <div class="input-group">
+        <span class="input-group-addon" id="basic-addon1"><%= current_subdomain.acronym if current_subdomain.acronym? %></span>
+        <input  name="upload[media_sku_number][]" type="text" class="form-control" value="{%= get_sku() %}" onfocus="skuRemoveError($(this).parent()); remove_uniqueError();" required aria-describedby="basic-addon1">
+      </div>
+    </td>
+
+
+    <td class="category" width="12%">
+      <select name="category[]" id="category_name" data-placeholder="Category" class="chosen-select" tabindex="2" onchange="fetch_subcategories(this);revert(this);">
+        <option value="">Select</option>
+        <% @categories.each do |category| -%>
+          <option value="<%= category.id %>"><%= category.category_name %></option>
+        <% end %>
+      </select>
+      <div>
+        <select name="subcategory[]" onchange="revert(this);" data-placeholder="SubCategory" class="chosen-select" tabindex="2" disabled>
+        </select>
+      </div>
+    </td>
+
+
+   
+    <td class="hide tag"><input name="upload[tag][]" type="text" onchange="revert(this);" value="" data-role="tagsinput" class="form-control tags" placeholder="Add Tags" /></td>
+   
+
+   
+
+    <td class="artist_work" width="10%">
+      <button type="button" class="btn btn-info" onclick="$(this).next().click();">Browse</button>
+      <input type="file" name="upload[artwork][]" class="hide" onchange="fileName(this);revert(this);">
+      <div style="font-size: small;">
+        <input type="hidden" name="artwork[]" onfocus="revert(this);">
+        <a href="#" data-toggle="modal" data-target="#myModal" onclick="modal_action(this); revert(this);">Use Our Image </a>
+      </div>
+      <span class="help tip-text">Square images work best.</span>
+    </td>
+
+
+    <td class="artist_name" width="10%"><select name="title_id" data-placeholder="" class="chosen-select" tabindex="2" >
+      <% Title.all.each do |title| -%>
+        <option value="<%= title.id %>"><%= title.title %></option>
+      <% end %>
+    </select></td>
+
+    <td class="artist_name" width="10%"><select name="presenter_name" data-placeholder="Presenter Name" class="form-control chosen-select-presenter" tabindex="2" onchange="revert(this);">  
+      <%= @presenter_names = UploadedMedium.where(subdomain: current_subdomain).pluck(:presenter_name).uniq %>
+      <option value="">Select</option>
+      <% @presenter_names.each do |presenter_name| -%>
+        <option value="<%= presenter_name %>"><%= presenter_name %></option>
+      <% end %>
+    </select></td>
+
+
+
+    <td class="description" width="50%"><textarea rows="8" name="upload[description][]" required class="form-control" placeholder="Description" onfocus="$(this).next().remove();if(this.value == 'Description') this.value = '';"></textarea></td>    
+    <td class="amount" width="30%"><input name="upload[amount][]" required class="form-control" placeholder="0 for Free" onfocus="$(this).next().remove();if(this.value == '0 for Free') this.value = '';"></td>
+
+
+    <td class="artist_work" width="10%">
+      <button type="button" class="btn btn-info" onclick="$(this).next().click();">Browse</button>
+      <input type="file" name="upload[lyrics][]" class="hide" onchange="fileName(this);revert(this);">
+
+      <!-- <input type="hidden" name="lyrics[]" onfocus="revert(this);"> -->
+      <span class="lyrics_help tip-text">Upload Your Lyrics. Only .txt, .doc and .docx are allowed.</span>
+    </td>        
+    
+    <td><div class="cancel">{% if (!i) { %}
+      <button class="btn btn-warning"><i class="glyphicon glyphicon-trash"></i></button>
+      {% } %}</div>
+    </td>
+    // <!-- <td width="10%" style="visibility: hidden"> -->
+    <td style="visibility: hidden">
+      <div class="start" style="visibility: hidden"></div>
+      <div class="progress progress-striped active" style="visibility: hidden">
+        <div class="progress-bar progress-bar-success" style="width:0%; visibility: hidden"></div>
+      </div>
+    </td>
+  </tr>
+  {% } %}
+</script>
+
+<!-- The template to display files available for download -->
+<script id="template-download" type="text/x-tmpl">
+  {% for (var i=0, file; file=o.files[i]; i++) { %}
+  <tr class="template-download fade">
+
+    {% } %}
+</script>
+
+<script type="text/javascript" charset="utf-8">
+  $(function () {
+    // Initialize the jQuery File Upload widget:
+    $('#fileupload').fileupload();
+    //
+    // Load existing files:
+    $.getJSON($('#fileupload').prop('action'), function (files) {
+      var fu = $('#fileupload').data('blueimpFileupload'),
+      template;
+      fu._adjustMaxNumberOfFiles(-files.length);
+      console.log(files);
+      template = fu._renderDownload(files)
+      .appendTo($('#fileupload .files'));
+      // Force reflow:
+      fu._reflow = fu._transition && template.length &&
+        template[0].offsetWidth;
+      template.addClass('in');
+      $('#loading').remove();
+    });
+  });
+
+  //Created_by:Rohit Patel
+  //Purpose: Serialize Additional for data for image
+  //created_at:03/02/2015
+  var i = 0;
+  $('#fileupload').bind('fileuploadsubmit', function (e, data) {
+    var inputs = data.context.find(':input');
+    if (inputs.filter(function () {
+      return !this.value && $(this).prop('required');
+    }).first().focus().length) {
+      data.context.find('button').prop('disabled', false);
+      return false;
+    }
+    var partialdata = inputs.serializeArray();
+    if ($('[name="upload[artwork][]"]').get(i).files[0] != undefined) {
+      partialdata.push({name: "upload[artwork][]",value: $('[name="upload[artwork][]"]').get(i).files[0]});
+    }
+    if ($('[name="upload[lyrics][]"]').get(i).files[0] != undefined) {
+      partialdata.push({name: "upload[lyrics][]",value: $('[name="upload[lyrics][]"]').get(i).files[0]});
+    }
+    i = i + 1;
+    data.formData = partialdata
+  });
+
+  $('#fileupload').bind('fileuploadstop', function(e, data) {
+    $('#fileupload').submit();
+  });
+
+  subcategories = {
+    "":[]<% @categories.each do |category| -%>,
+      "<%= category.id %>": [["",""]<% category.subcategories.each do |subcategory| -%>, ["<%= subcategory.id %>", "<%= subcategory.subcategory_name %>"]<% end %>]
+<% end %>
+  }
+
+  $(document).ready(function(){
+    $('.fileinput-button').bootstrapFileInput(); 
+  });
+
+</script>
+
+<style type="text/css">
+  .chosen-drop{
+    width: 173%;
+  }
+     
+</style>
+
+<style type="text/css">
+    .btn-file {
+        position: relative;
+        overflow: hidden;
+    }
+    .btn-file input[type=file] {
+        position: absolute;
+        top: 0;
+        right: 0;
+        min-width: 100%;
+        min-height: 100%;
+        font-size: 100px;
+        text-align: right;
+        filter: alpha(opacity=0);
+        opacity: 0;
+        outline: none;
+        background: white;
+        cursor: inherit;
+        display: block;
+    }
+</style>
+
+
+
+

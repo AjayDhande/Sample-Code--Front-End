@@ -1,0 +1,138 @@
+
+<div class="container container-fix">
+      <!--========================   Heading End  ======================--->
+    
+    <!--========================   Upload  Start   ======================-->
+    <div class="row">
+      <%= render 'layouts/admin_header' %>
+    </div>
+    
+    <div class="row">
+        <div class="col-sm-12">
+            <h2 class="heading-title text-left"><%=@chruch.username%></h2>
+        </div>
+        <div class="col-sm-12">
+            <%= form_for @chruch,:url=> {:controller => 'chruchs', :action => 'update'},:html=>{:class=>"form-horizontal label-padding", :role =>"form", :id => "edit_church_musician_form"} do |f| %> 
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Name</label>
+                    <div class="col-sm-5" style="padding-left:0px;">
+                        <%= f.text_field :name, :class => "form-control",:disabled =>true %>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Email</label>
+                    <div class="col-sm-5" style="padding-left:0px;">
+                        <%= f.text_field :email, :class => "form-control",:disabled =>true %>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Username</label>
+                    <div class="col-sm-5" style="padding-left:0px;">
+                        <%= f.text_field :username, :class => "form-control",:id => "username_id",:disabled =>true  %>
+                    </div>
+                </div> 
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Status</label>
+                    <div class="col-sm-5" style="padding-left:0px;">
+                        <%if @chruch.deactive == false %>
+                            <input type="text" name="status" class ="form-control" value="Active" disabled = true> 
+                        <%else%>
+                            <input type="text" name="status" class ="form-control" value="Deactive" disabled = true> 
+                        <%end%>
+                    </div>
+                </div>
+                <% church = @chruch.id %> 
+                <% church_plan = get_subdomain_plan(@chruch) rescue nil %>
+                <%unless church_plan.blank?%>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Subscription Plan</label>
+                        <div class="col-sm-5" style="padding-left:0px;">
+                            <input type="text" name="firstname" class ="form-control" value="<%= church_plan.plan_name %>" disabled = true>      
+                        </div>
+                    </div>
+                <%end%>
+
+                <% church_subscription =  get_subdomain_subscription(church) rescue nil%>
+                <%unless church_subscription.blank?%>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Effective From</label>
+                        <div class="col-sm-5" style="padding-left:0px;">
+                            <input type="text" name="firstname" class ="form-control" value="<%= church_subscription.effective_from %>" disabled = true>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Effective To</label>
+                        <div class="col-sm-5" style="padding-left:0px;">
+                            <input type="text" name="firstname" class ="form-control" value="<%= church_subscription.effective_to %>" disabled = true>
+                        </div>
+                    </div>
+                <%end%>
+                 
+                <% church_address =  get_subdomain_address(church) rescue nil%>
+                <%unless church_address.blank?%>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Street 1</label>
+                        <div class="col-sm-5" style="padding-left:0px;">
+                            <input type="text" name="firstname" class ="form-control" value="<%= church_address.street1 %>" disabled = true> 
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Street 2</label>
+                        <div class="col-sm-5" style="padding-left:0px;">   
+                            <input type="text" name="firstname" class ="form-control" value="<%= church_address.street2 %>" disabled = true> 
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">City</label>
+                        <div class="col-sm-5" style="padding-left:0px;">
+                            <input type="text" name="firstname" class ="form-control" value="<%= church_address.city %>" disabled = true> 
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">State</label>
+                        <div class="col-sm-5" style="padding-left:0px;">
+                            <input type="text" name="firstname" class ="form-control" value="<%= church_address.state %>" disabled = true>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Postal Code</label>
+                        <div class="col-sm-5" style="padding-left:0px;">
+                            <input type="text" name="firstname" class ="form-control" value="<%= church_address.postal_code %>" disabled = true> 
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Country</label>
+                        <div class="col-sm-5" style="padding-left:0px;">
+                            <input type="text" name="firstname" class ="form-control" value= "<%= church_address.country %>" disabled = true>      
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Password</label>
+                        <div class="col-sm-5" style="padding-left:0px;">
+                            <input type="password" id="password_id" name="user[password]" class ="form-control" value= "">      
+                        </div>
+                    </div> 
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Password Confirmatiom</label>
+                        <div class="col-sm-5" style="padding-left:0px;">
+                            <input type="password" id="password_confirmation_id"name="user[password_confirmation]" class ="form-control" value= "">      
+                        </div>
+                    </div>  
+                <%end%>
+            
+                <div class="form-group">
+                    <div class="col-sm-offset-2">
+                        <%= link_to "Back", {:controller => 'chruchs', :action => "index" }, {:class => "button-align btn btn-default", :style=> "margin-left:0px;" } %>
+                        <%= f.submit "Save",:class=>"btn btn-info" %>
+                    </div>
+                </div>
+            <% end %> 
+        </div>
+    </div>
+    <!--========================   Upload   End  ======================-->
+</div>
+
+
+
+<%= javascript_include_tag 'bootstrap-hover-dropdown.js', 'bootstrap-tabdrop.js', 'ekko-lightbox.js', 'icheck.min.js', 'summernote.min.js', 'edit_church.js' %>
+ <%= stylesheet_link_tag "uploaded_mediums.css" %>

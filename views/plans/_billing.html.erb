@@ -1,0 +1,70 @@
+<div class="col-sm-12">
+  <h4 class="heading-title text-left">Total Billings: <%=@user_id_amounts.count%></h4>
+</div>
+<div class="col-sm-12">
+  <div class="table-responsive billing_table">
+    <table class="table table-bordered" style="width:100%;">
+        <thead>
+        <tr bgcolor="#31708f">
+            <th><font color="white">Subscribers</font></th>
+            <th><font color="white">Subscription Details</font></th>
+        </tr>
+        </thead>
+        <tbody class="odd" id="mytable">
+        <% @user_id_amounts.each do |user_id_amount| %>
+          <%user_id = user_id_amount[0]%>
+            <tr>
+              <td>
+                <%=get_username_by_id(user_id)%>
+              </td>
+              <td>
+                $<%= number_with_precision(user_id_amount[1], precision:2)%> <span class="pointer custom_alink" data-transaction='<%= user_id_amount[2] %>' data-toggle="modal" data-target="#myModal"> More Details...</span>
+                    <!--span class="pointer" onclick="show_hide(event);"><a>More Detail..</a></span>
+                    <span class="price" hidden="hidden">$<%= number_with_precision(user_id_amount[1], precision:2)%>
+                    </span-->
+              </td>
+            </tr>
+        <%end%>
+        </tbody>
+    </table>
+  </div>
+</div>
+<!-- Modal -->
+<div class="modal fade container-fix" id="myModal" tabindex="-1" role="dialog"
+   aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close"
+               data-dismiss="modal" aria-hidden="true">
+                  &times;
+            </button>
+            <h4 class="modal-title text-primary" id="myModalLabel">
+               Billing Description
+            </h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-12" id="update_area">
+                    <h2>Please Wait...</h2>
+                </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-info"
+               data-dismiss="modal">Close
+            </button>
+          </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<%= javascript_include_tag 'bootstrap-hover-dropdown.js', 'bootstrap-tabdrop.js', 'ekko-lightbox.js', 'icheck.min.js', 'summernote.min.js', 'my_account.js' %>
+
+<%= stylesheet_link_tag "my_account.css","tab.css" %>
+<script>
+$(".odd").find("tr:odd").css("background-color","#FFF5EB");
+$(".odd").find("tr:even").css("background-color","#ffffff");
+
+</script>

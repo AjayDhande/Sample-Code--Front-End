@@ -1,0 +1,456 @@
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/css/bootstrap-select.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/js/bootstrap-select.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/js/i18n/defaults-*.min.js"></script> 
+
+<style type="text/css">
+.labelstyle
+{
+  color: gray;
+
+}
+
+
+</style>
+<div class="container container-fix">
+<div class="row">
+  <div class="col-sm-12">
+    <!--  <h2 class="heading-title text-left">Add Account Details</h2>
+      <form id = "add_bank_account_form" class="form-horizontal UserAdministration">
+        <div class="row">
+          <div class="col-sm-6 col-xs-12">
+            <div clas="row">
+              <div class="col-sm-12 col-xs-12">
+               <div class="form-group">
+                  <label class="col-sm-4 control-label required">First Name</label>
+                  <div class="col-sm-8 col-xs-12">
+                    <input id = "first_name" type="text" name="submerchant_accounts[first_name]" class="form-control" value = "">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-4 control-label required">Last Name</label>
+                  <div class="col-sm-8 col-xs-12">
+                    <input id = "last_name" type="text" name="submerchant_accounts[last_name]" class="form-control" value = "">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-4 control-label required">Street Address</label>
+                  <div class="col-sm-8 col-xs-12">
+                    <input id = "street_address" type="text" name="submerchant_accounts[street_address]" class="form-control" value = "">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-4 control-label required">Locality</label>
+                  <div class="col-sm-8 col-xs-12">
+                    <input id = "locality" type="text" name="submerchant_accounts[locality]" class="form-control" value = "">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-4 control-label required">Region</label>
+                  <div class="col-sm-8 col-xs-12">
+                    <input id = "region" type="text" name="submerchant_accounts[region]" class="form-control" value = "">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-4 control-label required">Postal Code</label>
+                  <div class="col-sm-8 col-xs-12">
+                    <input id = "postal_code" type="text" name="submerchant_accounts[postal_code]" class="form-control" value = "">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-4 control-label required">Account Number</label>
+                  <div class="col-sm-8 col-xs-12">
+                    <input id = "account_number" type="text" name="submerchant_accounts[account_number]" class="form-control" value = "">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-4 control-label required">Routing Number</label>
+                  <div class="col-sm-8 col-xs-12">
+                    <input id = "routing_number" type="text" name="submerchant_accounts[routing_number]" class="form-control" value = "">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-4 control-label required">Date of birth</label>
+                  <div class="col-sm-8 col-xs-12">
+                    <input id = "date_of_birth" type="text" name="submerchant_accounts[dob]" class="form-control" value = "">
+                  </div>
+                </div>
+                <div class="col-sm-12 col-xs-12">
+                  <div class="form-group" style="width:100%;">
+                    <div class="col-sm-12">
+                      <button id="SaveInfoButton" class="btn btn-info" value="Save Info">Save</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>      
+  </div> -->
+  <p style="text-align:justify;">In order for you to collect money, all stores are required to set up a Sub-Merchant account through Online Church Media using Braintree (by PayPal). You will see prompts on your Media Store pages in Online Church Media encouraging you to create your account. To create a sub-merchant account please select the appropriate option below and fill out the necessary fields:</p>
+</div>
+</div>
+ <div class="row">
+  <div class="col-sm-8">     
+<h2>Braintree Sub-Merchant Account Application</h2>
+<p>Please indicate below if payments will be routed to business or to you as an individual. Note: If you are creating an account as a business, you will still need to complete some personal information as the applicant. Please select either a Business OR Individual Account Option.</p>
+ <!-- <div class="btn-group btn-group-justified">
+    <a href="#" class="btn btn-primary">Apple</a>
+    <a href="#" class="btn btn-primary">Samsung</a>
+  </div> -->
+
+  <!-- <input type="button" onclick="return toggleMe('para0')" value="Expanse"><br> 
+  <div id="para0">TEST TEXT</div> -->
+   <!-- <label>Notifications<span class='toggle'><input type='radio' class='notifications' name='notifications' id='notifications' /></span></li>
+   <label>Preview<span class='toggle'><input type='radio' class='preview' name='preview' id='preview' /></span></li> -->
+   </div>
+ </div>
+
+  <div class="row">
+  <div class="col-sm-6"> 
+   <ul class="nav nav-pills nav-justified">
+    <li class="active "><a data-toggle="pill" class="navstyle" href="#home">Business</a></li>
+    <li><a data-toggle="pill" class="navstyle" href="#menu1">Individual</a></li>
+   </ul>
+
+  <div class="tab-content">
+    <div id="home" class="tab-pane fade in active">
+<form id = "add_business_account_form" class="UserAdministration">
+    <h3 class="busstyle" style="color: red ! important;">Business Account Option</h3>
+      <p>If you collect funds into a business bank account, select this option</p>
+    <h4><b>INDIVIDUAL INFORMATION</b></h4>
+      <hr>
+
+      <div class="form-group">
+        <label class="required labelstyle">First Name</label>
+        <input type="text"  class="form-control" id ="buisness_first_name" name="submerchant_accounts[first_name]" placeholder="Enter First Name">
+      </div>
+
+      <div class="form-group">
+        <label class="required labelstyle">Last Name</label>
+        <input type="text"  class="form-control" id ="buisness_last_name" name="submerchant_accounts[last_name]" placeholder="Enter Last Name">
+      </div>
+
+     
+
+      <div class="form-group">
+        <label class="labelstyle">Phone</label>
+        <input type="text" class="form-control" id="buisness_number" name="submerchant_accounts[phone]"  placeholder="Enter Phone">
+      </div>
+
+
+  
+      <div class="form-group">
+        <label class="required labelstyle">Date Of Birth</label>
+        <input type="text" class="form-control" id="buisness_dob" name="submerchant_accounts[dob]" placeholder="Enter DOB">
+      </div>
+
+      <h4><b>BUSINESS</b></h4>
+        <hr>
+      <div class="form-group">
+        <label class="required labelstyle">Business Name</label>
+        <input type="text"  class="form-control" id="business_name" name="submerchant_accounts[legal_name]" placeholder="Enter Business Name">
+      </div>
+     <div class="form-group">
+          <label class="required labelstyle">TAX-ID</label>
+          <input type="text"  class="form-control" id ="business_tax_id" name="submerchant_accounts[tax_id]" placeholder="Enter TAX-ID">
+        </div>
+           
+      <h4><b>BUSINESS ADDRESS</b></h4>
+        <hr>
+      <div class="form-group">
+         <label class="required labelstyle">Street Address</label>
+         <input type="text"  class="form-control" id ="buisness_street_address" name="submerchant_accounts[street_address]" placeholder="Enter Street Address">
+      </div>
+          
+      <div class="form-group">
+        <label class="required labelstyle">City</label>
+        <input type="text"  class="form-control" id ="buisness_locality" name="submerchant_accounts[locality]"  placeholder="Enter City">
+      </div>
+  
+    <div class="form-group">
+        <label class="required labelstyle">State</label>
+
+       <input type="text"  class="form-control" id ="buisness_region" name="submerchant_accounts[region]"  placeholder="Enter the two letter State abbreviation here">
+
+
+      </div> 
+
+        <div class="form-group">
+        <label class="required labelstyle">Postal Code</label>
+        <input type="text"  class="form-control" id ="buisness_postal_code" name="submerchant_accounts[postal_code]" placeholder="Enter Postal Code">
+       </div>
+
+        <h4><b>BANKING DETAILS</b></h4> 
+        <hr>
+
+     <div class="form-group">
+        <label class="required labelstyle">Bank Account Number</label>
+        <input type="text"  class="form-control" id ="buisness_account_number" name="submerchant_accounts[account_number]" placeholder="Enter Bank Account Number">
+       </div>
+
+
+            <div class="form-group">
+        <label class="required labelstyle">Account Routing Number</label>
+        <input type="text"  class="form-control" id ="buisness_routing_number" name="submerchant_accounts[routing_number]" placeholder="Enter Account Routing Number">
+       </div>
+
+
+
+   <div id="myModal" class="modal fade" role="dialog">
+     <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <!-- <h4 class="modal-title">Modal Header</h4> -->
+      </div>
+    <div class="modal-body">
+      <div class="row">
+      <div class="col-sm-12">
+      <!--  <p>Your submerchant account has been activated.Now you can recieive your payments.
+          KYCK.COM INC USES BRAINTREE PAY</p> -->
+    </div> 
+    </div>
+   
+    <div class="row">
+      <div class="col-sm-12">
+      <p>ONLINE CHURCH MEDIA INC USES BRAINTREE PAY
+      <!-- <img id="image_new" class="modallogostyle" src="<%#= asset_path 'braintree-payments.png' %>"/></p> -->
+      <hr>
+    </div> 
+    </div>
+
+    <div class="row">
+       <div class="col-sm-12">
+         <p><b>Online Church Media, </b>Inc.uses <b>Braintree Payment solutions LLC</b>(Braintree) for payment processing. In order for you to use BrainTrees's payment processing  services, you must enter into Merchant Services Agreement(MSA) with BrainTree and sponsoring bank. The MSA is available at
+          <a href="<%= home_path %>"> www.braintreepaymnets.com/agreements/merchant</a></p>
+         <p>By accepting this Agreement,you agree:(a) that you have downloaded or printed the MSA, and(b) that you have reviewed and agree to the MSA.</p>
+         <p>Please note that[MSP] is not a party to the MSA and that you, Braintree and Braintree's sponsoring bank are the three parties to the MSA and that Online Church Media has no obligations or liability to you unser the MSA</p>
+         <p>If you have questions regarding the MSA, please <b>contact Braintree</b> at </p>
+        </div> 
+    </div>
+    </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="checkbox">
+      <label class="fontstyle"><input type="checkbox"  style="margin-top: 0%;">I accept</label>
+      <a class="fontstyle" href="#">
+      <button type="button" class="btn btn-link" data-toggle="modal" data-target="#myModal">Terms of Service</a>
+   <!--    <button type="submit" class="btn btn-info btn-sm">CREATE BRAINTREE SUBMERCHANT ACCOUNT</button> -->
+      <button id="SaveInfoButton" class="btn btn-info btn-sm" value="Save Info">CREATE BRAINTREE SUBMERCHANT ACCOUNT</button>
+    </div>
+    </form>
+    </div>
+
+     <div id="menu1" class="tab-pane fade">
+    <form id = "add_bank_account_form" class="UserAdministration">
+       <h3 class="busstyle" style="color: red ! important;">Individual Account Option</h3>
+      <p>If you collect funds into an individual bank account, select this option</p>
+       <h4><b>INDIVIDUAL INFORMATION</b></h4>
+      <hr>
+      
+        <div class="form-group">
+          <label class="required labelstyle">First Name</label>
+          <input type="text"  class="form-control" id ="first_name" name="submerchant_accounts[first_name]" placeholder="Enter First Name">
+        </div>
+
+        <div class="form-group">
+          <label class="required labelstyle">Last Name</label>
+          <input type="text"  class="form-control" name="submerchant_accounts[last_name]" id ="last_name" placeholder="Enter Last Name">
+        </div>
+
+
+        <div class="form-group">
+          <label class="labelstyle">Phone</label>
+          <input type="text" class="form-control" id="number" name="submerchant_accounts[phone]" placeholder="Enter Phone">
+        </div>
+      
+        <div class="form-group">
+          <label class="required labelstyle">Date Of Birth</label>
+          <input type="text" class="form-control" id="dob" name="submerchant_accounts[dob]" placeholder="Enter DOB">
+        </div>
+
+        <h4><b>INDIVIDUAL ADDRESS</b></h4>
+        <hr>
+
+        <div class="form-group">
+        <label class="required labelstyle">Street Address</label>
+        <input type="text"  class="form-control" id ="street_address" name="submerchant_accounts[street_address]" placeholder="Enter Street Address">
+      </div>
+          
+      <div class="form-group">
+        <label class="required labelstyle">City</label>
+        <input type="text"  class="form-control" id ="locality" name="submerchant_accounts[locality]"  placeholder="Enter City">
+      </div>
+  
+    <div class="form-group">
+        <label class="required labelstyle">State</label>
+
+       <input type="text"  class="form-control" id ="region" name="submerchant_accounts[region]"  placeholder="Enter the two letter State abbreviation here">
+
+
+      </div> 
+
+        <div class="form-group">
+        <label class="required labelstyle">Postal Code</label>
+        <input type="text"  class="form-control" id ="postal_code" name="submerchant_accounts[postal_code]" placeholder="Enter Postal Code">
+       </div>
+
+
+      <h4><b>BANKING DETAILS</b></h4>
+      <hr> 
+
+      <div class="form-group">
+        <label class="required labelstyle">Bank Account Number</label>
+        <input type="text"  class="form-control" id ="account_number" name="submerchant_accounts[account_number]" placeholder="Enter Bank Account Number">
+       </div>
+
+       <div class="form-group">
+        <label class="required labelstyle">Account Routing Number</label>
+        <input type="text"  class="form-control" id ="routing_number" name="submerchant_accounts[routing_number]" placeholder="Enter Account Routing Number">
+       </div>
+
+       <div id="myModal1" class="modal fade" role="dialog">
+     <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <!-- <h4 class="modal-title">Modal Header</h4> -->
+      </div>
+    <div class="modal-body">
+      <div class="row">
+      <div class="col-sm-12">
+      <!--  <p>Your submerchant account has been activated.Now you can recieive your payments.
+          KYCK.COM INC USES BRAINTREE PAY</p> -->
+       <!-- <p><img id="image_new"  src="<%#= asset_path 'headimg.jpg' %>"/></p> -->
+    </div> 
+    </div>
+   
+    <div class="row">
+      <div class="col-sm-12">
+      <p>ONLINE CHURCH MEDIA USES BRAINTREE PAY
+      <!-- <img id="image_new" class="modallogostyle" src="<%#= asset_path 'braintree-payments.png' %>"/></p> -->
+      <hr>
+    </div> 
+    </div>
+
+     <div class="row">
+       <div class="col-sm-12">
+         <p><b>Online Church Media, </b>Inc.uses <b>Braintree Payment solutions LLC</b>(Braintree) for payment processing. In order for you to use BrainTrees's payment processing  services, you must enter into Merchant Services Agreement(MSA) with BrainTree and sponsoring bank. The MSA is available at
+          <a href="<%= home_path %>"> www.braintreepaymnets.com/agreements/merchant</a></p>
+         <p>By accepting this Agreement, you agree:(a) that you have downloaded or printed the MSA, and(b) that you have reviewed and agree to the MSA.</p>
+         <p>Please note that[MSP] is not a party to the MSA and that you, Braintree and Braintree's sponsoring bank are the three parties to the MSA and that Online Church Media has no obligations or liability to you unser the MSA</p>
+         <p>If you have questions regarding the MSA, please <b>contact Braintree</b> at </p>
+        </div> 
+    </div>
+    </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+        <div class="checkbox">
+        <label  class="fontstyle"><input type="checkbox"  style="margin-top: 0%;"> I accept</label>
+        
+    <!--     <a class="fontstyle" href="/kyckform">
+          <button type="button" class="btn btn-link">Terms and Services</a> -->
+         <a class="fontstyle" href="#">
+      <button type="button" class="btn btn-link" data-toggle="modal" data-target="#myModal1">Terms of Service</a>
+
+        <button type="submit" class="btn btn-info btn-sm">CREATE BRAINTREE SUBMERCHANT ACCOUNT</button>
+  
+        <!-- <%#= link_to 'CREATE BRAINTREE SUBMERCHANT ACCOUNT', '/my_account/#brand_new_messages_path', class: "btn btn-info btn-sm" %> -->
+
+        <!-- <form action="/my_account/#brand_new_messages_path"> 
+          <button type="submit" class="btn btn-info btn-sm">CREATE BRAINTREE SUBMERCHANT ACCOUNT</button>
+        </form> -->
+        </div>
+      </form>
+    </div>
+  </div>
+ </div>
+</div>
+</div>  
+
+<%= javascript_include_tag "my_account.js"%>
+<style type="text/css">
+.navstyle
+{
+border-radius: 0px;
+padding: 10px 100px;
+}
+.datefield 
+{ 
+/*    display: inline; */
+padding: 0.3em; 
+border: inset 1px #FEF7F7;
+background: #FFF; 
+border-radius: 4px;
+color: #666;
+}
+.datefield * 
+{ 
+  /* display: inline-block;*/
+}
+.datefield input 
+{
+width: 1.7em; 
+  /*  padding: 0 0.4em; */
+border: none; 
+font-size: 100%; 
+background: none;
+color: #000;            
+}
+.datefield input#year { width:2.5em; }
+.datefield input:focus { outline:none; }
+.fontstyle
+{
+  font-size: 12px;
+}
+.busstyle
+{
+  color:red;
+  text-decoration: underline;
+}
+.nav-pills a 
+{
+    /*color: #ffffff*/
+color: #323433;
+background-color:#e9e4e4;
+}
+.nav-pills li a
+{
+border-radius:0px;
+}
+.modallogostyle
+{
+  padding-left:30px;
+}
+</style>
+
+ <script type="text/javascript">
+// function toggleMe(a){
+//     var e = document.getElementById(a);
+//     if(!e) return true;
+//     if(e.style.display == "none") {
+//         e.style.display = "block"
+//     } else {
+//         e.style.display = "none"
+//     }
+//     return true;
+// }
+$('#date1 input').autotab_magic().autotab_filter('numeric');
+
+ </script>

@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% if current_subdomain.is_ocm? %>
+    <%= render 'favicon' %>
+    <title>Online Church Media - Your Online Church Media Store</title>
+  <% else %>
+    <% favicon = Theme.find_by_subdomain_id(current_subdomain.id) %>
+    <% if favicon.present? && favicon.favicon_image_path.present?%>
+      <link href="/assets/images/<%=favicon.favicon_image_path%>" rel="shortcut icon" type="image/x-icon"/>
+    <%else%>
+      <link href="<%= asset_path 'subdomain_favicon.png'%>" rel="shortcut icon" type="image/x-icon"/>
+    <% end %>
+    <title><%= subdomain_name.titleize %> - Media Store</title>
+  <% end %>
+
+  <meta charset="utf-8">
+  <%if @media_details != true %>
+    <meta property="og:title" content="Online Church Media - Your Online Church Media Store"/>
+    <meta property="og:description" content="Click here to stream and download the latest media from here." />
+    <meta property="og:url" content="<%=request.url%>"/>
+    <meta property="og:image" content="<%= request.base_url %><%= @logo_path rescue nil%>"/>
+  <%else%>
+    <meta property="og:title" content="<%= File.basename(@uploaded_media.media_file_name,File.extname(@uploaded_media.media_file_name)).gsub("_", " ") rescue nil%>"/>
+    <meta property="og:description" content="<%= @uploaded_media.presenter_name rescue nil%>" />
+    <meta property="og:type" content="music.song"/>
+    <meta property="og:url" content="<%=request.url%>"/>
+    <meta property="og:image" content="<%= request.base_url %><%= @uploaded_media.media_art.url(:thumb) rescue nil %>"/>
+  <%end%>
+  <meta property="og:site_name" content="onlinechurchmedia"/>
+  <meta property="fb:app_id" content="733241933481400" />
+  <meta property="og:image:width" content="600" />
+  <meta property="og:image:height" content="315" />
+  <meta http-equiv="X-UA-Compatible" content="IE=10; IE=9; IE=8; IE=7; IE=EDGE" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <%= include_gon %>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'jquery.validate.js', 'jquery.validate.min.js', 'bootstrap.min.js', 'jquery.blockUI.js', 'chosen.jquery.js', 'jquery-ui.min.js', 'chosen-select.js', 'index.js', 'searchmedia.js', 'bootstrap-toggle.min.js', 'wow.min.js','milestone.js' %>
+  <%= csrf_meta_tags %>
+  <link href="<%= asset_path "font-awesome.min.css"%>" rel="stylesheet" type="text/css" />
+  <link href="<%= asset_path "bootstrap.css" %>" rel="stylesheet" type="text/css" />
+  <link href="<%= asset_path "jquery-ui.css" %>" rel="stylesheet" type="text/css" />
+  <link href="<%= asset_path "chosen.min.css" %>" rel="stylesheet" type="text/css" />
+  <%= stylesheet_link_tag "bootstrapValidator", "summernote", "icheck", "sb-admin-2", "search", "animate", "bootstrap-colorpicker" %>
+  <link href="/custom.css" rel="stylesheet" type="text/css" />
+  <link href="<%= asset_path "bootstrap-toggle.min.css" %>" rel="stylesheet">
+  <link href="<%= asset_path "dev_custom.css" %>" rel="stylesheet" type="text/css" />
+  <link href="<%= asset_path "StyleSheet.css" %>" rel="stylesheet" />
+  <link href='http://fonts.googleapis.com/css?family=PT+Sans+Caption:400,700' rel='stylesheet' type='text/css'>
+  <script type='text/javascript' src="//wurfl.io/wurfl.js"></script>
+
+  <style type="text/css">
+    <%if current_subdomain && !current_subdomain.is_ocm? %>
+      <%if current_subdomain.themes.present? && current_subdomain.themes.last.gradient == true%>
+        header {
+          background: linear-gradient(#e6e6e6, <%= cookies[:header_color]%>);
+          color: <%= cookies[:header_font_color] %>;
+        }
+      <%else%>
+        header {
+          background: <%= cookies[:header_color]%>;
+          color: <%= cookies[:header_font_color] %>;
+        }
+      <%end%>
+    <%else%>
+      header {
+        background: <%= cookies[:header_color]%>;
+        color: <%= cookies[:header_font_color] %>;
+      }
+    <%end%>
+    .btn-new {
+      background: <%= cookies[:header_color] %> !important;
+    }
+
+    .logo {
+      background-repeat: no-repeat;
+    }
+
+    .logo a {
+      width: 100%;
+      float: left;
+    }
+
+    .logo-fix {
+      max-height: 55px;
+      max-width: 240px;
+      height: auto;
+      width: auto;
+    }
+
+    .logo {
+      max-height: 55px;
+      max-width: 240px;
+      height: auto;
+      width: auto;
+      margin-top: 10px;
+    }
+
+    @media(max-width: 420px){
+      .logo-fix {
+        height: 35px !important;
+        width: auto !important;
+      }
+
+      .logo {
+        height: 40px !important;
+        width: auto !important;
+        margin-top: 10px;
+      }
+    }
+
+    @media(min-width: 240px) and (max-width: 319px){
+      .logo-fix {
+        height: 30px !important;
+        width: auto !important;
+      }
+
+      .logo {
+        height: 30px !important;
+        width: auto !important;
+        margin-top: 10px;
+      }
+    }
+
+    body {
+      color: <%= cookies[:font_color] %> !important;
+      background-size: cover !important;
+    }
+
+  <% if current_theme.theme_name == "Default" && current_theme.subdomain_title_color == "#323433" %>
+    body {
+      background-image: url("<%= cookies[:background_image_path] %>") !important;
+      background: <%= cookies[:background_color] %> ;
+    }
+  <%end%>
+
+  <% if current_theme.theme_name == "CUSTOM" && current_theme.background_image_path.present? %>
+    body {
+      background-image: url("<%= cookies[:background_image_path] %>") !important;
+    }
+  <%elsif current_theme.theme_name == "CUSTOM" && !current_theme.background_image_path.present? %>
+    body {
+      background: <%= cookies[:background_color] %> !important;
+    }
+  <%else%>
+    body {
+      background: <%= cookies[:background_color] %> !important;
+      }
+  <%end%>
+
+    div.container.container-fix > div:nth-child(4) > div.col-md-9.col-sm-8.col-xs-12 > div:nth-child(1) > hr {
+      color: <%= cookies[:background_color] %> !important;
+    }
+
+    header .btn-login, header .login-new, header .btn .badge, header .header-forget, #greeting {
+      color: <%= cookies[:header_font_color] %> !important;
+    }
+
+    #home_search_by_chosen > a, header .active-result, header .form-control{
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+
+    #header > div > div > div.col-md-9.col-xs-12.header-search-area > div > div.col-md-5.col-xs-12.custom-width.med_search > form > div > div.input-group-btn > button, #update_list > div > div {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    <%if current_subdomain && !current_subdomain.is_ocm? %>
+      <%if current_subdomain.themes.present? && current_subdomain.themes.last.gradient == true%>
+        footer {
+          margin-left: -28px;
+          width: 106%;
+          background: linear-gradient(#d9d9d9, <%= cookies[:footer_color]%>);
+          color: <%= cookies[:header_font_color] %>;
+        }
+        <%else%>
+          footer {
+            margin-left: -28px;
+            width: 106%;
+            background: <%= cookies[:footer_color]%>;
+            color: <%= cookies[:header_font_color] %>;
+          }
+      <%end%>
+    <%else%>
+      footer {
+        margin-left: -28px;
+        width: 106%;
+        background: <%= cookies[:footer_color]%>;
+        color: <%= cookies[:header_font_color] %>;
+      }
+    <%end%>
+    footer .link-two, footer .link-two a, footer .link-one a, footer .text-info {
+      color: <%= cookies[:header_font_color] %> !important;
+    }
+
+    #usertype, #usertype > option, #news > div:nth-child(5) > div > button, footer .form-control {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+
+    footer .form-control::-moz-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    footer .form-control::-webkit-input-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    footer .form-control:-ms-input-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+
+    header .search::-moz-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    header .search::-webkit-input-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    header .search:-ms-input-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    header .form-control::-moz-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    header .form-control::-webkit-input-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    header .form-control:-ms-input-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+
+    body #category_select_chosen::-moz-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    body #category_select_chosen::-webkit-input-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    body #category_select_chosen:-ms-input-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+
+    body #category_name_id::-moz-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    body #category_name_id::-webkit-input-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    body #category_name_id:-ms-input-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+
+    body #subcategory_name_id::-moz-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    body #subcategory_name_id::-webkit-input-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    body #subcategory_name_id:-ms-input-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+
+    body #subscription_name::-moz-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    body #subscription_name::-webkit-input-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    body #subscription_name:-ms-input-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+
+    body #plan_amount::-moz-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    body #plan_amount::-webkit-input-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    body #plan_amount:-ms-input-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+
+    body #plan_description::-moz-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    body #plan_description::-webkit-input-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    body #plan_description:-ms-input-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+
+    body #feedback_text::-moz-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    body #feedback_text::-webkit-input-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    body #feedback_text:-ms-input-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    body #name::-moz-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    body #name::-webkit-input-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    body #name:-ms-input-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    body #email::-moz-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    body #email::-webkit-input-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    body #email:-ms-input-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    body #username::-moz-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    body #username::-webkit-input-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    body #username:-ms-input-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    body #pwd::-moz-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    body #pwd::-webkit-input-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    body #pwd:-ms-input-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    body #confirm_pwd::-moz-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    body #confirm_pwd::-webkit-input-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    body #confirm_pwd:-ms-input-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    body #street1::-moz-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    body #street1::-webkit-input-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    body #street1:-ms-input-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    body #street2::-moz-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    body #street2::-webkit-input-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    body #street2:-ms-input-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    body #pcode::-moz-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    body #pcode::-webkit-input-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    body #pcode:-ms-input-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    body .home_search_text::-moz-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    body .home_search_text::-webkit-input-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    body .home_search_text:-ms-input-placeholder {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+
+    #category_category_name, #category1_chosen > a, div#category1_chosen.chosen-container.chosen-container-single div.chosen-drop ul.chosen-results,#myTab > li.active.customer_profile_tab > a, #LikedFavouriteMedia > div > div.well, #DownloadMedia > div > div.well, #OrderlistForMedia > div > div.well, #RatingForMedia > div > div.well, #accordion.panel-group div.panel.panel-default div.panel-collapse.collapse.in div.panel-body, #addon-area > div > div > ul > li > h2, #OrderlistForMedia > div > h2, #OrderlistForMedia > div > div > table > thead > tr > th, #OrderlistForMedia > div > div > table > tbody > tr > td, #OrderlistForMedia > div > div > table > tbody > tr > td > a, #profile > div.container, #profile > div.container > div:nth-child(1) > h2, #myTabContent, #DownloadMedia > div > div > table > tbody > tr > td > a, #DownloadMedia > div > div > table > tbody > tr > td > div > a > span, #DownloadMedia > div > h2, #LikedFavouriteMedia > div > div > table > tbody > tr > td > a > span.text-play-customer, #LikedFavouriteMedia > div > h2, #RatingForMedia > div > div > div > table > tbody > tr > td > a > span.text-play-customer, #RatingForMedia > div > div > h2, #SubscriptionPlanChange > div > div > ul > li > div > div.col-sm-4 > h3 > b, #SubscriptionPlanChange > div > div > ul > li > div > div.col-sm-8 > div > h3 > b {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+
+    body > div.container.container-fix > div.update_page > div:nth-child(2) > div:nth-child(2) > div.well, body > div.container.container-fix > div.update_page > div:nth-child(2) > div:nth-child(2) > div.well > h3:nth-child(1), body > div.container.container-fix > div.update_page > div:nth-child(2) > div:nth-child(2) > div.well > h3:nth-child(3) > a, body .caption, body .dropdown-menu > li > a, div.update_page > div > div > div, #update_church_account > div > div > h2, #AdminControl > div > div > h2, #YourChurchPlane > div.row > div > h2, #cancel_account_form > div > h2, #cancel_account_form > div > h3, #myTab > li.myAccount_tab5.active > a, #AdminControl > div:nth-child(2) > div > div > div > div > a {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    body .caption > h4:nth-child(1) > a, #category_select_chosen > a, #category_select_chosen > div > ul > li.active-result, #subcategory_chosen > a, #subcategory_chosen > div > ul > li.active-result, body > div.container.container-fix > div.content > form > div > div.col-sm-12 > div, body .caption > h5:nth-child(1) > a, body .caption > h5:nth-child(2) > p, div.caption h5 div.row div.col-xs-12.rating p {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    .table-bordered > thead > tr > th, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > td, body .pull-right, body .myaccount_tab > h3 > small, body .myaccount_tab > h3, div.container.container-fix > div:nth-child(4) > div.col-md-9.col-sm-8.col-xs-12 > div.well.well-sm {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    #mytable > tr > td > h2, div.container.container-fix div.the_tabs div div.row div.col-sm-6 div.row div.col-sm-12 table.table.table-bordered tbody.odd1 tr > td > h2, html body div.container.container-fix div.row div.col-sm-5, div.col-sm-5 ul.list-group.shopping-cart-total li.list-group-item div.col-sm-12.well.text-center a.padding2, div.row div.text-left.subtotal, #logo_button {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+
+    #theme_id_chosen > a > span, #theme_id_chosen.chosen-container.chosen-container-single.chosen-container-active.chosen-with-drop div.chosen-drop ul.chosen-results li.active-result, form#update_church_account.form-horizontal.UserAdministration div.row div.col-sm-6 div.well p, div.row div.text-left.total-amount, body > div.container.container-fix > div:nth-child(5) > div > div > p, div.container.container-fix > div:nth-child(5) > div > div > h3 > a, div.container.container-fix > div:nth-child(8) > div > div > p> a, #accordion > div > div.panel-heading > h4 > a {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+
+    body .panel-heading > h3, div.container.container-fix div.update_page div.row div.col-sm-12 div.panel.panel-default div.panel-body, div.container.container-fix div.update_page div.row div.col-sm-12 div.panel.panel-default div.panel-heading, div.update_page div.row div.col-sm-12 div.panel.panel-default div.panel-body form.form-horizontal.UserAdministration div.form-group div.col-sm-12.col-sm-offset-2 > .btn-default, #subcategory_name_id, #subcategory_subcategory_name, #feedback_form > div > div:nth-child(9) > div > input, #device_statistics, body .form-control, #plans, #plans div.col-sm-4 div.well.monthly-pricing.text-center p.desc, #plans div.col-sm-4 h4.text-success label.checkbox-inline, #plans div.col-sm-4 div.well.monthly-pricing.text-center p.month {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+
+    body .tile-heading, #plan_amount, #subscription_name, #plan_description, #user_email, #feedback_text, #guest_user_email, div.form-container.radius-box.glassy-bg.small-10.small-centered.medium-8.large-6.columns form input.button.mt1.btn.btn-primary, body .btn.btn-primary, body .btn.btn-info, body .btn.btn-default, body div.container.container-fix div.row div.col-sm-3 div.alert.text-center a.alert-link, body .btn.btn-success, body .btn.btn-danger,
+      div.container.container-fix div.row div.col-sm-3 div.alert.text-center a.alert-link > input, body > div.container.container-fix > div:nth-child(2) > div:nth-child(2) > ul > li {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+
+    div#SubscriptionPlanChange.tab-pane.active div.row div.col-sm-12 ul.list-group li.list-group-item div.row div.col-sm-4 > h3, div#SubscriptionPlanChange.tab-pane.active div.row div.col-sm-12 ul.list-group li.list-group-item div.row div.col-sm-8 div.row h3, body .alert.alert-info.Upgradable-plan-change.text-center > h2, body .alert.alert-info.Upgradable-plan-change.text-center > div > h5, body .alert.alert-info.Upgradable-plan-change.text-center > h4, div.update_page div.row div.col-sm-12 div.panel.panel-default div.panel-body form.form-horizontal.UserAdministration div.form-group h3, #mytable.odd tr td a {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+
+    body .tile, body .tile-body > i, #add_plan_subscriptions > div:nth-child(5) > div > div > a, #add_plan_subscriptions.form-horizontal.label-padding div.form-group div.col-xs-6 div.chosen-container.chosen-container-single div.chosen-drop ul.chosen-results, form#add_plan_subscriptions.form-horizontal.label-padding div.form-group div.col-xs-6 div.chosen-container.chosen-container-single a.chosen-single, body div.row.Monthly-Pricing-two div.col-sm-12 div.row h3.text-center.text-info, #fileupload > table > tbody > tr > td.tag > div > input[type="text"], .chosen-container-single .chosen-single span, #fileupload > table > tbody > tr > td.category > div.chosen-container .chosen-results li.active-result, #fileupload > table > tbody > tr > td.category > div.chosen-container .chosen-results .no-results, .chosen-container-single .chosen-search input[type="text"], #update_church_account > div:nth-child(2) > div.col-sm-12.address_section > div > h2, #update_church_account > div:nth-child(2) > div.col-sm-12.address_section > div > div > label {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+    div.container.container-fix div.row div.col-sm-4.cart_subtotal ul.list-group.shopping-cart-total li.list-group-item div.row div.col-sm-6.col-xs-6.text-center, div.container.container-fix div.row div.col-sm-4.cart_subtotal ul.list-group.shopping-cart-total li.list-group-item div.col-sm-12.well.text-center, #search_by_chosen a.chosen-single, #search_by_chosen.chosen-container.chosen-container-single.chosen-with-drop.chosen-container-active div.chosen-drop ul.chosen-results li.active-result, div.input-group input.search.home_search_text, form.navbar-form.header-search.category-before div.input-group input.search, #YourChurchPlane.tab-pane.active div.row div.col-sm-12 ul.list-group li.list-group-item div.row div.col-sm-4 h3 {
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+
+    #subscribeModal > div > form > div > div.modal-body > div > div > div > table > tbody > tr > td > a {
+      /*background: <%= cookies[:header_color] %> !important;*/
+      color: <%= cookies[:other_font_color] %> !important;
+    }
+
+    @media (min-width: 768px) and (max-width: 991px) {
+      .logo {
+        /*height: 50px;*/
+        margin-left: -15px;
+        margin-top: 10px;
+      }
+    }
+
+    /*@media (min-width: 480px) and (max-width: 767px)  {
+      .logo { 
+        height: 35px;
+        width: 40%;
+      }
+    }
+
+    @media (min-width: 320px) and (max-width: 479px)  {
+      .logo {
+        height: 40px;
+        width: 80%;
+      }
+    }*/
+
+    /*Nitin : Changes for theme font color*/
+    
+  <% if current_theme.theme_name != "Default" && current_theme.subdomain_title_color != "#323433" %>
+    .form-control::-moz-placeholder {
+      color: <%= cookies[:font_color] %> !important;
+    }
+    .btn-default {
+      color: <%= cookies[:font_color] %> !important;
+    }
+    .chosen-container-single .chosen-single {
+      color: <%= cookies[:font_color] %> !important;
+    }
+    .chosen-container .chosen-results {
+      color: <%= cookies[:font_color] %> !important;
+    }
+    .panel-default > .panel-heading {
+      color: <%= cookies[:font_color] %> !important;
+    }
+    a {
+      color: <%= cookies[:font_color] %> !important;
+    }
+    h1 small, h2 small, h3 small, h4 small, h5 small, h6 small, .h1 small, .h2 small, .h3 small, .h4 small, .h5 small, .h6 small, h1 .small, h2 .small, h3 .small, h4 .small, h5 .small, h6 .small, .h1 .small, .h2 .small, .h3 .small, .h4 .small, .h5 .small, .h6 .small {
+      color: <%= cookies[:font_color] %> !important;
+    }
+    .btn-info {
+      color: <%= cookies[:font_color] %> !important;
+    }
+    .already-register p {
+      color: <%= cookies[:font_color] %> !important;
+    }
+    h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+      color: <%= cookies[:font_color] %> !important;
+    }
+    .experience-image figcaption span {
+      color: <%= cookies[:font_color] %> !important;
+    }
+    .btn-primary {
+      color: <%= cookies[:font_color] %> !important;
+    }
+    .shopping-cart-total .subtotal{
+      color: <%= cookies[:font_color] %> !important;
+    }
+    .form-control {
+      color: <%= cookies[:font_color] %> !important;
+    }
+    .tile-heading {
+      color: <%= cookies[:font_color] %> !important;
+    }
+    .tile {
+      color: <%= cookies[:font_color] %> !important;
+    }
+    button, input, optgroup, select, textarea {
+      color: <%= cookies[:font_color] %> !important;
+    }
+
+  <% end %>
+  /*Nitin*/
+</style>
+  <style type="text/css">
+      <%if current_user and current_user.is_customer?%>
+          @media (min-width: 767px) and (max-width: 980px) {
+            .pull-right {
+            float: right;
+            /*margin-right: -27px;*/
+            }
+          }
+      <%elsif current_user%>
+          @media (min-width: 767px) and (max-width: 980px) {
+            .pull-right {
+            float: right;
+            }
+          }
+      <%end%>
+    </style>
+</head>
+<body>
+<!-- <img class="hide" src="semi_transparent_play.png" width="200" height="200" alt="video name" style="background:url(waveform1.png) 0 0 no-repeat;" /> -->
+  <!--========================   Header Start  ======================-->
+  <script type="text/javascript">
+  <% if !flash[:type].blank? %>
+    notify("<%= flash[:title] %>", "<%= flash[:message] %>", "notice");
+  <% else %>
+    notify("<%= flash[:title] %>", "<%= flash[:message] %>", "notice");
+  <% end %>
+  </script>
+<!--========================   Header Start    ======================-->
+  <!--========================   Header Start    ======================-->
+
+<header id="header" class="fix-header">
+  <div class="container">
+    <div class="row">
+      <nav class="navbar navbar-default" role="navigation" style= "margin-bottom: 0px; margin-top: 0px;">
+        <div class="row">
+          <div class="col-md-3 col-xs-12 header-search-area2 navbar-header">
+              <div class="col-xs-9 col-sm-12">
+                <% @url_link = Subdomain.find(current_subdomain.id).personal_url %>
+                <% if @url_link.present? %>
+                  <a class="" href="<%= @url_link %>">
+                  <img alt="Logo" class="logo" src="<%= cookies[:logo_path] %>" />
+                </a>
+                <%else%>
+                  <a class="" href="<%= logo_link_path %>">
+                  <img alt="Logo" class="logo" src="<%= cookies[:logo_path] %>"/>
+                </a>
+                <% end %>
+                </a>
+              </div>
+              <div class="col-xs-3">
+                <button id="navbar-toggle-button" type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                   data-target="#example-navbar-collapse">
+                   <span class="sr-only">Toggle navigation</span>
+                   <span class="icon-bar"></span>
+                   <span class="icon-bar"></span>
+                   <span class="icon-bar"></span>
+                   <span class="icon-bar"></span>
+                </button>
+              </div>
+          </div>
+
+          <div class="col-md-9 col-xs-12 header-search-area">
+            <div class="collapse navbar-collapse" id="example-navbar-collapse">
+              <div class="row">
+                <ul class="nav" style="margin-left: 0px; margin-right:0px;">
+                  <li class="active">
+                    <div class="col-md-5 col-xs-12">
+                    <form action="<%= medialist_path %>" role="search" method="post" class="navbar-form header-search category-before">
+                        <div class="input-group" id="home_search">
+                          <span class="dropdown width5">
+                            <select data-placeholder="" name="home_search_by" id="home_search_by" class="chosen-select chosen-select5" tabindex="2">
+                              <% if params[:home_search_by] %>
+                                <option <%= "selected" if params[:home_search_by] == "all" %> value="all">All</option>
+                                <option <%= "selected" if params[:home_search_by] == "artist" %> value="artist">Presenter</option>
+                                <option <%= "selected" if params[:home_search_by] == "file" %> value="file">Message</option>
+                              <% else %>
+                                  <option selected value="all">All</option>
+                                  <option value="artist">Presenter</option>
+                                  <option value="file">Message</option>
+                              <% end %>
+                            </select>
+                          </span>
+                          <input type="text" name="home_search_text" id="search-input" placeholder="Search Media" class="search" value="<%= params[:home_search_text] if params[:home_search_text] && params[:home_search_by] %>" autocomplete="off" >                          
+                          <span class="input-group-btn">
+                            <button class="btn btn-info" name="go" id="go" type="submit" style="margin-top: -1.7px; height:37px; margin-right:-1px;">Go</button>
+                          </span>
+                          <div id="auto-complete"></div>
+                        </div>
+                    </form>
+                    </div>
+                  <!-- </li>
+
+                  <li> -->
+                    <div class="col-md-7 col-xs-12 pull-right">
+                    <% unless user_signed_in? %>
+                        <div class="row header-login" id="login_error">
+                          <%= form_for User.new, url: user_session_path, html: { method: :post, class: "form-inline login-sign-before", role: 'form' } do |f| %>
+                            <div class="form-group">
+                              <label class="sr-only">User Name</label>
+                              <%= f.text_field :username, placeholder: "Username", class: "form-control" %>
+                            </div>
+                            <div class="form-group">
+                              <label class="sr-only" for="exampleInputPassword2">Password</label>
+                                <%= f.password_field :password, placeholder: "Password", class: "form-control" %>
+                            </div>
+                            <div class="form-group">
+                              <label class="sr-only">Login</label>
+                                <%= f.submit "Login", class: "btn-new login-new", id: "login1" %>
+                            </div>
+                            <div class="form-group">
+                              <% if current_subdomain.is_ocm? %>
+                                  <%= link_to "Signup", signup1_path, class: "btn btn1 btn-login signup-new", id: "signup1" %>
+                              <%else%>
+                                <%= link_to "Signup", signup_path, class: "btn btn1 btn-login signup-new", id: "signup1" %>
+                              <%end%>
+                            </div>
+                            <div class="form-group cart_postion">
+                                <%= render 'layouts/cart_text' %>
+                            </div>
+                            <a href="<%=new_user_password_path%>" class="header-forget header-forget1" name="forget_password">Forgot Password?</a>
+                            <a href="<%=forgot_username_path%>" class="header-forget header-forget1" name="forget_name">Forgot Username?</a>
+                          <% end %>
+                        </div>
+                    <% else %>
+                        <div class="header-login header-after-login">
+                          <form class="form-inline login-sign-before pull-right" role="form">
+                            <div class="form-group">
+                              <% if current_user.is_ocm? %>
+                                <%= link_to "My Account", '/my_account#brand_new_promotion', class: "btn btn-login", id: "my_account_link" %>
+                              <%elsif current_user.is_subscription_admin? %>
+                                <%= link_to "Your Account", '/reports', class: "btn btn-login" %>
+                              <%elsif current_user.is_customer? %>
+                                <%= link_to "My Account", "#{my_account_path}#ProfileInformation", class: "btn btn-login" %>
+                              <%else%>
+                                <%= link_to "My Account", my_account_path, class: "btn btn-login" %>
+                                <%= link_to "Submerchant Account", submerchant_account_path, class: "btn btn-login" %>
+                              <%end%>
+                            </div>
+                            <div class="form-group">
+                              <%= link_to "Support", support_path, class: "btn btn-login" %>
+                            </div>
+                            <div class="form-group">
+                              <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "btn btn-login" %>
+                            </div>
+                            <% if current_user.is_customer? %>
+                              <div class="form-group">
+                                <%= render 'layouts/cart_text' %>
+                              </div>
+                            <% end %>
+                            <% if current_user.present? %>  
+                            <div id="greeting" style="font-size: 14px;">Hi, <%= current_user.title.title rescue nil%> <%=current_user.name.split(" ").first %></div>
+                            <%end%>
+                          </form>
+                        </div>
+                    <% end %>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+         </div>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+<!--=====================================   Header End  ==================================-->
+    <% request_pending = Subdomain.where(exchange_status: 1).count %>
+    <% if (user_signed_in? && current_user.is_ocm?) && request_pending > 0 %>
+      <div class="container">
+        <div class="onload-message container-fix">
+          <div class="alert alert-success">
+            <b>Hello Admin!</b> <a href="/exchange_request_approval">You have <%= request_pending %> request pending.</a>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <%if user_signed_in? && current_user.is_tenant_owner? && !current_user.submerchant_accounts.present? %>
+      <div class="container">
+        <div class="onload-message container-fix">
+          <div class="alert alert-success">
+            <b>Hello Admin!</b> You have To create a submerchant account first to sell any media. <a href="/submerchant_account">Click here to create a submerchant account</a>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <%if user_signed_in? && current_user.is_tenant_owner? %>
+      <% if Affiliation.where("affiliator_id in (?) and status=0", current_subdomain.id).present? %>
+      <% request_pending = Affiliation.where("affiliator_id in (?) and status=0", current_subdomain.id).count %>
+        <div class="container">
+          <div class="onload-message container-fix">
+            <div class="alert alert-success">
+              <b>Hello Admin!</b> You have <%= request_pending %> pending requests from Affiliates that need your approval. <a href="/affiliation_approval_list">Click here to approve or decline</a>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+           <%unless flash[:type].blank?%>
+        <script type="text/javascript">
+          $(function() {
+            $(".onload_error").next("div").css("margin-top","0px")
+            $("#show_error").next().next().next().next().removeClass("container-fix");
+          });
+        </script>
+        <%if flash[:type] == "info"%>
+          <div class="container">
+            <div class="onload_error"> 
+               <div class="alert alert-info1"> 
+                <b>Heads up!</b><%= flash[:message] %>
+            </div> 
+          </div> 
+          </div>
+        <%elsif flash[:type] == "success"%>
+          <div class="container">
+          <div class=" onload_error"> 
+             <div class="alert alert-success1">  
+                <b>Well done!</b> <%= flash[:message] %>
+              </div> 
+           </div>   
+          </div>
+        <%elsif flash[:type] == "warning"%>
+          <div class="container">
+    <div class="onload_error"> 
+             <div class="alert alert-danger1"> 
+                <b>Warning!</b> <%= flash[:message] %>
+             </div>
+      </div> 
+          </div>
+        <%elsif flash[:type] == "error" %>
+          <div class="container">
+            <div class="onload_error">  
+           <div class="alert alert-danger1"> 
+                <b>Warning!</b> <%= flash[:message] %>
+          </div> 
+      </div> 
+          </div>
+        <%elsif flash[:type] == "notice" %>
+          <div class="container">
+           <div class=" onload_error"> 
+            <div class="alert alert-info1"> 
+                <b>Warning!</b> <%= flash[:message] %>
+             </div> 
+           </div> 
+          </div>
+        <%end%>
+      <%end%>
+
+
+      <div class="container">
+        <div class="container-fix">
+          <ul class="breadcrumb">
+            <li><a href="/my_account#ChurchAccountInfo">Home</a></li>
+            <li><a href="#" data-toggle="collapse" onclick="change_milestone()" data-target="#success_milestone">Completion Milestones</a></li>
+              <!-- <span class="divider">/</span> -->
+            <% milestone = milestone(current_subdomain) %> 
+            <li class="dropdown">
+              <a class="dropdown-toggle" id="branches" role="button" data-toggle="dropdown" href="#">Sign Up <b class="caret"></b></a>
+              <ul id="branches-dropdown" class="dropdown-menu">
+                <%if milestone && milestone.include?(1) %>
+                  <li class="milbck"><a >Visited OCM</a></li>
+                  <li class="milbck"><a >Check Out Pricing Page</a></li>
+                  <li class="milbck"><a >Sign up for Trial</a></li>
+                  <li class="milbck"><a >Validate Their Email</a></li>
+                  <li class="milbck"><a >Login for the First Time</a></li>
+                <%else%>
+                  <li class="milbck1"><a href="/">Visited OCM</a></li>
+                  <li class="milbck1"><a href="/">Check Out Pricing Page</a></li>
+                  <li class="milbck1"><a href="/">Sign up for Trial</a></li>
+                  <li class="milbck1"><a href="/">Validate Their Email</a></li>
+                  <li class="milbck1"><a href="/">Login for the First Time</a></li>
+                <%end%>    
+              </ul>
+            </li>
+
+            <li class="dropdown">
+              <a class="dropdown-toggle" id="branches" role="button" data-toggle="dropdown" href="#">Create Media Store<b class="caret"></b></a>
+              <ul id="branches-dropdown" class="dropdown-menu">
+                <%if milestone && milestone.include?(4) %>
+                  <li class="milbck"><a >Name the Store</a></li>
+                  <li class="milbck"><a >Provide Contact Info</a></li>
+                  <li class="milbck"><a >Add a Media Item</a></li>
+                  <li class="milbck"><a >Add Name/Description/Cost</a></li>
+                  <li class="milbck"><a >Upload or Create Cover Art</a></li> 
+                <%else%>
+                  <li class="milbck1"><a href="/my_account#brand_new_promotion">Name the Store</a></li>
+                  <li class="milbck1"><a href="/my_account#brand_new_promotion">Provide Contact Info</a></li>
+                  <li class="milbck1"><a href="/my_account#brand_new_promotion">Add a Media Item</a></li>
+                  <li class="milbck1"><a href="/my_account#brand_new_promotion">Add Name/Description/Cost</a></li>
+                  <li class="milbck1"><a href="/my_account#brand_new_promotion">Upload or Create Cover Art</a></li>
+                <%end%>  
+              </ul>
+            </li>
+
+            <li class="dropdown">
+              <a class="dropdown-toggle" id="branches" role="button" data-toggle="dropdown" href="#">Customize Store<b class="caret"></b></a>
+              <ul id="branches-dropdown" class="dropdown-menu">
+                <%if milestone && milestone.include?(8) %>
+                  <li class="milbck"><a>Select a Theme</a></li>
+                <%else %>
+                  <li class="milbck1"><a href="/my_account#theme">Select a Theme</a></li>
+                <%end %> 
+                <%if milestone && milestone.include?(3) %>
+                  <li class="milbck"><a>Add a Logo</a></li>
+                <%else %>
+                  <li class="milbck1"><a href="/my_account#theme">Add a Logo</a></li>
+                <%end %> 
+                <%if milestone && milestone.include?(2) %>
+                  <li class="milbck"><a>Link Social Media Profiles</a></li>
+                <%else %>
+                  <li class="milbck1"><a href="/my_account#brand_new_promotion">Link Social Media Profiles</a></li> 
+                <%end %> 
+              </ul>
+            </li>
+
+            <li class="dropdown ">
+              <a class="dropdown-toggle" id="branches" role="button" data-toggle="dropdown" href="#">Payment Details<b class="caret"></b></a>
+              <ul id="branches-dropdown" class="dropdown-menu">
+                <%if milestone && milestone.include?(5) %>
+                  <li class="milbck"><a>Add Merchant Account</a></li>
+                  <li class="milbck"><a>Add Payment Details</a></li>
+                  <li class="milbck"><a>Verify Merchant Account</a></li> 
+                <%else%>
+                  <li class="milbck1"><a href="/submerchant_account">Add Merchant Account</a></li>
+                  <li class="milbck1"><a href="/submerchant_account">Add Payment Details</a></li>
+                  <li class="milbck1"><a href="/submerchant_account">Verify Merchant Account</a></li> 
+                <%end%> 
+              </ul>
+            </li>
+
+            <li class="dropdown ">
+              <a class="dropdown-toggle" id="branches" role="button" data-toggle="dropdown" href="#">Promote Store<b class="caret"></b></a>
+              <ul id="branches-dropdown" class="dropdown-menu">
+                <%if milestone && milestone.include?(6) %>
+                  <li class="milbck"><a>Invite Friends, Family, Supporters,<br> and Congregants to check it out<br> on social media</a></li>
+                <% else %>
+                  <li class="milbck1"><a href="/my_account#brand_new_promotion">Invite Friends, Family, Supporters,<br>and Congregants to check it out<br>on social media</a></li>
+                <% end %>
+                <%if milestone && milestone.include?(7) %>
+                  <li class="milbck"><a>First 25 subcribers</a></li>
+                <% else %>
+                  <li class="milbck1"><a href="/my_account#brand_new_promotion">First 25 subcribers</a></li>
+                <% end %>
+              </ul>
+            </li>
+
+            <li class="dropdown ">
+              <a class="dropdown-toggle" id="branches" role="button" data-toggle="dropdown" href="#">Exchange<b class="caret"></b></a>
+              <ul id="branches-dropdown" class="dropdown-menu">
+                <%if milestone && milestone.include?(9) %>
+                  <li class="milbck"><a>Select Top 5 </a></li> 
+                <%else%>
+                  <li class="milbck1"><a href="/exchange_list">Select Top 5 </a></li> 
+                <%end%>
+                <%if milestone && milestone.include?(10) %>           
+                  <li class="milbck"><a>Agree to ToC</a></li>
+                <%else%>              
+                  <li class="milbck1"><a href="/#">Agree to ToC</a></li>
+                <%end%>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+
+      <div class="container collapse" id="success_milestone" >
+        <div class="row tasks">
+          <div class="checkout-wrap col-md-11 col-sm-12 col-xs-12">
+            <% milestone = milestone(current_subdomain) #milestone = Milestone.where(subdomain_id: current_subdomain.id).map(&:milestone_number)%>
+            <ul class="checkout-bar">
+              <%if  milestone && milestone.include?(1) %>
+                <li class="visited" style=" margin-left: -4%;"><a href="" data-toggle="tab">Step1</a>
+                  <input name="progress" class="progress hide" value="" type="checkbox">
+                </li>
+              <%else%>
+                <li class="active" style=" margin-left: -4%;"><a href="" data-toggle="tab">Step1</a>
+                  <input name="progress" class="progress hide" value="" type="checkbox">
+                </li>
+              <%end%>  
+               <%if  milestone && milestone.include?(2) %>
+                <li class="visited" id="step2"><a href="" data-toggle="tab">Step2</a>
+                  <input name="progress" class="progress hide" value="" type="checkbox">
+                </li>
+              <%else%>
+                <li class="active" id="step2"><a href="" data-toggle="tab">Step2</a>
+                  <input name="progress" class="progress hide" value="" type="checkbox">
+                </li>
+              <%end%>
+               <%if  milestone && milestone.include?(3) && milestone.include?(8) && milestone.include?(2) %>
+                <li class="visited" id="step3"><a href="" data-toggle="tab">Step3</a>
+                  <input name="progress" class="progress hide" value="" type="checkbox">
+                </li>
+              <%else%>
+                <li class="active" id="step3"><a href="" data-toggle="tab">Step3</a>
+                  <input name="progress" class="progress hide" value="" type="checkbox">
+                </li>
+              <%end%>
+               <%if  milestone && milestone.include?(4) %>
+                <li class="visited" id="step4"><a href="" data-toggle="tab">Step4</a>
+                  <input name="progress" class="progress hide" value="" type="checkbox">
+                </li>
+              <%else%>
+                <li class="active" id="step4"><a href="" data-toggle="tab">Step4</a>
+                  <input name="progress" class="progress hide" value="" type="checkbox">
+                </li>
+              <%end%>
+               <%if  milestone && milestone.include?(5) %>
+                <li class="visited" id="step5"><a href="" data-toggle="tab">Step5</a>
+                  <input name="progress" class="progress hide" value="" type="checkbox">
+                </li>
+              <%else%>
+                <li class="active" id="step5"><a href="" data-toggle="tab">Step5</a>
+                  <input name="progress" class="progress hide" value="" type="checkbox">
+                </li>
+              <%end%>
+               <%if  milestone && milestone.include?(6)  && milestone.include?(7) %>
+                <li class="visited" id="step6"><a href="" data-toggle="tab">Step6</a>
+                  <input name="progress" class="progress hide" value="" type="checkbox">
+                </li>
+              <%else%>
+                <li class="active" id="step6"><a href="" data-toggle="tab">Step6</a>
+                  <input name="progress" class="progress hide" value="" type="checkbox">
+                </li>
+              <%end%>
+               <%if  milestone && milestone.include?(10) && milestone.include?(9) %>
+                <li class="visited"><a href="" data-toggle="tab">Step7</a>
+                  <input name="progress" class="progress hide" value="" type="checkbox">
+                </li>
+              <%else%>
+                <li class="active"><a href="" data-toggle="tab">Step7</a>
+                  <input name="progress" class="progress hide" value="" type="checkbox">
+                </li>
+              <%end%>
+            </ul>
+          </div>
+        </div>
+
+        <% milestone_count_for_subdomain = Milestone.where(subdomain_id: current_subdomain.id).count %>
+        <% if milestone_count_for_subdomain >= 8 %>
+          <div class="row tasks">
+            <div class="col-sm-12">
+              <div class="col-sm-3"></div>
+              <div class="col-sm-6 text-center">
+                <% if current_subdomain.exchange_status == "not_requested" %>
+                  <p>Do you want to be in the exchange?</p>
+                  <button type="button" class="btn btn-info" data-toggle="modal" data-target="#termsModal">Yes</button>
+                  <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#success_milestone">No</button>
+                <% elsif current_subdomain.exchange_status == "requested"%>
+                  <p>You have requested for exchange, Your request is to be approved by our Admin.</p>
+                <% elsif current_subdomain.exchange_status == "approved" %>
+                  <p> Exchange feature is enabled. </p>
+                <% end %>
+              </div>
+              <div class="col-sm-3"></div>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade container-fix" id="termsModal" role="dialog">
+              <div class="modal-dialog">
+              
+                <!-- Modal content-->
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title text-center">Terms and Conditions</h4>
+                  </div>
+                  <div class="col-sm-12">
+                    <div class="modal-body">
+                      <p>1. Some Condition..</p>
+                      <p>2. Some Condition..</p>
+                      <p>3. Some Condition..</p>
+                      <p>4. Some Condition..</p>
+                      <p>5. Some Condition..</p>
+                      <p>6. Some Condition..</p>
+                      <p>7. Some Condition..</p>
+                      <label><input id="terms_condition" type="checkbox" value="">Agree to all Terms and Conditions.</label>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-info" onclick="check_checkbox();">Save</button>
+                    <button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
+                  </div>
+                </div>   
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <div class="row tasks" style="margin-top: 10px;">
+          <div class="col-sm-12">
+            <div class="col-sm-12 well" style="font-size: 14px;">
+              <p>1. Create Account and Login for first time.</p>
+              <p>2. Link your Social Media Profile form Promotion page.</p>
+              <p>3. Add logo to your subdomain.</p>
+              <p>4. Add a media item and update your CoverArt.</p>
+              <p>5. Verify your Braintree account.</p>
+              <p>6. Share with friends and family on Facebook, Twitter.</p>
+              <p>7. You should have 25 Subscribers.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <script type="text/javascript">
+        $(document).ready(function(){
+          milestoneStatus();
+        });
+
+        function milestoneStatus(){
+          var valeur = 0;
+          $('input:checked').each(function(){
+              var value = parseInt($(this).attr('value'));
+               if ( value > valeur )
+               {
+                   valeur =  $(this).attr('value');
+               }
+          });
+          $('.progress-bar').css('width', valeur+'%').attr('aria-valuenow', valeur);    
+        }
+      </script>
+    <%end%>
+    <div id="show_error"><div class="container"></div></div>
+    <div></div>
+<!-- 
+
+      <%#unless flash[:type].blank?%>
+        <script type="text/javascript">
+          $(function() {
+            $(".onload_error").next("div").css("margin-top","0px")
+            $("#show_error").next().next().next().next().removeClass("container-fix");
+          });
+        </script>
+        <%#if flash[:type] == "info"%>
+          <div class="container">
+            <div class="onload-message container-fix1 onload_error">
+              <div class="alert alert-info">
+                <b>Heads up!</b><%#= flash[:message] %>
+              </div>
+            </div>
+          </div>
+        <%#elsif flash[:type] == "success"%>
+          <div class="container">
+            <div class="onload-message container-fix1 onload_error">
+              <div class="alert alert-success">
+                <b>Well done!</b> <%#= flash[:message] %>
+              </div>
+            </div>
+          </div>
+        <%#elsif flash[:type] == "warning"%>
+          <div class="container">
+            <div class="onload-message container-fix1 onload_error">
+              <div class="alert alert-danger">
+                <b>Warning!</b> <%#= flash[:message] %>
+              </div>
+            </div>
+          </div>
+        <%#elsif flash[:type] == "error" %>
+          <div class="container">
+            <div class="onload-message container-fix1 onload_error">
+              <div class="alert alert-danger">
+                <b>Warning!</b> <%#= flash[:message] %>
+              </div>
+            </div>
+          </div>
+        <%#elsif flash[:type] == "notice" %>
+          <div class="container">
+            <div class="onload-message container-fix1 onload_error">
+              <div class="alert alert-info">
+                <b>Warning!</b> <%#= flash[:message] %>
+              </div>
+            </div>
+          </div>
+        <%#end%>
+      <%#end%>
+ -->
+
+<%= yield %>
+
+<!--========================   Footer Start  ======================-->
+<footer id="footer_color" class="wow">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-7 footer-fix">
+                <div class="col-sm-12 link-one">
+                  <p>
+                    <% if current_subdomain.facebook_url.present?%>
+                      <a href="<%= current_subdomain.facebook_url%>" target="_blank">
+                        Visit us on Facebook
+                      </a>
+                    <% end %>
+                    <% if current_subdomain.facebook_url.present? && current_subdomain.twitter_url.present? %>
+                      &nbsp;&nbsp; |&nbsp;&nbsp;
+                    <% end %>
+                    <% if current_subdomain.twitter_url.present?%>
+                      <a href="<%= current_subdomain.twitter_url%>" target="_blank">
+                        Follow us on Twitter
+                      </a>
+                    <% end %>
+                  </p>
+                </div>
+                <div class="col-sm-12 link-two">
+                    <% if current_subdomain.is_ocm? %>
+                        <ol class="breadcrumb breadcrumb-menu" style="background-color: transparent; padding-left: 0px;">
+                            <li><a href="/about_us">About Us</a></li>
+                            <li><a href="<%= help_faq_path %>">Help/FAQ</a></li>
+                            <li><a href="/contact_us">Contact Us</a></li>
+                            <li><a href="/how_it_works">How it Works?</a></li>
+                            <li><a href="/privacy_policy">Privacy Policy</a></li>
+                            <li><a href="<%= terms_of_service_link_path %>">Terms of Service</a></li>
+                            <li><a href="<%= pricing_options_path %>">Pricing</a></li>
+                            <li><a href="/refund_policy">Refund Policy</a></li>
+                        </ol>
+                    <% else %>
+                      <a href="<%= pricing_options_path %>">Pricing</a>
+                    <%end%>
+                    <div>
+                    <% if @url_link.present? %>
+                      <a href="<%= @url_link %>">Home</a>
+                    <% end %>
+                    </div>
+                    <p style="margin-top:10%;">
+                        @2014 All right reserved. Please read our <a href="/terms_of_service">Terms of Service</a> and <a href="/privacy_policy">Privacy Policy</a>.
+                    </p>
+                </div>
+            </div>
+            <% if !(Subdomain.find(current_subdomain.id).subscription_check) %>
+
+            <div class="col-sm-5">
+                <form accept-charset="UTF-8" method='post' action='/news_letter' id="news" class="form-horizontal" role="form">
+                    <div class="form-group subfooter_home" >
+                        <h4 class="text-info">Subscribe To Newsletter</h4>
+                    </div> 
+                  <!--  <div class="subsrcibe">
+                    Subscribe To Newsletter
+                    </div> -->
+
+                    <div class="form-group subfooter_home" id ="user_type" >
+                        <label for="inputPassword3" class="col-sm-5 control-label required">Business/Personal</label>
+                        <div class="col-sm-7">
+                            <select name="usertype" id="usertype" onchange="" class="form-control">
+                              <option value="">Select</option>
+                              <option value="business">Business</option>
+                              <option value="customer">Personal</option>
+                            </select>
+                        </div>
+                    </div>
+
+                <div class="form-group subfooter_home">
+                        <label for="inputPassword3" class="col-sm-5 control-label required">Full Name</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" id="news_name" placeholder="Full Name" name="full_name">
+                        </div>
+                 </div>
+                 <div class="form-group subfooter_home">
+                        <label for="inputPassword3" class="col-sm-5 control-label required">Email</label>
+                  <div class="col-sm-7">
+                    <input type="text" class="form-control" id="news_email" placeholder="Email" name="email">
+                  </div>
+                  </div>
+                 <div class="form-group subfooter_home">
+                        <div class="col-sm-offset-5 col-sm-7">
+                            <button type="submit" class="btn btn-info">Submit</button>
+                        </div>
+                  </div>
+                </form>
+            </div>
+            <%else%>
+            <%end%>
+        </div>
+    </div>
+
+</footer>
+<!--========================   Footer  End  ======================-->
+<%=javascript_include_tag "custom.js", "login.js", "subdomain_autocomplete.js" %>
+<%=stylesheet_link_tag "flash.css"%>
+<%=javascript_include_tag "home_search.js", "logo_size.js" %>
+
+<% unless current_subdomain.is_ocm? %>
+  <script type="text/javascript">
+    $('#usertype option[value="customer"]').attr("selected", "selected");
+    $("#user_type").hide();
+  </script>
+<% end %>
+<script type="text/javascript">
+  function search_flash_message(){
+    var message = "Search Results Below"
+    $("#home_search").after('<div class="go_success">'+ message + '</div>');
+  }
+  $( document ).ready(function() {
+    var method = '<%= params[:action] %>';
+    if (method == 'index_post') {
+      search_flash_message()
+    }
+    setTimeout(function(){
+      $(".go_success").remove();
+    }, 4000);
+  });
+  
+  var addthis_config = addthis_config||{};
+  addthis_config.pubid = 'ra-51b6ad4b307d7a24';
+
+  // created_at: Ashnag
+  // purpose: For render a page on click of steps
+  // created_at: 15/07/2016
+$(document).ready(function(){
+  $("#step2").click(function(){
+    window.location.href = "/my_account#brand_new_promotion";
+  });
+   $("#step3").click(function(){
+    window.location.href = "/my_account#theme";
+  });
+    $("#step4").click(function(){
+    window.location.href = "/my_account#brand_new_messages";
+  });
+  $("#step5").click(function(){
+    window.location.href = "/submerchant_account";
+  });
+   $("#step6").click(function(){
+    window.location.href = "/my_account#brand_new_promotion";
+  });
+})
+</script>
+
+
+<style type="text/css">
+.alert-success1
+{
+color: #3c763d;
+background-color: #dff0d8;
+margin-top: -20px;
+padding-top: 0;
+}
+.alert-info1
+{
+   color: #31708f;
+  background-color: #d9edf7;
+  margin-top: -20px;
+padding-top: 0;
+}
+.alert-danger1
+{
+   color: #a94442;
+   background-color: #f2dede;
+   margin-top: -20px;
+  padding-top: 0;
+}
+.milbck
+{
+  background-color: #ddd;
+}
+.milbck1
+{
+ background-color: #d9edf7;
+}
+</style>
+
+</body>
+</html>

@@ -1,0 +1,21 @@
+              <% if questions.present? %>
+                <% count = 0 %>
+                <% questions.each do |question| %>
+                  <% count += 1 %>
+                  <div class="panel panel-default">
+                      <div class="panel-heading">
+                          <h4 class="panel-title">
+                              <a data-toggle="collapse" href="#<%= count %>" class="collapsed" style="word-wrap: break-word;" ><%= question.question %>
+                              </a>
+                          </h4>
+                      </div>
+                      <div id="<%= count %>" class="panel-collapse collapse" style="height: 0px;background-color: beige">
+                          <div class="panel-body">
+                            <%= question.answer.blank? ? "Coming Soon" : question.answer %>
+                          </div>
+                      </div>
+                  </div>
+                <% end %>
+              <% else %>
+                <p class="error-color">No Question Found</p>
+              <% end %>

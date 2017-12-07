@@ -1,0 +1,206 @@
+<div class="container container-fix"> <!-- Open -->
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="breadcrumb-outer">
+      </div>
+    </div>
+    <div class="col-sm-12">
+      <h2 class="heading-title text-left">
+      </h2>
+    </div>
+  </div>
+  <div class="row"> <!-- open -->
+    <div class="col-sm-6"><!-- open -->
+      <div class="form-group"><!-- open -->
+        <div class="row">
+          <div class="col-sm-4"></div>
+          <div class="col-sm-4 text-center">
+            <img src="<%= asset_path 'circle-check-green.png'%>" alt="" />
+          </div>
+          <div class="col-sm-4"></div>
+        </div>
+        <div class="row">
+          <div class="col-sm-3 col-xs-3"></div>
+          <div class="col-sm-6 col-xs-6 text-center">
+            <h4>Thank you for your purchase!</h4>
+          </div>
+          <div class="col-sm-3 col-xs-3"></div>
+        </div>
+        <% if (current_user && current_user.is_customer?) && (@uploaded_media.can_download_by?(current_user) || @uploaded_media.media_amount.round(2) > 0.00) %>
+          <% if Download.where('user_id = ? and uploaded_media_id = ?',current_user.id, @uploaded_media.id).blank? %>
+            <div class="row">
+              <div class="col-sm-3 col-xs-3"></div>
+              <div class="col-sm-6 col-xs-6 text-center">
+                <%if @customer_cart_media_ids.count <= 1%>
+                  <a href="/download/media/<%= crypt(UploadedMedium.find(@customer_cart_media_ids.first).id)%>?mode=download"><button class="btn btn-info">Download Now</button></a> 
+                <%else%>
+                <!-- Trigger the modal with a button -->
+                  <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">Download Now</button>
+                <%end%>
+              </div>
+              <div class="col-sm-3 col-xs-3"></div>
+            </div>
+          <%end%>
+         <%else%>
+         <div class="col-sm-3 col-xs-3"></div>
+             <div class="col-sm-6 col-xs-6 text-center">
+                <%if @customer_cart_media_ids.count <= 1%>
+                  <a href="/download/media/<%= crypt(UploadedMedium.find(@customer_cart_media_ids.first).id)%>?mode=download"><button class="btn btn-info">Download Now</button></a> 
+                <%else%>
+                <!-- Trigger the modal with a button -->
+                  <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">Download Now</button>
+                <%end%>
+              </div>
+        <%end%>
+        <br>
+        <div class="row">
+          <div class="col-sm-3 col-xs-3"></div>
+          <div class="col-sm-6 col-xs-6 text-center">
+            <% if current_user.blank? %>
+              <a href="<%= order_history_path %>"><button class="btn btn-info purchase_history">See Your Purchase History</button></a>
+            <% else %>
+              <a href="<%= customer_profile_path %>#OrderlistForMedia"><button class="btn btn-info purchase_history1">See Your Purchase History</button></a>
+            <% end %>
+          </div>
+          <div class="col-sm-3 col-xs-3"></div>
+        </div>
+        <br>
+        <div class="row" style="margin-top: -1.7%;">
+          <div class="col-sm-3 col-xs-3"></div>
+          <div class="col-sm-6 col-xs-6 text-center">
+            <a href="<%=medialist_path%>"><button class="btn btn-info">Continue Shopping</button></a>
+          </div>
+        </div>
+
+
+      </div>
+
+
+   </div>
+
+  <!-- Modal -->
+  <div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Download Song</h4>
+        </div>
+        <div class="modal-body">
+          <%@customer_cart_media_ids.each do |cart_item_id|%>
+          <%customer_cart_item = get_customer_cart_item(cart_item_id)%>
+          <div class="row">
+            <% name = File.basename(customer_cart_item.media_file_name,File.extname(customer_cart_item.media_file_name))%>
+            <div class="col-sm-4 col-xs-4 text-left subtotal trunc padding" data-size="40" title="<%= name %>">
+              <%= name.gsub("_"," ") %>
+            </div>
+            <div class="col-sm-3 col-xs-3 text-left subtotal padding">
+              <a href="/download/media/<%= crypt(cart_item_id)%>?mode=download"><button class="btn btn-info">Download</button></a>
+            </div>
+            
+          </div>
+          <br>
+          <%end%>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <!-- Modal End -->
+  <div class="col-sm-6">
+    <ul class="list-group shopping-cart-total" style="padding-left: 0px;">
+      <li class="list-group-item">
+        <div class="col-sm-12 well text-center">
+          <b>Your Order</b>
+        </div>
+        <div class="row">
+          <div class="col-sm-4 col-xs-4 text-left total-amount font1" >
+            Item
+          </div>
+          <div class="col-sm-3 col-xs-3 text-left total-amount font1" >
+            Qty
+          </div>
+          <div class="col-sm-5 col-xs-5 text-left total-amount font1" >
+            Total<br>(Purchase Price)
+          </div>
+        </div>
+        <%@customer_cart_media_ids.each do |cart_item_id|%>
+        <%customer_cart_item = get_customer_cart_item(cart_item_id)%>
+        <div class="row">
+          <% name = File.basename(customer_cart_item.media_file_name,File.extname(customer_cart_item.media_file_name))%>
+          <div class="col-sm-4 col-xs-4 text-left subtotal trunc padding" data-size="40" title="<%= name %>">
+            <%= name.gsub("_"," ") %>
+          </div>
+          <div class="col-sm-3 col-xs-3 text-left subtotal padding">
+            1
+          </div>
+          <div class="col-sm-5 col-xs-5 text-left subtotal padding">
+            <%if current_user.blank?%>
+              <%= number_to_currency(customer_cart_item.media_amount, :precision=>2) %>
+            <%else%>
+              <%= number_to_currency(customer_cart_item.purchase_amount(current_user), :precision=>2) %>
+            <%end%>
+          </div>
+        </div>
+        <%end%>
+        <div class="row bgcolor">
+          <div class="col-sm-4 col-xs-4 text-left padding1">
+            Subtotal
+          </div>
+          <div class="col-sm-3 col-xs-3 text-left padding padding1">
+            <%= @customer_cart_media_ids.count%>
+          </div>
+          <div class="col-sm-5 col-xs-5 text-left padding padding1">
+            <%= number_to_currency(@subtotal, :precision=>2) %>
+          </div>
+        </div>
+        <div class="row bgcolor">
+          <div class="col-sm-4 col-xs-4 text-left padding1">
+            Tax
+          </div>
+          <div class="col-sm-3 col-xs-3 text-left padding padding1">
+          </div>
+          <div class="col-sm-5 col-xs-5 text-left padding padding1">
+            $0.00
+          </div>
+        </div>
+        <div class="row bgcolor">
+          <div class="col-sm-4 col-xs-4 text-left padding1">
+            Total
+          </div>
+          <div class="col-sm-3 col-xs-3 text-left padding padding1">
+          </div>
+          <div class="col-sm-5 col-xs-5 text-left padding padding1">
+            <%= number_to_currency(@subtotal, :precision=>2) %>
+          </div>
+        </div>
+        <div class="row bgcolor">
+          <div class="col-sm-4 col-xs-4 text-left padding1">
+            Paid
+          </div>
+          <div class="col-sm-3 col-xs-3 text-left padding padding1">
+          </div>
+          <div class="col-sm-5 col-xs-5 text-left padding padding1" id="Paid_amount">
+            <%= number_to_currency(@subtotal, :precision=>2) %>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div> 
+
+<style type="text/css">
+  .purchase_history{
+    margin-left: 68%;
+    margin-top: 5%;
+  }
+
+  .purchase_history1{
+    margin-top: -3%;
+  }
+</style>

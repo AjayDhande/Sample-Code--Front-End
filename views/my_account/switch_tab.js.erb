@@ -1,0 +1,16 @@
+element = $(".alert-info")
+$(element).removeClass("alert-info")
+$(element).addClass("alert-add-message")
+$(".<%= j @selected_tab%>").removeClass("alert-add-message")
+$(".<%= j @selected_tab%>").addClass("alert-info")
+$(".update_page").removeClass("hide");
+back_button = true;
+<% if params[:hashValue] == "false" %>
+hideLoader();
+<% end %>
+$(".update_page").html('<%= escape_javascript(render "my_account/#{@selected_tab}") %>');
+$('.chosen-select').chosen();
+<% if session[:theme_updated] == true %>
+  <% session[:theme_updated] = false %>
+  $("#customize").click();
+<% end %>

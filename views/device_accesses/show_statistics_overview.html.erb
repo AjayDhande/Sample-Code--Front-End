@@ -1,0 +1,188 @@
+ 
+<div class="container container-fix">
+    <!--
+        <div class="row">
+            <div class="col-sm-12">
+                <h2 class="heading-title text-left">
+                    Statistics
+                </h2>
+            </div>
+        </div> -->
+      <!--========================   Heading End  ======================-->
+     
+      <div class="row">
+            <div class="col-xs-12 col-sm-4 col-md-3 custom-width">
+                <img alt="" class="logo-fix" src="<%= cookies[:logo_path] %>" />
+            </div>
+            <div class="col-xs-12 col-sm-8 col-md-9">
+                <h2 class="heading-title text-left subdomain_title">
+                  <% if @can_update%>
+                    <%= current_user.church_name.titlecase %> Media Store<small>&nbsp;<a href = "/my_account">Update your site's info</a></small>
+                  <%else%>
+                    <%= subdomain_name.titleize %> Media Store
+                  <%end%>
+                </h2>
+                <p>
+                  Your Online Church Media Site: <a href="<%=request.base_url%>"><%=request.base_url%></a>
+                </p>
+            </div>
+        </div>
+
+    <div class="the_tabs">
+      <%= render 'the_tabs' %>
+    <div>
+      
+    <!--========================   Upload  Start   ======================-->
+    <div class="row">
+        <div class="col-sm-12">
+            <a href="/get_statistic_overview" class="btn btn-info">Overview</a>
+            <a href="/device_statistic" class="btn btn-default">Devices </a>
+            <a href="/get_location_report" class="btn btn-default">Location</a>
+        </div>
+    </div>   
+
+
+ <% if @no_data_avaliable%> 
+
+        <p class="text-center">
+          There is no data to be shown in statistics.
+        </p> 
+
+ <% else %>    
+    <div class="row">
+            <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-sm-7">
+                        <h2 class="" style="margin-bottom: 25px;">
+                           Recent Messages
+                        </h2> 
+                    </div>
+                    <div class="col-sm-2">
+                        <h4 class="" style="margin-bottom: 25px;">
+                        <% if current_subdomain.is_ocm? %>
+
+                            <% avg = (ListenMedium.where("uploaded_media_id in (?) and created_at > ?", @recent_songs.take(5).map {|r| r[0]}, 60.days.ago).count / @recent_songs.take(5).count.to_f).round rescue 0%>
+                        <% else %>
+                            <% avg = (ListenMedium.where("uploaded_media_id in (?) and user_id in (?) and created_at > ?", @recent_songs.take(5).map {|r| r[0]}, current_subdomain.users.pluck(:id), 60.days.ago).count / @recent_songs.take(5).count.to_f).round rescue 0%>
+                        <% end %>
+                           Avg. Plays (<%= avg %>)
+                        </h4>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table style="width:100%;" class="table table-bordered">
+                      <thead style="border: none;">
+                        <tr bgcolor="#0e83b2" >
+                          <th style="width:25%;"><font color="white">Date</font></th>
+                          <th style="width:50%;"><font color="white">Messages</font></th>
+                          <th style="width:70%;"><font color="white">Presenter Name</font></th>
+                          <th style="width:100%;"><font color="white">Total Plays</font></th>
+                        </tr>
+                      </thead>
+                        <tbody id="mytable" class="odd">
+                          <%- @recent_songs.first(5).each do |uploaded_media_array| %>
+                            <% uploaded_media = UploadedMedium.find(uploaded_media_array[0]) %>
+                            <tr>
+                              <%- media_name = File.basename(uploaded_media.media_file_name,File.extname(uploaded_media.media_file_name)).gsub("_", " ") %>
+                              <td><%= uploaded_media.created_at.to_date.strftime("%B %d, %Y") %></td>
+                              <td><%= media_name %></td>
+                              <td><%= truncate(uploaded_media.presenter_name, length: 20)%></td>
+                              <td><%= uploaded_media_array[1] %>
+                              </td>
+                            </tr>  
+                          <% end %>
+                        </tbody>
+                    </table>
+                </div>
+                
+            </div>            
+        </div>
+        
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h2>Most Popular <small class="text-right pull-right">Plays</small></h2>
+                        <div class="table-responsive">
+                            <table style="width:100%;" class="table table-bordered">
+                                 
+
+                                    <tbody id="mytable" class="odd">
+                                    <%- @sorted_hash.take(5).each do |hash_element| %>
+                                        <tr><%- full_media_name =find_media_by_id(hash_element[0]).media_file_name %>
+                                            <%- media_name = File.basename(full_media_name,File.extname(full_media_name)).gsub("_", " ") %>
+                                            <td style="width:90%;"><%= media_name %></td>
+                                            <td style="width:100%;"><%= hash_element[1] %></td>
+                                        </tr>
+                                    <%- end %>
+                                    </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-sm-6">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-bordered">
+                                <tbody class="odd1">
+                                    <tr>
+                                        <td><h2 style="margin: 0px;">Listeners</h2></td>
+                                        <td><h2 style="margin: 0px;"><%= @listeners%></h2></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        <h3>Messages Played Over Time</h3>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                  <tr bgcolor="#0e83b2">
+                                    <th><font color="white">Last 7 Days</font></th>
+                                    <th><font color="white">Last 30 Days</font></th>
+                                    <th><font color="white">Last 90 Days</font></th>
+                                  </tr>
+                                </thead>
+
+                                <tbody id="mytable">
+                                    <tr class="odd">
+                                        <td><h2 style="margin: 0px;"><%= @last_7_days%></h2></td>
+                                        <td><h2 style="margin: 0px;"><%= @last_30_days%></h2></td>
+                                        <td><h2 style="margin: 0px;"><%= @last_90_days%></h2></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                            <table class="table table-bordered table-hover">
+                                <thead class="odd1">
+                                <th>Highest Total Plays</th>
+                                <th><%= @highest_total_plays%></th>
+                                </thead>
+                                <!--tbody>
+                                    <tr>
+                                        <td><h2 style="margin: 0px;">
+                                        <%= @highest_total_plays%></h2></td>
+                                        <td><h2 style="margin: 0px;">70.13%</h2></td>
+                                    </tr>
+                                </tbody-->
+                            </table>
+                        </div>
+                        
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+ <% end %>
+    <!--========================   Upload   End  ======================-->
+</div>
+</div>
+</div>
+
+<script>
+$(".odd").find("tr:odd").css("background-color","#FFF5EB")
+$(".odd1").find("tr:even").css("background-color","#FFF5EB")
+</script>
+
+<%= javascript_include_tag "device_accesses.js","bootstrap-colorpicker.js","bootstrap-datetimepicker.min.js","bootstrap-hover-dropdown.js","bootstrap-tabdrop.js", "bootstrapValidator.js", "summernote.min.js", "my_account.js" %>

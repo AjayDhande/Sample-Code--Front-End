@@ -1,0 +1,13 @@
+<%= "No Available" if royalties.empty? %>
+<% royalties.each do |royalty| %>
+  <div class="col-sm-3">
+    <div class="royalty-image thumbnail">                                                                                                                                    
+      <%= image_tag royalty.artwork.url(:thumb)%>
+      <div class="checkbox text-center">
+        <label>
+          <input type="radio" name="royalty" data-name="<%= "#{royalty.artwork_file_name}" %>" value="<%= "#{royalty.id}" %>" data-img="<%=royalty.artwork.url(:thumb)%>">
+        </label>
+      </div>
+    </div>
+  </div>
+<% end %>

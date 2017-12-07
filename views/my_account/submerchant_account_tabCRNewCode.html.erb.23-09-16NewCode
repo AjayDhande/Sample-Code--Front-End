@@ -1,0 +1,620 @@
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/css/bootstrap-select.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/js/bootstrap-select.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/js/i18n/defaults-*.min.js"></script> 
+<div class="container container-fix">
+<div class="row">
+  <div class="col-sm-12">
+    <!--  <h2 class="heading-title text-left">Add Account Details</h2>
+      <form id = "add_bank_account_form" class="form-horizontal UserAdministration">
+        <div class="row">
+          <div class="col-sm-6 col-xs-12">
+            <div clas="row">
+              <div class="col-sm-12 col-xs-12">
+               <div class="form-group">
+                  <label class="col-sm-4 control-label required">First Name</label>
+                  <div class="col-sm-8 col-xs-12">
+                    <input id = "first_name" type="text" name="submerchant_accounts[first_name]" class="form-control" value = "">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-4 control-label required">Last Name</label>
+                  <div class="col-sm-8 col-xs-12">
+                    <input id = "last_name" type="text" name="submerchant_accounts[last_name]" class="form-control" value = "">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-4 control-label required">Street Address</label>
+                  <div class="col-sm-8 col-xs-12">
+                    <input id = "street_address" type="text" name="submerchant_accounts[street_address]" class="form-control" value = "">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-4 control-label required">Locality</label>
+                  <div class="col-sm-8 col-xs-12">
+                    <input id = "locality" type="text" name="submerchant_accounts[locality]" class="form-control" value = "">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-4 control-label required">Region</label>
+                  <div class="col-sm-8 col-xs-12">
+                    <input id = "region" type="text" name="submerchant_accounts[region]" class="form-control" value = "">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-4 control-label required">Postal Code</label>
+                  <div class="col-sm-8 col-xs-12">
+                    <input id = "postal_code" type="text" name="submerchant_accounts[postal_code]" class="form-control" value = "">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-4 control-label required">Account Number</label>
+                  <div class="col-sm-8 col-xs-12">
+                    <input id = "account_number" type="text" name="submerchant_accounts[account_number]" class="form-control" value = "">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-4 control-label required">Routing Number</label>
+                  <div class="col-sm-8 col-xs-12">
+                    <input id = "routing_number" type="text" name="submerchant_accounts[routing_number]" class="form-control" value = "">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-4 control-label required">Date of birth</label>
+                  <div class="col-sm-8 col-xs-12">
+                    <input id = "date_of_birth" type="text" name="submerchant_accounts[dob]" class="form-control" value = "">
+                  </div>
+                </div>
+                <div class="col-sm-12 col-xs-12">
+                  <div class="form-group" style="width:100%;">
+                    <div class="col-sm-12">
+                      <button id="SaveInfoButton" class="btn btn-info" value="Save Info">Save</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>      
+  </div> -->
+  <p style="text-align:justify;">In order for you to collect money,all stores are required to set up a Sub-Merchant account through Online Church Media using Braintree (by PayPal). You will see prompts on your Media Store pages in Online Church Media encouraging you to create your account.To create a sub-merchant account please select the appropriate option below and fill out the necessary fields:</p>
+</div>
+</div>
+ <div class="row">
+  <div class="col-sm-8">     
+<h2>Braintree Sub-Merchant Account Application</h2>
+<p>Please indicate below if payments will be routed to bussiness or to you as an indivisual.Note:if to a bussiness.you will still need to complete some personal information as the applicant.</p>
+ <!-- <div class="btn-group btn-group-justified">
+    <a href="#" class="btn btn-primary">Apple</a>
+    <a href="#" class="btn btn-primary">Samsung</a>
+  </div> -->
+
+  <!-- <input type="button" onclick="return toggleMe('para0')" value="Expanse"><br> 
+  <div id="para0">TEST TEXT</div> -->
+   <!-- <label>Notifications<span class='toggle'><input type='radio' class='notifications' name='notifications' id='notifications' /></span></li>
+   <label>Preview<span class='toggle'><input type='radio' class='preview' name='preview' id='preview' /></span></li> -->
+   </div>
+ </div>
+
+  <div class="row">
+  <div class="col-sm-6"> 
+   <ul class="nav nav-pills nav-justified">
+    <li class="active "><a data-toggle="pill" class="navstyle" href="#home">Bussiness</a></li>
+    <li><a data-toggle="pill" class="navstyle" href="#menu1">Individual</a></li>
+   </ul>
+
+  <div class="tab-content">
+    <div id="home" class="tab-pane fade in active">
+      <h4><b>INDIVIDUAL INFORMATION</b></h4>
+      <hr>
+    <form>
+      <div class="form-group">
+        <label class="required">First Name</label>
+        <input type="text"  class="form-control" id ="name" placeholder="Enter First Name">
+      </div>
+
+      <div class="form-group">
+        <label class="required">Last Name</label>
+        <input type="text"  class="form-control" id ="last_name" placeholder="Enter Last Name">
+      </div>
+
+      <div class="form-group">
+        <label class="required">Email:</label>
+        <input type="email" class="form-control" id="email" placeholder="Enter email">
+      </div>
+
+      <div class="form-group">
+        <label>Phone</label>
+        <input type="text" class="form-control" id="number" placeholder="Enter number">
+      </div>
+
+      <label for="day" class="required">Date of Birth</label>
+      <br>
+      <!--   <div id="date1" class="datefield"> -->
+            <!--  <input id="day" type="tel" maxlength="2" placeholder="dd"/> /              
+                 <input id="month" type="tel" maxlength="2" placeholder="mm"/>/
+                 <input id="year" type="tel" maxlength="4" placeholder="yy"/> -->
+      <!--   <input id="day" type="tel" maxlength="2" />/              
+        <input id="month" type="tel" maxlength="2"/>/
+        <input id="year" type="tel" maxlength="4" />
+      </div> -->
+      <select class="selectpicker form-control"  name="DOBMonth" data-width="fit">
+         <option> - Month - </option>
+         <option value="January">January</option>
+         <option value="Febuary">Febuary</option>
+         <option value="March">March</option>
+         <option value="April">April</option>
+         <option value="May">May</option>
+         <option value="June">June</option>
+         <option value="July">July</option>
+         <option value="August">August</option>
+         <option value="September">September</option>
+         <option value="October">October</option>
+         <option value="November">November</option>
+         <option value="December">December</option>
+        </select>  /
+      
+      <select class="selectpicker form-control"  name="DOBDay" data-width="fit">
+        <option> - Day - </option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+        <option value="11">11</option>
+        <option value="12">12</option>
+        <option value="13">13</option>
+        <option value="14">14</option>
+        <option value="15">15</option>
+        <option value="16">16</option>
+        <option value="17">17</option>
+        <option value="18">18</option>
+        <option value="19">19</option>
+        <option value="20">20</option>
+        <option value="21">21</option>
+        <option value="22">22</option>
+        <option value="23">23</option>
+        <option value="24">24</option>
+        <option value="25">25</option>
+        <option value="26">26</option>
+        <option value="27">27</option>
+        <option value="28">28</option>
+        <option value="29">29</option>
+        <option value="30">30</option>
+        <option value="31">31</option>
+        </select> 
+         /
+<select class="selectpicker form-control" name="DOBYear" data-width="fit">
+        <option> - Year - </option>
+        <option value="1993">1993</option>
+        <option value="1992">1992</option>
+        <option value="1991">1991</option>
+        <option value="1990">1990</option>
+        <option value="1989">1989</option>
+        <option value="1988">1988</option>
+        <option value="1987">1987</option>
+        <option value="1986">1986</option>
+        <option value="1985">1985</option>
+        <option value="1984">1984</option>
+        <option value="1983">1983</option>
+        <option value="1982">1982</option>
+        <option value="1981">1981</option>
+        <option value="1980">1980</option>
+        <option value="1979">1979</option>
+        <option value="1978">1978</option>
+        <option value="1977">1977</option>
+        <option value="1976">1976</option>
+        <option value="1975">1975</option>
+        <option value="1974">1974</option>
+        <option value="1973">1973</option>
+        <option value="1972">1972</option>
+        <option value="1971">1971</option>
+        <option value="1970">1970</option>
+        <option value="1969">1969</option>
+        <option value="1968">1968</option>
+        <option value="1967">1967</option>
+        <option value="1966">1966</option>
+        <option value="1965">1965</option>
+        <option value="1964">1964</option>
+        <option value="1963">1963</option>
+        <option value="1962">1962</option>
+        <option value="1961">1961</option>
+        <option value="1960">1960</option>
+        <option value="1959">1959</option>
+        <option value="1958">1958</option>
+        <option value="1957">1957</option>
+        <option value="1956">1956</option>
+        <option value="1955">1955</option>
+        <option value="1954">1954</option>
+        <option value="1953">1953</option>
+        <option value="1952">1952</option>
+        <option value="1951">1951</option>
+        <option value="1950">1950</option>
+        <option value="1949">1949</option>
+        <option value="1948">1948</option>
+        <option value="1947">1947</option>
+        </select>
+    <h3 class="busstyle">Business Account Option</h3>
+      <p>If you collect funds into a bussiness bank account,select this option</p>
+      <h4><b>BUSSINESS</b></h4>
+        <hr>
+      <div class="form-group">
+        <label class="required">Bussiness Name</label>
+        <input type="text"  class="form-control" id ="Bussiness Name" placeholder="Enter Bussiness Name">
+      </div>
+     <div class="form-group">
+          <label class="required">TAX-ID</label>
+          <input type="text"  class="form-control" id ="TAX-ID" placeholder="Enter TAX-ID">
+        </div>
+           
+      <h4><b>BUSSINESS ADDRESS</b></h4>
+        <hr>
+      <div class="form-group">
+         <label class="required">Street Address</label>
+         <input type="text"  class="form-control" id ="Street Address" placeholder="Enter Street Address">
+      </div>
+          
+      <div class="form-group">
+        <label class="required">City</label>
+        <input type="text"  class="form-control" id ="City" placeholder="Enter City">
+      </div>
+  
+    <div class="form-group">
+        <label class="required">State</label>
+   <!--   <label for="state" class="col-sm-2 control-label">State</label> -->
+    <!-- <div class="col-sm-10"> -->
+   <!--  <select class="form-control" id="state" name="state"> -->
+        <select class="form-control selectpicker" id="state" name="state">
+        <option value="">Andaman and Nicobar Islands </option>
+        <option value="AK">Andhra Pradesh</option>
+        <option value="AL">Arunachal Pradesh</option>
+        <option value="AR">Assam</option>
+        <option value="AZ">Bihar</option>
+        <option value="CA">Chhattisgarh</option>
+        <option value="CO">Chandigarh</option>
+        <option value="CT">Dadra and Nagar Haveli </option>
+        <option value="DC">Daman and Diu </option>
+        <option value="DE">Goa</option>
+        </select>
+ <!--  </div> -->
+      </div> 
+
+        <div class="form-group">
+        <label class="required">Postal Code</label>
+        <input type="text"  class="form-control" id ="Postal Code" placeholder="Enter Postal Code">
+       </div>
+
+       <!--modal code-->
+    <!--  <button type="button" class="btn btn-info btn-lg" >Open Modal</button> -->
+<!-- Modal -->
+   <div id="myModal" class="modal fade" role="dialog">
+     <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <!-- <h4 class="modal-title">Modal Header</h4> -->
+      </div>
+    <div class="modal-body">
+      <div class="row">
+      <div class="col-sm-12">
+      <!--  <p>Your submerchant account has been activated.Now you can recieive your payments.
+          KYCK.COM INC USES BRAINTREE PAY</p> -->
+       <p><img id="image_new"  src="<%= asset_path 'headimg.jpg' %>"/></p>
+    </div> 
+    </div>
+   
+    <div class="row">
+      <div class="col-sm-12">
+      <p>KYCK.COM INC USES BRAINTREE PAY
+      <img id="image_new" class="modallogostyle" src="<%= asset_path 'braintree-payments.png' %>"/></p>
+      <hr>
+    </div> 
+    </div>
+
+    <div class="row">
+       <div class="col-sm-12">
+         <p><b>kyck.com,</b>Inc.uses <b>Braintree Payment solutions LLC</b>(Braintree) for payment processing.In order for you to use BrainTrees's payment processing  services,you must enter into Merchant Services Agreement(MSA) with BrainTree and sponsoring bank.The MSA is available at <a> www.braintreepaymnets.com/agreements/merchant</a></p>
+         <p>By accepting this Agreement,you agree:(a) that you have downloaded or printed the MSA, and(b) that you have reviewed and agree to the MSA.</p>
+         <p>Please note that[MSP] is not a party to the MSA and that you,Braintree and Braintree's sponsoring bank are the three parties to the MSA and that Kyck.com has no obligations or liability to you unser the MSA</p>
+         <p>If you have questions regarding the MSA,please <b>contact Braintree</b> at </p>
+        </div> 
+    </div>
+    </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Modal code-->
+<!-- <label for="day">Date of Birth (normal):</label>
+<div id="date2" class="datefield">
+    <input id="day" type="tel" maxlength="2" placeholder="DD"/> /
+    <input id="month" type="tel" maxlength="2" placeholder="MM"/> /
+    <input id="year" type="tel" maxlength="4" placeholder="YYYY" />
+</div> -->
+    <div class="checkbox">
+      <label class="fontstyle"><input type="checkbox">Remember me</label>
+      <a class="fontstyle" href="#">
+      <button type="button" class="btn btn-link" data-toggle="modal" data-target="#myModal">Terms and Services</a>
+      <button type="submit" class="btn btn-info btn-sm">CREATE BRAINTREE SUBMERCHANT ACCOUNT</button>
+    </div>
+    </form>
+    </div>
+
+     <div id="menu1" class="tab-pane fade">
+       <h3 class="busstyle">Individual Account Option</h3>
+      <p>If you collect funds into an indivisual bank account,select this option</p>
+      <h2>Braintree Sub-Merchant Account Application</h2>
+      <p>Please indicate below if payments will be routed to bussiness or to you as an indivisual.Note:if to a bussiness.you will still need to complete some personal information as the applicant.</p>
+       <h4><b>INDIVIDUAL INFORMATION</b></h4>
+      <hr>
+      <form>
+        <div class="form-group">
+          <label class="required">First Name</label>
+          <input type="text"  class="form-control" id ="name" placeholder="Enter First Name">
+        </div>
+
+        <div class="form-group">
+          <label class="required">Last Name</label>
+          <input type="text"  class="form-control" id ="last_name" placeholder="Enter Last Name">
+        </div>
+
+        <div class="form-group">
+          <label class="required">Email:</label>
+          <input type="email" class="form-control" id="email" placeholder="Enter Email">
+        </div>
+
+        <div class="form-group">
+          <label>Phone</label>
+          <input type="text" class="form-control" id="number" placeholder="Enter Number">
+        </div>
+      
+       <label for="day" class="required">Date of Birth</label>
+       <br>
+  
+    <!--   <div id="date1" class="datefield"> -->
+            <!--  <input id="day" type="tel" maxlength="2" placeholder="dd"/> /              
+                 <input id="month" type="tel" maxlength="2" placeholder="mm"/>/
+                 <input id="year" type="tel" maxlength="4" placeholder="yy"/> -->
+         <!--  <input id="day" type="tel" maxlength="2" />/              
+          <input id="month" type="tel" maxlength="2"/>/
+          <input id="year" type="tel" maxlength="4" />
+        </div> -->
+        <select class="selectpicker form-control"  name="DOBMonth" data-width="fit">
+            <option> - Month - </option>
+            <option value="January">January</option>
+            <option value="Febuary">Febuary</option>
+            <option value="March">March</option>
+            <option value="April">April</option>
+            <option value="May">May</option>
+            <option value="June">June</option>
+            <option value="July">July</option>
+            <option value="August">August</option>
+            <option value="September">September</option>
+            <option value="October">October</option>
+            <option value="November">November</option>
+            <option value="December">December</option>
+            </select>
+            /
+<select class="selectpicker form-control"  name="DOBDay" data-width="fit">
+            <option> - Day - </option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+            <option value="19">19</option>
+            <option value="20">20</option>
+            <option value="21">21</option>
+            <option value="22">22</option>
+            <option value="23">23</option>
+            <option value="24">24</option>
+            <option value="25">25</option>
+            <option value="26">26</option>
+            <option value="27">27</option>
+            <option value="28">28</option>
+            <option value="29">29</option>
+            <option value="30">30</option>
+            <option value="31">31</option>
+            </select> 
+            /
+<select class="selectpicker form-control" name="DOBYear" data-width="fit">
+            <option> - Year - </option>
+            <option value="1993">1993</option>
+            <option value="1992">1992</option>
+            <option value="1991">1991</option>
+            <option value="1990">1990</option>
+            <option value="1989">1989</option>
+            <option value="1988">1988</option>
+            <option value="1987">1987</option>
+            <option value="1986">1986</option>
+            <option value="1985">1985</option>
+            <option value="1984">1984</option>
+            <option value="1983">1983</option>
+            <option value="1982">1982</option>
+            <option value="1981">1981</option>
+            <option value="1980">1980</option>
+            <option value="1979">1979</option>
+            <option value="1978">1978</option>
+            <option value="1977">1977</option>
+            <option value="1976">1976</option>
+            <option value="1975">1975</option>
+            <option value="1974">1974</option>
+            <option value="1973">1973</option>
+            <option value="1972">1972</option>
+            <option value="1971">1971</option>
+            <option value="1970">1970</option>
+            <option value="1969">1969</option>
+            <option value="1968">1968</option>
+            <option value="1967">1967</option>
+            <option value="1966">1966</option>
+            <option value="1965">1965</option>
+            <option value="1964">1964</option>
+            <option value="1963">1963</option>
+            <option value="1962">1962</option>
+            <option value="1961">1961</option>
+            <option value="1960">1960</option>
+            <option value="1959">1959</option>
+            <option value="1958">1958</option>
+            <option value="1957">1957</option>
+            <option value="1956">1956</option>
+            <option value="1955">1955</option>
+            <option value="1954">1954</option>
+            <option value="1953">1953</option>
+            <option value="1952">1952</option>
+            <option value="1951">1951</option>
+            <option value="1950">1950</option>
+            <option value="1949">1949</option>
+            <option value="1948">1948</option>
+            <option value="1947">1947</option>
+            </select>
+
+        <div class="form-group">
+          <label class="required">Indivisual SSN</label>
+          <input type="text"class="form-control" id="Indivisual SSN"placeholder="Enter Indivisual SSN">
+        </div>
+       
+        <div class="form-group">
+          <label class="required">Street Address</label>
+          <input type="text"class="form-control" id="Street Address"placeholder="Enter Street Address">
+        </div>
+
+        <div class="form-group">
+          <label class="required">City</label>
+          <input type="text"  class="form-control" id ="City" placeholder="Enter City">
+        </div>
+
+        <div class="form-group">
+          <label class="required">State</label>
+          <select class="form-control selectpicker" id="state" name="state">
+          <option value="">Andaman and Nicobar Islands </option>
+          <option value="AK">Andhra Pradesh</option>
+          <option value="AL">Arunachal Pradesh</option>
+          <option value="AR">Assam</option>
+          <option value="AZ">Bihar</option>
+          <option value="CA">Chhattisgarh</option>
+          <option value="CO">Chandigarh</option>
+          <option value="CT">Dadra and Nagar Haveli </option>
+          <option value="DC">Daman and Diu </option>
+          <option value="DE">Goa</option>
+         </select>
+       </div> 
+
+        <div class="form-group">
+          <label class="required">Postal Code</label>
+          <input type="text"  class="form-control" id ="Postal Code" placeholder="Enter Postal Code">
+        </div>
+
+        <div class="form-group">
+          <label class="required">Funding account number</label>
+          <input type="text"  class="form-control" id ="Funding account number" placeholder="Enter Funding account number">
+        </div>
+
+        <div class="form-group">
+          <label class="required">Routing Number</label>
+          <input type="text" class="form-control" id ="Postal Code" placeholder="Enter Routing Number">
+        </div>
+
+        <div class="checkbox">
+        <label  class="fontstyle"><input type="checkbox"> Remember me</label>
+        <a class="fontstyle" href="/kyckform"><button type="button" class="btn btn-link">Terms and Services</a>
+        <button type="submit" class="btn btn-info btn-sm">CREATE BRAINTREE SUBMERCHANT ACCOUNT</button>
+        </div>
+      </form>
+    </div>
+  </div>
+ </div>
+</div>
+</div>  
+
+<%= javascript_include_tag "my_account.js"%>
+<style type="text/css">
+.navstyle
+{
+border-radius: 0px;
+padding: 10px 100px;
+}
+.datefield 
+{ 
+/*    display: inline; */
+padding: 0.3em; 
+border: inset 1px #FEF7F7;
+background: #FFF; 
+border-radius: 4px;
+color: #666;
+}
+.datefield * 
+{ 
+  /* display: inline-block;*/
+}
+.datefield input 
+{
+width: 1.7em; 
+  /*  padding: 0 0.4em; */
+border: none; 
+font-size: 100%; 
+background: none;
+color: #000;            
+}
+.datefield input#year { width:2.5em; }
+.datefield input:focus { outline:none; }
+.fontstyle
+{
+  font-size: 12px;
+}
+.busstyle
+{
+  color:red;
+  text-decoration: underline;
+}
+.nav-pills a 
+{
+    /*color: #ffffff*/
+color: #323433;
+background-color:#e9e4e4;
+}
+.nav-pills li a
+{
+border-radius:0px;
+}
+.modallogostyle
+{
+  padding-left:30px;
+}
+</style>
+
+ <script type="text/javascript">
+// function toggleMe(a){
+//     var e = document.getElementById(a);
+//     if(!e) return true;
+//     if(e.style.display == "none") {
+//         e.style.display = "block"
+//     } else {
+//         e.style.display = "none"
+//     }
+//     return true;
+// }
+$('#date1 input').autotab_magic().autotab_filter('numeric');
+$('#date1 input').datepicker()
+ </script>

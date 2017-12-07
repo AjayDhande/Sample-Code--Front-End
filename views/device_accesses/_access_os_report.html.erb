@@ -1,0 +1,43 @@
+    <% operating_system_statistics = get_access_operating_system(@device_accesses) rescue nil %>
+        <div class="col-sm-12">
+             <h4>Sources</h4>
+            <div class="table-responsive">
+                <table style="width:100%;" class="table table-bordered">
+                    <tbody id="mytable" class="odd">  
+                    <tr>
+                    	<td style="width:60%;">Computer</td>
+                    	<td style="width:100%;"><%= operating_system_statistics['computer_percent'] rescue nil %>%</td>
+                        <td style="width:90%;"><%= operating_system_statistics['computer_count_data'] rescue nil %></td>   
+                    </tr>
+                    <tr>
+                    	<td style="width:60%;">Mobile</td>
+                    	<td style="width:100%;"><%= operating_system_statistics['mobile_percent'] rescue nil %>%</td>
+                        <td style="width:90%;"><%= operating_system_statistics['mobile_count_data'] rescue nil %></td>
+                        
+                    </tr><tr>
+                       <td style="width:60%;">Tablet</td>
+                       <td style="width:100%;"><%= operating_system_statistics['tablet_percent'] rescue nil %>%</td>
+                       <td style="width:90%;"><%= operating_system_statistics['tablet_count_data'] rescue nil %></td>                     
+                    </tr>
+                    </tbody>
+                </table>
+            </div>  
+        </div>   
+<script>
+$(".odd").find("tr:odd").css("background-color","#FFF5EB")
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          

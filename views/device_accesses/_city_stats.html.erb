@@ -1,0 +1,24 @@
+
+<% city_list = @device_accesses.pluck(:access_city).uniq.compact.reject(&:empty?) %>
+<% total_records = @device_accesses.pluck(:access_city).compact.reject(&:empty?).count %>
+<% city_stat_hash = get_city_statistics_report(city_list, @device_accesses) rescue nil%>
+
+<% city_stat_hash %>
+<table style="width: 100%;" class="table table-bordered">
+    <% city_hash_lenght = city_stat_hash.length rescue nil%>
+      <% ci = 0 %>
+      <% ci_num = 5 %>
+    <tbody id="mytable" class= "odd1">
+      <% while (ci < ci_num && ci < city_hash_lenght)  do %>
+        <tr>
+          <%unless city_stat_hash.keys[ci] == ""%>
+            <td style="width: 70%;"><%= city_stat_hash.keys[ci] %>,<%=get_city_state(city_stat_hash.keys[ci])%></td>
+
+            <td style="width: 90%;"><%= ((city_stat_hash.values[ci].to_f * 100) / total_records).round(2)  %>%</td>
+            <td style="width: 100%;"><%= city_stat_hash.values[ci] %></td>
+          <%end%>   
+        </tr>
+        <% ci +=1 %>
+      <% end %>
+    </tbody>
+</table>

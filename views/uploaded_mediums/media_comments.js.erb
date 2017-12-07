@@ -1,0 +1,12 @@
+$("input[name='comment']").blur();
+document.getElementById("myform").reset();
+// Get updated comments and time instances
+<% comment_instances = get_all_comment_instances(params[:uploaded_media_id]) %>
+// Assign comments and time array to respective variable
+window.visualizer.comments_array = <%= raw comment_instances[1] %>;
+window.visualizer.commentsTiming = <%= raw comment_instances[0] %>;
+window.visualizer.points_color = <%= raw get_points_color(comment_instances[0].length) %>;
+// Re-draw comment line
+drawCommentsLine();
+// Update time instance index variable because due to new comment array indexes has been changed
+window.visualizer.events.onSeek(wavesurfer.getCurrentTime()/window.visualizer.total_duration);

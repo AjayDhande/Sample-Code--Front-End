@@ -1,0 +1,85 @@
+<div class="col-sm-12">
+  <div class=" well" style="background-color: transparent; border-color: transparent;">
+    <p>Create a brand new user and give them access to your site based on their different responsibilities</p>
+    <form accept-charset="UTF-8" action="/create_administration" class="form-horizontal UserAdministration" role="form" id ="create_administration_form" method="post">
+    <div style="display:none">
+      <input name="utf8" type="hidden" value="&#x2713;" />
+      <input name="authenticity_token" type="hidden" value="gEYHqr2kQuhkhjylU1kMkUdq3IqgcriyF81KvVWgt3E=" />
+    </div>
+    <fieldset>
+      <div class="form-group">
+        <label class="col-sm-3 control-label required">Username:</label>
+        <div class="col-sm-5">
+          <input id="username" name="username" type="text" class="form-control"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="inputPassword3" class="col-sm-3 control-label required">Email:</label>
+        <div class="col-sm-5">
+          <input id="email" name="email" type="text" class="form-control"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-3 control-label required">Name:</label>
+        <div class="col-sm-5">
+          <input id="name" name="name" type="text" class="form-control" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-3 control-label required">Password:</label>
+        <div class="col-sm-5">
+          <input id="password" name="password" type="password" class="form-control" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-3 control-label required">Repeat Password:</label>
+        <div class="col-sm-5">
+          <input id="confirmPasswordInput" name="password_confirmation" type="password" class="form-control" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-3 control-label"></label>
+        <div class="col-sm-5" align = "justify">
+          Hint: The password should be at least seven characters long. To make it stronger use upper and lower case letters, numbers and special characters.
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-3 text-left">
+          <b>Send Password?:</b>
+        </div>
+        <div class="col-sm-6">
+          <div class="checkbox">
+              <label><%=check_box_tag 'mail'%>Send this password to the new user by email</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-3 control-label required">Role:</label>
+        <div class="col-sm-5">
+          <%= select_tag :user_role_id, options_for_select([['Super Admin', get_super_admin_id],['Content Manager', get_content_manager_id],['Subscription Admin', get_subscription_admin_id]]), {:prompt => "Select",:class =>"form-control"} %>
+        </div>
+      </div>
+        <div class="form-group">
+          <div class="col-sm-offset-3 col-sm-5">
+            <input type="reset" value="Reset" class="btn btn-info" style="margin-bottom:5px;" onclick="window.create_administration_form.resetForm(); $('.bar').css('width', '0%')" />
+            <%=submit_tag "Add New User",:class => "btn btn-info", :style => "margin-bottom:5px;"%>
+          </div>
+        </div>
+    </fieldset>
+  </form>
+  <div class="col-sm-offset-8 col-sm-4">
+    <a class = "search_admin_user" href="#">See all registered users</a>
+  </div>
+</div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+  $(".search_admin_user").click(function(){
+    $.ajax({
+        url : '/search_user',
+        type : 'POST'
+    });  
+  });
+});
+</script>

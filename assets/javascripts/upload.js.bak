@@ -1,0 +1,232 @@
+window.onload = function() {
+  $('#files').val('');
+  eval_files(($('#files')[0]));
+};
+
+function size_in_mb(sizeInBytes) {
+  return (sizeInBytes / (1024*1024)).toFixed(2);
+}
+
+function eval_files (media) {
+  var data = [];
+  for (var i = 0; i < media.files.length; i++)
+    data[i] = { file_name: media.files.item(i).name }
+  $("#upload_tbody").loadTemplate($("#template"), data);
+  $('.tags').tagsinput();
+  $('.chosen-select').chosen();
+  $("#form_submit").val("Upload All");
+  $("#cancel").hide();
+}
+
+$('#copyall').click(function(){
+  $("input[name='amount[]']").val($("input[name='amount[]']")[0].value);
+});
+
+$("#upload").submit(function( event ) {
+  var media_content_format = /^audio\/(mpeg|mp3|x-wav|wav|x-mpeg|x-mp3|mpeg3|x-mpeg-3)/;
+  var art_content_format = /^image/;
+  var amount_format = /^[0-9]+[.]{0,1}[0-9]*$/;
+  var error = $("#form_submit").val() == "Upload Valid Files Only" ? false : true;
+  var flag = true;
+  media = $("#files")[0];
+  var ignore = $("input[name='ignore[]']");
+  var subcategories = $("select[name='subcategory[]']");
+  var arts = $("input[name='media_art[]']");
+  var artowrks = $("input[name='artwork[]']");
+  var artists = $("input[name='artist[]']");
+  var descriptions = $("textarea[name='description[]']");
+  var amounts = $("input[name='amount[]']");
+  var tags = $("input[name='tag[]']");
+  var amount = $("input[name='amount[]']");
+  var mediaContentError = true;
+  var mediaSizeError = true;
+  var artContentError = true;
+  var subcategoryError = true;
+  var tagError = true;
+  var artistError = true;
+  var descError = true;
+  var amountError = true;
+  var artabsentError = true;
+  if (media.files.length == 0){
+    notify("Browse File(s)", "You have no chosen files to upload", "warning");
+    flag = false;
+    event.preventDefault();
+  }
+  else{
+    for (var i = 0; i < media.files.length; i++){
+      var value = "0";
+      if (!media.files.item(i).type.match(media_content_format)){
+        value = "1";
+        if (error && mediaContentError){
+          notify("Message Content Type Error", "Only MP3 or WAV allowed", "error");
+          flag = false;
+          mediaContentError = false;
+        }
+      }
+      else if (size_in_mb(media.files.item(i).size) > 100) {
+        value = "1";
+        if (error && mediaSizeError){
+          notify("Message Size Error", "Message should be less then or equals to 100 MB", "error");
+          flag = false;
+          mediaSizeError = false;
+        }
+      }
+      if (subcategories[i].value.length == 0) {
+        value = "1";
+        if (error && subcategoryError){
+          notify("Select Subcategory", "Please select subcategory", "error");
+          flag = false;
+          subcategoryError = false;
+        }
+      }
+      if (artowrks[i].value == "") {
+        if (arts[i].files.length == 0) {
+          value = "1";
+          if (error && artabsentError){
+            notify("Browse art image or Select Royalty", "You have no chosen art image to upload", "error");
+            flag = false;
+            artabsentError = false;
+          }
+        }
+        else{
+          if (!arts[i].files.item(0).type.match(art_content_format)) {
+            value = "1";
+            if (error && artContentError){
+              notify("Artwork Content Type Error", "Artwork content type miss match", "error");
+              flag = false;
+              artContentError = false;
+            }
+          }
+        }
+      }
+      else{
+        arts[i].files.length = 0;
+      }
+      if (artists[i].value.length == 0) {
+        value = "1";
+        if (error && artistError){
+          notify("Presenter Field Blank", "Presenter name shouldn't blank", "error");
+          flag = false;
+          artistError = false;
+        }
+      }
+      else if(artists[i].value.length > 255) {
+        value = "1";
+        if (error && artistError){
+          notify("Invalid Presenter Name", "Presenter name length should be less than 256", "error");
+          flag = false;
+          artistError = false;
+        }
+      }
+      if (descriptions[i].value.length == 0) {
+        value = "1";
+        if (error && descError){
+          notify("Description Field Blank", "Description fields shouldn't blank", "error");
+          flag = false;
+          descError = false;
+        }
+      }
+      else if (descriptions[i].value.length > 500) {
+        value = "1";
+        if (error && descError){
+          notify("Description Field", "Description fields length should be less than 500", "error");
+          flag = false;
+          descError = false;
+        }
+      }
+      if (amounts[i].value.length == 0) {
+        value = "1";
+        if (error && amountError){
+          notify("Amount Field Blank", "Amount fields shouldn't blank. Use 0 for free", "error");
+          flag = false;
+          amountError = false;
+        }
+      }
+      else if (!amounts[i].value.match(amount_format)){
+        value = "1";
+        if (error && amountError){
+          notify("Invalid Amount", "Invalid currency format. Use 0 for free", "error");
+          flag = false;
+          amountError = false;
+        }
+      }
+      if (tags[i].value.length == 0) {
+        value = "1";
+        if (error && tagError){
+          notify("Tag Field Blank", "Tag fields shouldn't blank.", "error");
+          flag = false;
+          tagError = false;
+        }
+      }
+      else if (tags[i].value.length > 255) {
+        value = "1";
+        if (error && descError){
+          notify("Invalid Tag Field", "Tag fields length should be less than 256", "error");
+          flag = false;
+          descError = false;
+        }
+      }
+      ignore[i].value = value;
+    }
+  }
+  if (flag){
+    showLoader();
+  }
+  else{
+    $("#form_submit").val("Upload Valid Files Only");
+    $("#cancel").show();
+    if (error)
+      event.preventDefault();
+  }
+});
+
+$("#cancel").click(function () {
+  $("#form_submit").val("Upload All");
+  $(this).hide();
+});
+
+function revert() {
+  $("#form_submit").val("Upload All");
+  $("#cancel").hide();
+}
+
+function fetch_subcategories (elem) {
+  src = ($(elem).parent().next().children()[0]);
+  $(src).empty();
+  var data = subcategories[elem.value];
+  for (var i = 0; i < data.length; i++){
+    $(src).append($("<option value='" + data[i][0] + "'>" + data[i][1] + "</option>"));
+  }
+  $(src).prop("disabled", $(elem).val() == "" ? true : false);
+  $(src).chosen().trigger("chosen:updated");
+}
+
+$(document).ready(function() 
+{
+    $("form input[data-role='tagsinput']").keypress(function(event) 
+    { 
+        if (event.keyCode == 13)
+        {
+            event.preventDefault();
+            $(this).trigger("change");
+        }
+    });
+});
+last_elem = null;
+
+function modal_action(elem) {
+  last_elem = elem;
+  var val = $(last_elem).next().val();
+  if (val != "")
+    $("input[value='"+val+"'][type='radio']").click();
+}
+
+$("button[data-role='set_artwork']").click(function(event) {
+  $(last_elem).next().val($("input[name='royalty']:checked").val());
+  if ($("input[name='royalty']:checked").length == 0) {
+    notify("Select an Image", "You have no chosen art image", "error");
+    return false;
+  }
+  $('#myModal').modal('hide');
+  $("input[name='royalty']:checked").attr("checked", false);
+});

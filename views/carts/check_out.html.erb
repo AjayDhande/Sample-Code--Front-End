@@ -1,0 +1,637 @@
+<!--================   Breadcrumb  Start  ===================-->
+<div class="container container-fix">
+  <div class="row">
+    <div class="col-sm-12">
+        <div class="breadcrumb-outer">
+        </div>
+    </div>
+    <!--============= Breadcrumb End ======================-->
+
+    <!--============== Heading Start ======================-->
+    <div class="col-sm-12">
+        <h2 class="heading-title text-left">
+        </h2>
+    </div>
+  </div>
+  <!--==================   Heading End  ======================-->
+  <!--===============   Upload  Start   ======================-->
+  <div class="row">
+    <%if current_user.blank? && (session[:guest_email].blank? || session[:fname].blank?) %>
+      <div class="col-sm-7">
+        <div class="bs-example-tabs">
+          <div class="tab-content" id="myTabContent1" style="border-top: 1px solid #ddd;">
+            <div id="home" class="tab-pane fade active in">
+              <form accept-charset="UTF-8" action="/get_guest_email" method="get" id="user_email" class="form-horizontal" role="form"><div style="display:none"><input name="utf8" type="hidden" value="&#x2713;" /></div>
+                <% if session[:guest_email].blank? %>
+                  <div class="form-group">
+                    <label for="EmailAddress" class="col-sm-3 control-label" id="email_label" style="padding-left:15px;">Email Address</label>
+                    <div class="col-sm-6">
+                        <input id="guest_user_email" name="guest_user_email" class="form-control"  type="text" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-10">
+                      <div class="radio">
+                        <label class="login-here">
+                                If already have an account, <a href="#" class="alert-link" data-toggle="modal" data-target="#LoginModal">login here</a>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                <% else %>
+                    <input id="guest_user_email" name="guest_user_email" class="form-control"  type="hidden" value="<%= session[:guest_email]%>"/>
+                <% end %>
+                  <h4 class="Billing_address">Billing Address</h4>
+                    <div class="form-group">
+                      <label class="required col-sm-3 control-label" style="padding-left:15px;">First Name</label>
+                      <div class="col-sm-6">
+                          <input id= "first_name" name="first_name" class="form-control"  type="text" />
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="required col-sm-3 control-label" style="padding-left:15px;">Address</label>
+                      <div class="col-sm-6">
+                          <input id="address" name="address" class="form-control"  type="text" />
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-3 control-label" style="padding-left:15px;">Address 2</label>
+                      <div class="col-sm-6">
+                          <input id="address_2" name="address2" class="form-control"  type="text" />
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="required col-sm-3 control-label" style="padding-left:15px;">Country</label>
+                      <div class="col-sm-6">
+                        <select name="country" id="country" class="form-control">
+                            <option value=""></option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group" hidden>
+                      <label class="required">State</label>
+                      <select name="address[state]" id="state" onchange="listOfStatesOrCities(this,'region');" class="form-control">
+                        <option value=""></option>
+                      </select>
+                    </div>
+                    <div class="form-group" hidden>
+                      <label id="region_label" class="required">Region</label>
+                      <select name="address[region]" id="region" onchange="listOfStatesOrCities(this,'city');" class="form-control">
+                        <option value=""></option>
+                      </select>
+                    </div>
+                    <div class="form-group" id="div_city" hidden>
+                      <label class="required">City</label>
+                      <select name="address[city]" id="city" class="form-control">
+                          <option value=""></option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label class="required col-sm-3 control-label" style="padding-left:15px;">Postal Code</label>
+                      <div class="col-sm-6">
+                          <input id="postal_code" name="postal_code" class="form-control"  type="text" />
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-sm-offset-3 col-sm-1">
+                          <button type="submit" class="btn btn-info btn-lg">Continue as guest</button>
+                      </div>
+                    </div>
+                     <%= hidden_field_tag "user_cart_ids[]", @customer_cart_media_ids %>
+                     <input id="subtotal" name="subtotal" type="hidden" value="<%=ApplicationController.crypt(@subtotal)%>" />
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <%= javascript_include_tag 'guest_email.js'%>
+    <%elsif current_user && !current_user.address.present? %> <!-- This code is written  for customer -->
+      <div class="col-sm-7">
+        <div class="bs-example-tabs">
+          <div class="tab-content" id="myTabContent1" style="border-top: 1px solid #ddd;">
+            <div id="home" class="tab-pane fade active in">
+              <form accept-charset="UTF-8" action="/get_guest_email" method="get" id="user_email" class="form-horizontal" role="form"><div style="display:none"><input name="utf8" type="hidden" value="&#x2713;" /></div>
+                <h4 class="Billing_address">Billing Address</h4>
+                  <div class="form-group">
+                    <label class="required col-sm-3 control-label" style="padding-left:15px;">First Name</label>
+                    <div class="col-sm-6">
+                        <input id= "first_name" name="first_name" class="form-control" value="<%=%>"  type="text" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="required col-sm-3 control-label" style="padding-left:15px;">Address</label>
+                    <div class="col-sm-6">
+                        <input id="address" name="address[street1]" value="<%=%>" class="form-control"  type="text" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label" style="padding-left:15px;">Address 2</label>
+                    <div class="col-sm-6">
+                        <input id="address_2" value="<%=%>" name="address[street2]" class="form-control"  type="text" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="required col-sm-3 control-label" style="padding-left:15px;">Country</label>
+                    <div class="col-sm-6">
+                        <select name="address[country]" id="country" class="form-control">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                  </div>
+                  <div class="form-group" hidden>
+                    <label class="required">State</label>
+                    <select name="address[state]" id="state" onchange="listOfStatesOrCities(this,'region');" class="form-control">
+                      <option value=""></option>
+                    </select>
+                  </div>
+                  <div class="form-group" hidden>
+                    <label id="region_label" class="required">Region</label>
+                    <select name="address[region]" id="region" onchange="listOfStatesOrCities(this,'city');" class="form-control">
+                        <option value=""></option>
+                    </select>
+                  </div>
+                  <div class="form-group" id="div_city" hidden>
+                    <label class="required">City</label>
+                    <select name="address[city]" id="city" class="form-control">
+                        <option value=""></option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="required col-sm-3 control-label" style="padding-left:15px;">Postal Code</label>
+                    <div class="col-sm-6">
+                        <input id="address[postal_code]" value="<%=%>" name="address[postal_code" class="form-control"  type="text" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-offset-3 col-sm-1">
+                        <button type="submit" class="btn btn-info btn-lg">Continue</button>
+                    </div>
+                  </div>
+                   <%= hidden_field_tag "user_cart_ids[]", @customer_cart_media_ids %>
+                   <input id="subtotal" name="subtotal" type="hidden" value="<%=ApplicationController.crypt(@subtotal)%>" />
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <%= javascript_include_tag 'billing_address.js'%>
+      <%else%>
+      <!-- Billeng adreess form for customer -->
+        <%if current_user.present? && current_user.address.present?%>
+          <div class="col-sm-7">
+         <!--  <form class="form-horizontal" role="form" style="border: 1px solid #ddd; padding: 12px;">
+            <div class="form-group">
+                  <div class="col-sm-4">
+                      <h3>Payment Method</h3>
+                  </div>
+              </div>
+
+               <div class="form-group">
+                  <div class="col-sm-4">
+                      <img src="/assets/braintree-payments-logo3.jpg" alt="" />
+                  </div>
+              </div>
+
+              <div class="form-group">
+                  <div class="col-sm-9">
+                      <img src="/assets/checkout-with-paypal.png" alt="" />
+                  </div>
+              </div>
+          </form> -->
+            <div class="form-container radius-box glassy-bg small-10 small-centered medium-8 large-6 columns">
+              <h2 class="mbs">Process Transaction</h2>
+                <%= form_tag url_for(:controller => "cart_items", :action =>"media_payment_transaction", :method => "post") do%>
+                  <p>Please enter your payment details:</p>
+                    <div id="dropin" class ="transaction_grid"></div>
+                    <%= hidden_field_tag "amount", @subtotal %>
+                    <%= submit_tag "Pay Now", class: "button mt1 btn btn-info"  %>
+                <% end %>
+                <div class="row">
+                  <div class="col-xs-12 col-sm-12"></div>
+                    <% if current_user.present? %>
+                      <div class="col-xs-12 col-sm-12">
+                        <table id="BillingAddress">
+                          <tbody>
+                            <tr style="border: solid 1px; border-color: #CCCCCC;">
+                                <td style="padding-left: 10px !important;">
+                                    <h4 class="Billing_address">Billing Address</h4>
+                                </td>
+                                <td>
+                                    <a href="#" class="alert-link" data-toggle="modal" id="edit_customer" data-target="#BillingModal_customer">Edit</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding-left: 10px !important;">
+                                    <p><%= current_user.name %></p>
+                                    <p><%= current_user.address.street1%></p>
+                                    <p><%= current_user.address.street2%></p>
+                                    <p><%= current_user.address.country%></p>
+                                    <p><%= current_user.address.postal_code%></p>
+                                </td>
+                                <td></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    <% end %>
+                </div>
+              </div>
+          </div>
+        <%else session[:fname].present?%>
+          <div class="col-sm-7">
+         <!--  <form class="form-horizontal" role="form" style="border: 1px solid #ddd; padding: 12px;">
+            <div class="form-group">
+                  <div class="col-sm-4">
+                      <h3>Payment Method</h3>
+                  </div>
+              </div>
+
+               <div class="form-group">
+                  <div class="col-sm-4">
+                      <img src="/assets/braintree-payments-logo3.jpg" alt="" />
+                  </div>
+              </div>
+
+              <div class="form-group">
+                  <div class="col-sm-9">
+                      <img src="/assets/checkout-with-paypal.png" alt="" />
+                  </div>
+              </div>
+          </form> -->
+            <div class="form-container radius-box glassy-bg small-10 small-centered medium-8 large-6 columns">
+              <h2 class="mbs">Process Transaction</h2>
+                <%= form_tag url_for(:controller => "cart_items", :action =>"media_payment_transaction", :method => "post") do%>
+                  <p>Please enter your payment details:</p>
+                    <div id="dropin" class ="transaction_grid"></div>
+                    <%= hidden_field_tag "amount", @subtotal %>
+                    <%= submit_tag "Buy Now", class: "button mt1 btn btn-info"  %>
+                <% end %>
+                <div class="row">
+                  <div class="col-xs-12 col-sm-12"></div>
+                    <% if session[:fname].present? %>
+                      <div class="col-xs-12 col-sm-12">
+                        <table id="BillingAddress">
+                          <tbody>
+                            <tr style="border: solid 1px; border-color: #CCCCCC;">
+                                <td style="padding-left: 10px !important;">
+                                    <h4 class="Billing_address">Billing Address</h4>
+                                </td>
+                                <td>
+                                    <a href="#" class="alert-link" data-toggle="modal" id="edit_guest" data-target="#BillingModal">Edit</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding-left: 10px !important;">
+                                    <p><%= session[:fname] %> <%= session[:lname]%></p>
+                                    <p><%= session[:address1]%></p>
+                                    <p><%= session[:address2]%></p>
+                                    <p><%= session[:country]%></p>
+                                    <p><%= session[:postal_code]%></p>
+                                </td>
+                                <td></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    <% end %>
+                </div>
+              </div>
+            </div>
+        <%end%>
+      <%end%>
+      <!-- summary page model which is comman for both the users --> 
+      <div class="col-sm-5">
+        <ul class="list-group shopping-cart-total" style="padding-left: 0px;">
+          <li class="list-group-item">
+           <div class="col-sm-12 well text-center">
+              <b>Your Order</b>
+           
+              <%if current_user and current_user.is_tenant_owner?%>
+                  <a  href="<%=carts_path%>"  style="margin-left: 20%;">Edit</a>
+              <% elsif current_user and current_user.is_customer?%>
+                  <a  href="<%=carts_path%>" style="margin-left: 20%;">Edit</a>
+              <%else %>
+                  <a  href="<%=carts_path%>" style="margin-left: 20%;">Edit</a>
+              <%end%>
+            </div>
+            <div class="row">
+              <div class="col-sm-4 col-xs-4 text-left total-amount font1" >
+                  Item
+              </div>
+              <div class="col-sm-3 col-xs-3 text-left total-amount font1" >
+                  Qty
+              </div>
+              <div class="col-sm-5 col-xs-5 text-left total-amount font1" >
+                  Total<br>(Purchase Price)
+              </div>
+            </div>
+            <%@customer_cart_media_ids.each do |cart_item_id|%>
+              <%customer_cart_item = get_customer_cart_item(cart_item_id)%>
+                <div class="row">
+                  <% name = File.basename(customer_cart_item.media_file_name,File.extname(customer_cart_item.media_file_name))%>
+                    <div class="col-sm-4 col-xs-4 text-left subtotal trunc padding" data-size="40" title="<%= name %>">
+                        <%= name.gsub("_"," ") %>
+                    </div>
+                    <div class="col-sm-3 col-xs-3 text-left subtotal padding">
+                        1
+                    </div>
+                    <div class="col-sm-5 col-xs-5 text-left subtotal padding">
+                      <%if current_user.blank?%>
+                        <%= number_to_currency(customer_cart_item.media_amount, :precision=>2) %>
+                      <%else%>
+                        <%= number_to_currency(customer_cart_item.purchase_amount(current_user), :precision=>2) %>
+                      <%end%>
+                    </div>
+                </div>
+            <%end%>
+            <div class="row bgcolor">
+              <div class="col-sm-4 col-xs-4 text-left padding1">
+                  Subtotal
+              </div>
+              <div class="col-sm-3 col-xs-3 text-left padding padding1">
+                  <%= @customer_cart_media_ids.count%>
+              </div>
+              <div class="col-sm-5 col-xs-5 text-left padding padding1">
+                  <%= number_to_currency(@subtotal, :precision=>2) %>
+              </div>
+            </div>
+            <div class="row bgcolor">
+              <div class="col-sm-4 col-xs-4 text-left padding1">
+                  Tax
+              </div>
+              <div class="col-sm-3 col-xs-3 text-left padding padding1">
+              </div>
+              <div class="col-sm-5 col-xs-5 text-left padding padding1">
+                  $0.00
+              </div>
+            </div>
+            <div class="row bgcolor">
+              <div class="col-sm-4 col-xs-4 text-left padding1">
+                  Total
+              </div>
+              <div class="col-sm-3 col-xs-3 text-left padding padding1">
+              </div>
+              <div class="col-sm-5 col-xs-5 text-left padding padding1">
+                  <%= number_to_currency(@subtotal, :precision=>2) %>
+              </div>
+            </div>
+          </li>
+          <%unless current_user.blank? && session[:guest_email].blank?%>
+            <li class="list-group-item">
+              <div class="row">
+                <div class="col-sm-12 col-xs-12 text-center">
+                  <div class="col-sm-12 col-xs-12 text-center total-amount">
+                    <%= form_tag client_token_path,:method => 'post' do%>
+                      <%= hidden_field_tag "amount", @subtotal %>
+                      <%#=submit_tag "Pay Now", class: "button mt1 btn btn-primary"  %>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </li>
+          <%end%>
+      </ul>
+    </div>
+  </div>
+  <!--===================   Upload   End  ======================-->
+</div>
+
+
+<div class="modal fade container-fix" id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+
+  <div class="modal-dialog">
+      <div class="modal-content well">
+          <div class="modal-header">
+              <button type="button" class="close"
+             data-dismiss="modal" aria-hidden="true">
+                &times;
+          </button>
+          <h4 class="modal-title text-primary" id="myModalLabel">
+             Login Now
+          </h4>
+          </div>
+          <div class="modal-body">
+              <div class="row">
+                  <div class="col-sm-6" id="model_error">
+                     <%= form_for User.new, url: user_session_path, html: { method: :post, onsubmit: "return submitForm();", id:"model_login", class: "form-horizontal", role: 'form' } do |f| %>
+                          <div class="form-group">
+                              <label class="sr-only">Username</label>
+                              <%= f.text_field :username, placeholder: "Username", class: "form-control", id: "model_username" %>
+                          </div>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputPassword2">Password</label>
+                              <%= f.password_field :password, placeholder: "Password", type: :password, class: "form-control", id: "model_password" %>
+                          </div>
+                          <div class="form-group">
+                              <label class="sr-only">Login</label>
+                              <%= f.submit "Login", id: "LoginButton", class: "btn btn-info login-new" %>
+                          </div>
+                          <input name="model_login" type="hidden" class="form-control" value ="<%= request.url %>">
+                          <a href="<%=new_user_password_path%>" class="header-forget modal-forgot-password" name="forget_password">Forgot Password?</a>
+                          <a href="<%=forgot_username_path%>" class="header-forget modal-forgot-password" name="forget_password" style="margin-left: 0%;">Forgot Username?</a>
+                      <% end %>
+                  </div>
+              </div>
+          </div>
+          <div class="modal-footer">
+              <button type="button" data-dismiss="modal" class="btn btn-info">Cancel</button>
+          </div>
+      </div>
+  </div>
+
+
+</div>
+
+
+
+                                            <!-- This is a edit form for customer -->
+
+<div class="modal fade container-fix" id="BillingModal_customer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content well">
+      <div class="modal-header">
+        <button type="button" class="close"
+       data-dismiss="modal" aria-hidden="true">
+          &times;
+        </button>
+        <h4 class="modal-title text-primary" id="myModalLabel">
+           Billing Address
+        </h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12" id="model_error">
+            <form accept-charset="UTF-8" action="/update_address_customer" method="get" id="user_email" class="form-horizontal" role="form"><div style="display:none"><input name="utf8" type="hidden" value="&#x2713;" /></div>
+              <div class="form-group">
+                <label class="required col-sm-3 control-label" style="padding-left:15px;">First Name</label>
+                <div class="col-sm-6">
+                    <input id= "first_name" name="first_name" class="form-control"  type="text" value="<%= current_user.name rescue nil%>" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="required col-sm-3 control-label" style="padding-left:15px;">Address</label>
+                <div class="col-sm-6">
+                    <input id="address" name="address[street1]" class="form-control"  type="text" value="<%=current_user.address.street1 rescue nil%>" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label" style="padding-left:15px;">Address 2</label>
+                <div class="col-sm-6">
+                    <input id="address_2" name="address[street2]" class="form-control"  type="text" value="<%= current_user.address.street2 rescue nil%>"/>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="required col-sm-3 control-label" style="padding-left:15px;">Country</label>
+                <div class="col-sm-6">
+                  <select name="address[country]" id="country" class="form-control">
+                      <option  value=""></option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group" hidden>
+                <label class="required">State</label>
+                <select name="address[state]" id="state" onchange="listOfStatesOrCities(this,'region');" class="form-control">
+                  <option value="<%current_user.address.state rescue nil%>"></option>
+                </select>
+              </div>
+              <div class="form-group" hidden>
+                <label id="region_label" class="required">Region</label>
+                <select name="address[region]" id="region" onchange="listOfStatesOrCities(this,'city');" class="form-control">
+                    <option value=""></option>
+                </select>
+              </div>
+              <div class="form-group" id="div_city" hidden>
+                <label class="required">City</label>
+                <select name="address[city]" id="city" class="form-control">
+                    <option value="<%current_user.address.city rescue nil%>"></option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="required col-sm-3 control-label" style="padding-left:15px;">Postal Code</label>
+                <div class="col-sm-6">
+                    <input id="postal_code" name="address[postal_code]" class="form-control"  type="text" value="<%= current_user.address.postal_code rescue nil%>"/>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-1">
+                    <button type="submit" class="btn btn-info btn-lg">Save</button>
+                </div>
+              </div>
+              <input type="hidden" name="guest_user_email" value="<%= session[:guest_email]%>"/>
+              <%= hidden_field_tag "user_cart_ids[]", @customer_cart_media_ids %>
+              <input id="subtotal" name="subtotal" type="hidden" value="<%=ApplicationController.crypt(@subtotal)%>" />
+            </form>
+            <%= javascript_include_tag "billing_address.js"%>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+          <button type="button" data-dismiss="modal" class="btn btn-info">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+                                            <!-- This is a edit form for guest -->    
+<div class="modal fade container-fix" id="BillingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content well">
+      <div class="modal-header">
+        <button type="button" class="close"
+       data-dismiss="modal" aria-hidden="true">
+          &times;
+        </button>
+        <h4 class="modal-title text-primary" id="myModalLabel">
+           Billing Address
+        </h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12" id="model_error">
+            <form accept-charset="UTF-8" action="/get_guest_email" method="get" id="user_email" class="form-horizontal" role="form"><div style="display:none"><input name="utf8" type="hidden" value="&#x2713;" /></div>
+              <div class="form-group">
+                <label class="required col-sm-3 control-label" style="padding-left:15px;">First Name</label>
+                <div class="col-sm-6">
+                    <input id= "first_name" name="first_name" class="form-control"  type="text" value="<%= session[:fname] %>" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="required col-sm-3 control-label" style="padding-left:15px;">Address</label>
+                <div class="col-sm-6">
+                    <input id="address" name="address" class="form-control"  type="text" value="<%= session[:address1]%>" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label" style="padding-left:15px;">Address 2</label>
+                <div class="col-sm-6">
+                    <input id="address_2" name="address2" class="form-control"  type="text" value="<%= session[:address2]%>"/>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="required col-sm-3 control-label" style="padding-left:15px;">Country</label>
+                <div class="col-sm-6">
+                  <select name="country" id="country_guest" class="form-control">
+                      <option value=""></option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group" hidden>
+                <label class="required">State</label>
+                <select name="state" id="state" onchange="listOfStatesOrCities(this,'region');" class="form-control">
+                  <option value=""></option>
+                </select>
+              </div>
+              <div class="form-group" hidden>
+                <label id="region_label" class="required">Region</label>
+                <select name="region" id="region" onchange="listOfStatesOrCities(this,'city');" class="form-control">
+                    <option value=""></option>
+                </select>
+              </div>
+              <div class="form-group" id="div_city" hidden>
+                <label class="required">City</label>
+                <select name="city" id="city" class="form-control">
+                    <option value=""></option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="required col-sm-3 control-label" style="padding-left:15px;">Postal Code</label>
+                <div class="col-sm-6">
+                    <input id="postal_code" name="postal_code" class="form-control"  type="text" value="<%=session[:postal_code]%>"/>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-1">
+                    <button type="submit" class="btn btn-info btn-lg">Save</button>
+                </div>
+              </div>
+              <input type="hidden" name="guest_user_email" value="<%= session[:guest_email]%>"/>
+              <%= hidden_field_tag "user_cart_ids[]", @customer_cart_media_ids %>
+              <input id="subtotal" name="subtotal" type="hidden" value="<%=ApplicationController.crypt(@subtotal)%>" />
+            </form>
+            <%= javascript_include_tag 'billing_address.js'%>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+          <button type="button" data-dismiss="modal" class="btn btn-info">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+ <script>
+  $("#edit_guest").click(function(){
+    $("#country_guest").replaceWith($("#country"));
+    $("select#country").attr("name","country"); 
+    $($("select#country option:selected").text("<%=session[:country]%>")).val("<%=session[:country]%>")
+  });
+ 
+ <% if current_user.present? %>
+ 
+ $("#edit_customer").click(function(){
+    $($("select[name='address[country]'] option:selected").text("<%=current_user.address.country%>")).val("<%=current_user.address.country%>")   
+  })
+ <%end%>
+</script>
+
+<%= javascript_include_tag 'bootstrapValidator.js', 'summernote.min.js', "transactions.js", "braintree.js" %>
+<%= stylesheet_link_tag 'carts.css'%>

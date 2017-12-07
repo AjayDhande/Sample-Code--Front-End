@@ -1,0 +1,135 @@
+<div id="ProfileInformation" class="tab-pane fade active in">
+                       <!--form class="form-horizontal" action="/profile_update" method="post" role="form" id="profile" -->
+        
+           <%= form_for current_user,:url=> {:controller => 'customers', :action => 'profile_update'},:html=>{:class=>"form-horizontal", :role =>"form", :id => "profile", method: "POST", multipart: true} do |f| %> 
+            <div class="container">
+              <div class="form-group">
+                <h2>Your Profile</h2>
+              </div>
+              <div class="col-sm-4 profile_image">
+                <%if current_user.picture.present? %>
+                  <%= image_tag "#{current_user.picture.profile_picture.url}" %>
+                <%else%>
+                  <img src="<%= asset_path 'default.jpg'%>" >
+                <% end %>
+              </div>
+
+              <div class="col-sm-8">
+                 <div class="form-group">
+                  <label for="Name" class="col-sm-4 control-label required">Title</label>
+                  <div class="col-sm-8" style="padding-left:0px;">
+                    <select name="title_id" data-placeholder="" class="chosen-select" tabindex="2">
+                      <option name = "user[title]"><%= @user_title rescue nil%></option>
+                      <% @cust_title.each do |title| -%>
+                      <option name="user[title.id]" value="<%= title.id %>"> <%= title.title rescue nil%></option>
+                      <% end %>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                    <label for="Name" class="col-sm-4 control-label required">First Name</label>
+                    <div class="col-sm-8" style="padding-left:0px;">
+                      <input type="text" class="form-control" id="name" name="user[name]" value = "<%= current_user.name %>">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="Name" class="col-sm-4 control-label required">Last Name</label>
+                    <div class="col-sm-8" style="padding-left:0px;">
+                      <input type="text" class="form-control" id="last_name" name="user[last_name]" value = "<%= current_user.last_name %>">
+                    </div>
+                </div>
+                   
+                <div class="form-group">
+                  <label for="Email" class="col-sm-4 control-label required">Email</label>
+                  <div class="col-sm-8" style="padding-left:0px;">
+                    <input type="text" class="form-control" id="email" name="user[email]" value = "<%= current_user.email %>" >
+                  </div>
+               
+               
+                </div>
+                   
+                <div class="form-group">
+                  <label for="username" class="col-sm-4 control-label required">Username</label>
+                  <div class="col-sm-8" style="padding-left:0px;">
+                    <input type="text" class="form-control" id="username" name="user[username]" value = "<%= current_user.username %>" disabled >
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="Password" class="col-sm-4 control-label">Password</label>
+                  <div class="col-sm-8" style="padding-left:0px;">
+                    <input type="password" class="form-control" id="password" name="user[password]" >
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="Confirm Password" class="col-sm-4 control-label">Confirm Password</label>
+                  <div class="col-sm-8" style="padding-left:0px;">
+                    <input type="password" class="form-control" id="confirm_password" name="user[confirm_password]" >
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="Profile Image" class="col-sm-4 control-label">Profile Image</label>
+                  <div style="padding-left:0px;">
+                    <input type="file" id="profile_image" name="user[profile_image]" >
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="Address" class="col-sm-4 control-label">Address Street1</label>
+                  <div class="col-sm-8" style="padding-left:0px;">
+                  <input type="text" class="form-control" id="street1" name="address[street1]" value = "<%= current_user.address.street1 rescue nil%>" >
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="Address" class="col-sm-4 control-label">Address Street2</label>
+                  <div class="col-sm-8" style="padding-left:0px;">
+                    <input type="text" class="form-control" id="street2" name="address[street2]" value = "<%= current_user.address.street2 rescue nil%>" >
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="Address" class="col-sm-4 control-label">City</label>
+                  <div class="col-sm-8" style="padding-left:0px;">
+                    <input type="text" class="form-control" id="city" name="address[city]" value = "<%= current_user.address.city rescue nil%>">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="Address" class="col-sm-4 control-label">State</label>
+                  <div class="col-sm-8" style="padding-left:0px;">
+                    <input type="text" class="form-control" id="state" name="address[state]" value = "<%= current_user.address.state rescue nil%>">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="Address" class="col-sm-4 control-label required">Country</label>
+                  <div class="col-sm-8" style="padding-left:0px;">
+                    <input type="text" class="form-control" id="country" name="address[country]" value = "<%= current_user.address.country rescue nil%>">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="Address" class="col-sm-4 control-label required">Postal Code</label>
+                  <div class="col-sm-8" style="padding-left:0px;">
+                    <input type="text" class="form-control" id="postal_code" name="address[postal_code]" value = "<%= current_user.address.postal_code rescue nil%>">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="col-sm-offset-4 col-sm-8" style="padding-left:0px;">
+                    <a class="btn btn-info" href="<%= medialist_path%>">Back</a>
+                    <button type="submit" id="save" class="btn btn-info">Save</button>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+            <% end %>   
+           <!--/form-->
+            
+</div>
+
+<%= javascript_include_tag "customer_profile.js" %>
+

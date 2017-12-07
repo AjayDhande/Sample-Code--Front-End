@@ -1,0 +1,257 @@
+<!--div id="products" class="col-sm-12 list-group"-->
+  <% if messages.length == 0 %>    
+    <h5 class="error-color" style="padding-left:2%;">No Message Found</h5>
+  <% end %>
+
+  <% messages.each do |message| -%>
+
+  <% if current_subdomain.present? && (current_subdomain.id == message.subdomain_id) %>
+  <% link = "/media_details/#{ApplicationController.crypt(message.id)}"%>
+    
+    <%# if device_name.is_mobile? %>
+    <% if device_name.is_mobile? && browser.mobile? %>
+      <td style="padding: 5px;">
+      <div class="item custom-width grid-group-item" style="width:160px;">
+        <div class="media-list-height thumbnail" style="min-width: 140px;">
+          <a href="<%= link %>"><img class="group list-group-image" src="<%= message.media_art.url(:thumb) %>" alt=""></a>
+          <div class="caption">
+            <h4 class="group inner list-group-item-heading text-info media_file_name">
+              <% media_name = File.basename(message.media_file_name,File.extname(message.media_file_name)).gsub("_", " ") %>
+              <a href="<%= link %>" title="<%= media_name %>"><%= media_name %></a>
+            </h4>
+            <p class="group inner list-group-item-text trunc" data-size="42" title="<%= message.presenter_name %>">
+              <%= message.presenter_name %>
+            </p>
+            <div class="row">   
+              <div class="col-xs-2 custom-width">
+                <div class="rateit" id="rateit9" data-rate="<%= get_average_rating(message.id)%>">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 rating">
+                <p>
+                <% if get_number_of_likes(message.id) == 0 %>
+                  <span class="glyphicon glyphicon-heart-empty"></span>
+                <% else %>
+                  <span class="glyphicon glyphicon-heart"></span>&nbsp<%= get_number_of_likes(message.id)%> Likes
+                <% end %>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </td>
+    <%else%>
+      <div class="item custom-width col-xs-6 img_width col-md-3 col-lg-3 grid-group-item">
+        <div class="media-list-height thumbnail">
+          <a href="<%= link %>"><img class="group list-group-image" src="<%= message.media_art.url(:thumb) %>" alt=""></a>
+          <div class="caption">
+            <h4 class="group inner list-group-item-heading text-info media_file_name">
+              <% media_name = File.basename(message.media_file_name,File.extname(message.media_file_name)).gsub("_", " ") %>
+              <a href="<%= link %>" title="<%= media_name %>"><%= media_name %></a>
+            </h4>
+            <p class="group inner list-group-item-text trunc" data-size="42" title="<%= message.presenter_name %>">
+              <%= message.presenter_name %>
+            </p>
+            <div class="row">   
+              <div class="col-xs-2 custom-width">
+                <div class="rateit" id="rateit9" data-rate="<%= get_average_rating(message.id)%>">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 rating">
+                <p>
+                  <% if get_number_of_likes(message.id) == 0 %>
+                    <span class="glyphicon glyphicon-heart-empty"></span>
+                  <% else %>
+                    <span class="glyphicon glyphicon-heart"></span>&nbsp<%= get_number_of_likes(message.id)%> Likes
+                  <% end %>
+                </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <%end%>  
+
+  <% else %>
+  <% if (message.media_amount > 0) && (!SubmerchantAccounts.find_by(:user_id => (User.find_by(:username => (Subdomain.where(:id => message.subdomain_id).pluck(:subdomain_name).join(","))).id)).blank?)%>
+    <% link = "/media_details/#{ApplicationController.crypt(message.id)}"%>
+    
+    <%# if device_name.is_mobile? %>
+    <% if device_name.is_mobile? && browser.mobile? %>
+      <td style="padding: 5px;">
+      <div class="item custom-width grid-group-item" style="width:160px;">
+        <div class="media-list-height thumbnail" style="min-width: 140px;">
+          <a href="<%= link %>"><img class="group list-group-image" src="<%= message.media_art.url(:thumb) %>" alt=""></a>
+          <div class="caption">
+            <h4 class="group inner list-group-item-heading text-info media_file_name">
+              <% media_name = File.basename(message.media_file_name,File.extname(message.media_file_name)).gsub("_", " ") %>
+              <a href="<%= link %>" title="<%= media_name %>"><%= media_name %></a>
+            </h4>
+            <p class="group inner list-group-item-text trunc" data-size="42" title="<%= message.presenter_name %>">
+              <%= message.presenter_name %>
+            </p>
+            <div class="row">   
+              <div class="col-xs-2 custom-width">
+                <div class="rateit" id="rateit9" data-rate="<%= get_average_rating(message.id)%>">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 rating">
+                <p>
+                <% if get_number_of_likes(message.id) == 0 %>
+                  <span class="glyphicon glyphicon-heart-empty"></span>
+                <% else %>
+                  <span class="glyphicon glyphicon-heart"></span>&nbsp<%= get_number_of_likes(message.id)%> Likes
+                <% end %>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </td>
+    <%else%>
+      <div class="item custom-width col-xs-6 img_width col-md-3 col-lg-3 grid-group-item">
+        <div class="media-list-height thumbnail">
+          <a href="<%= link %>"><img class="group list-group-image" src="<%= message.media_art.url(:thumb) %>" alt=""></a>
+          <div class="caption">
+            <h4 class="group inner list-group-item-heading text-info media_file_name">
+              <% media_name = File.basename(message.media_file_name,File.extname(message.media_file_name)).gsub("_", " ") %>
+              <a href="<%= link %>" title="<%= media_name %>"><%= media_name %></a>
+            </h4>
+            <p class="group inner list-group-item-text trunc" data-size="42" title="<%= message.presenter_name %>">
+              <%= message.presenter_name %>
+            </p>
+            <div class="row">   
+              <div class="col-xs-2 custom-width">
+                <div class="rateit" id="rateit9" data-rate="<%= get_average_rating(message.id)%>">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 rating">
+                <p>
+                  <% if get_number_of_likes(message.id) == 0 %>
+                    <span class="glyphicon glyphicon-heart-empty"></span>
+                  <% else %>
+                    <span class="glyphicon glyphicon-heart"></span>&nbsp<%= get_number_of_likes(message.id)%> Likes
+                  <% end %>
+                </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <%end%>
+    <% else %>
+    <% if !(message.media_amount > 0) && %>
+    <% link = "/media_details/#{ApplicationController.crypt(message.id)}"%>
+    
+    <%# if device_name.is_mobile? %>
+    <% if device_name.is_mobile? && browser.mobile? %>
+      <td style="padding: 5px;">
+      <div class="item custom-width grid-group-item" style="width:160px;">
+        <div class="media-list-height thumbnail" style="min-width: 140px;">
+          <a href="<%= link %>"><img class="group list-group-image" src="<%= message.media_art.url(:thumb) %>" alt=""></a>
+          <div class="caption">
+            <h4 class="group inner list-group-item-heading text-info media_file_name">
+              <% media_name = File.basename(message.media_file_name,File.extname(message.media_file_name)).gsub("_", " ") %>
+              <a href="<%= link %>" title="<%= media_name %>"><%= media_name %></a>
+            </h4>
+            <p class="group inner list-group-item-text trunc" data-size="42" title="<%= message.presenter_name %>">
+              <%= message.presenter_name %>
+            </p>
+            <div class="row">   
+              <div class="col-xs-2 custom-width">
+                <div class="rateit" id="rateit9" data-rate="<%= get_average_rating(message.id)%>">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 rating">
+                <p>
+                <% if get_number_of_likes(message.id) == 0 %>
+                  <span class="glyphicon glyphicon-heart-empty"></span>
+                <% else %>
+                  <span class="glyphicon glyphicon-heart"></span>&nbsp<%= get_number_of_likes(message.id)%> Likes
+                <% end %>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </td>
+    <%else%>
+      <div class="item custom-width col-xs-6 img_width col-md-3 col-lg-3 grid-group-item">
+        <div class="media-list-height thumbnail">
+          <a href="<%= link %>"><img class="group list-group-image" src="<%= message.media_art.url(:thumb) %>" alt=""></a>
+          <div class="caption">
+            <h4 class="group inner list-group-item-heading text-info media_file_name">
+              <% media_name = File.basename(message.media_file_name,File.extname(message.media_file_name)).gsub("_", " ") %>
+              <a href="<%= link %>" title="<%= media_name %>"><%= media_name %></a>
+            </h4>
+            <p class="group inner list-group-item-text trunc" data-size="42" title="<%= message.presenter_name %>">
+              <%= message.presenter_name %>
+            </p>
+            <div class="row">   
+              <div class="col-xs-2 custom-width">
+                <div class="rateit" id="rateit9" data-rate="<%= get_average_rating(message.id)%>">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 rating">
+                <p>
+                  <% if get_number_of_likes(message.id) == 0 %>
+                    <span class="glyphicon glyphicon-heart-empty"></span>
+                  <% else %>
+                    <span class="glyphicon glyphicon-heart"></span>&nbsp<%= get_number_of_likes(message.id)%> Likes
+                  <% end %>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <%end%>
+    <% end %>
+  <% end %>
+  <% end %>
+  <% end %>
+<!--/div-->
+<%= javascript_include_tag 'jquery.rateit.js', 'rate.js' %>
+<%= stylesheet_link_tag 'rateit.css'%>  
+
+<style type="text/css">
+  .media-list-height{
+  line-height: 0.428571;
+  }
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

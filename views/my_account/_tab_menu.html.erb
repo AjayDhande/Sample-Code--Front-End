@@ -1,0 +1,448 @@
+<% if session[:back_url]!=nil && session[:back_url].include?("subdomain_plan") && session[:payment_status] == true && current_user.is_subdomain_admin?%>
+<!-- <div class="modal fade in as" id="myModal" role="dialog"  data-dismiss="modal"  data-toggle="modal" style="text-align:justify;">
+    <b>Your order has been processed!</b><br>
+    You can now view your new subscription plan level in My Account under the Plan & Billing Setting section <br>
+   Thank you for your purchase!<br>
+    
+</div> -->
+
+<!-- <div  id="" role="dialog"  data-dismiss="modal" 
+ data-toggle="modal" style="text-align:justify;"> -->
+  <div class="modal-dialog" >
+     <div class="modal-content" data-toggle="modal" data-dismiss="modal"  id="myModal">
+
+        <div class="modal-header">
+     
+         <h4 class="modal-title"> <b>Your order has been processed!</b></h4>
+        </div>
+
+           <div class="modal-body">
+    
+          You can now view your new subscription plan level in My Account under the Plan & Billing Setting section <br>
+           
+        </div>
+
+          <div class="modal-footer" style="text-align: left;">
+           <b >Thank you for your purchase!</b>
+        </div>
+     </div>
+    </div>
+  <!-- </div> -->
+
+
+<%end%>
+<% session[:back_url]=nil && session[:payment_status]=nil%>
+
+<%if current_subdomain.is_active?%>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="bs-example-tabs">
+        <ul class="nav nav-tabs" id="myTab">
+            <li class="active myAccount_tab5" name="ChurchAccountInfo"><a data-toggle="tab" href="#ChurchAccountInfo">My Account Info </a></li>
+          <li class="myAccount_tab5" name="AdminControl"><a data-toggle="tab" href="#AdminControl">Admin Control</a></li>
+          <% if !current_subdomain.is_ocm? %>
+            <li class="myAccount_tab5" name="YourChurchPlane"><a data-toggle="tab" id="change_plan_tab" href="#YourChurchPlane">My Subscription<%#= @user.subdomain.subdomain_type.subdomain_type.split('_').first.titleize %> Plan</a></li>
+          <% end %>
+          <li class="myAccount_tab5 hide" name="CancelYourAccount"><a data-toggle="tab" id="cancel_account" href="#CancelYourAccount">Cancel Your Account<!-- Cancel My Account --></a></li>
+          
+        </ul>
+        <div class="tab-content" id="myTabContent" style=" background: #ffffff;">
+          <div id="ChurchAccountInfo" class="tab-pane fade in active">
+            <form id = "update_church_account" action="<%= update_church_info_path %>" class="form-horizontal UserAdministration" method= "post">
+              <div class="row">
+                <div class="col-sm-6 col-xs-12">
+                   <div clas="row">
+                   <div class="col-sm-12 col-xs-12">
+                  <h2 class="church_info_tab">
+                    My Account Info
+                  </h2>
+                  <div class="form-group">
+                    <label for="Name" class="required">Title</label>
+                      <select name="title_id" data-placeholder="" class="chosen-select" tabindex="2">
+                        <%if current_user.title.present? %>
+                          <option name="church[title]" value="<%= current_user.title.id rescue nil%>"><%=current_user.title.title rescue nil%></option>
+                        <%end%>
+                        <% @title.each do |title| %>
+                          <option name="church[title]"value="<%= title.id %>"><%= title.title %></option>
+                        <% end %>
+                      </select>
+                  </div>
+
+                       
+                  <%# if current_user.role == "CUSTOMER"  %>
+                    <!-- <div class="form-group">
+                      <label class ="required">Your Name</label>
+                      <input id = "name_field" name="church[name]" type="text" class="form-control" value ="<%#= @user.name %>">
+                    </div> -->
+                  <%#end%>
+                  <div class="form-group">
+                    <label class ="required">First Name</label>
+                    <input id = "name_field" name="church[name]" type="text" class="form-control" value ="<%= @user.name %>">
+                  </div>
+                  <div class="form-group">
+                    <label class ="required">Last Name</label>
+                    <input id = "lname_field" name="church[last_name]" type="text" class="form-control" value ="<%= @user.last_name %>">
+                  </div>
+                  <div class="form-group">
+                    <label class ="required">Your Email</label>
+                    <input id = "email_id" name="church[email]" type="text" class="form-control" value = "<%= @user.email%>">
+                  </div>
+                  <div class="form-group">
+                    <label>Church/Organization/Business Name</label>
+                    <input id = "uname" type="text" class="form-control" value = "<%= @user.username%>" disabled = true>
+                  </div>
+                  <div class="form-group">
+                    <label >Your Site Acronym</label>&nbsp;&nbsp;<span class="example1">(must be four characters only. e.g: STJN)</span>
+                    <input id = "acronym" type="text" class="form-control" value = "<%=current_subdomain.acronym%>" disabled = true>
+                  </div>
+                  <div class="form-group">
+                    <label class ="required">Your Business Email</label>
+                    <input name="subdomain_email" type="text" class="form-control" value = "<%= current_subdomain.business_email%>">
+                  </div>
+                  <div class="form-group">
+                    <label>New Password</label>
+                    <input id = "pwd" name="church[password]" type="password" class="form-control" placeholder="" id = "pwd">
+                  </div>
+                  <div class="form-group">
+                    <label>Confirm Password</label>
+                    <input id = "confirm_pwd" name="church[confirm_password]" type="password" class="form-control" placeholder="" id = "confirm_pwd">
+                  </div>
+                  </div>
+                  </div>
+                  <div class="row">
+                  <div class="col-sm-12 col-xs-12" style="float: left;">
+                  <div class="well">
+                    <h2 class="" style="margin-bottom: 25px;">
+                      Address
+                    </h2>
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label">Address Street1</label>
+                      <div class="col-sm-8 col-xs-12">
+                        <input id = "street1" type="text" name="address[street1]" class="form-control" value = "<%= @user.address.street1%>">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label">Address Street2</label>
+                      <div class="col-sm-8 col-xs-12">
+                        <input id = "street2" type="text" name="address[street2]" class="form-control" value = "<%= @user.address.street2%>">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label">City</label>
+                      <div class="col-sm-8 col-xs-12">
+                        <input id = "city" type="text" name="address[city]" class="form-control" value = "<%=@user.address.city%>">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label">State</label>
+                      <div class="col-sm-8 col-xs-12">
+                        <input id = "state" type="text" name="address[state]" class="form-control" value = "<%= @user.address.state%>">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label required">Postal Code</label>
+                      <div class="col-sm-8 col-xs-12">
+                        <input id = "postalcode" type="text" name="address[postal_code]" class="form-control" value = "<%= @user.address.postal_code%>">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label required">Country</label>
+                      <div class="col-sm-8 col-xs-12">
+                        <input id = "country" type="text" name="address[country]" class="form-control" value = "<%= @user.address.country%>">
+                      </div>
+                    </div>
+                  </div>
+                  </div>
+                  </div>
+                  
+                  <div class="col-sm-12 col-xs-12">
+                    <div class="form-group" style="width:100%;">
+                      <div class="col-sm-12">
+                        <input id="SaveInfoButton" type="submit" class="btn btn-info" value="Save Info">
+                      </div>
+                    </div>
+                  </div>
+                
+                </div>
+                <div class="col-sm-6 col-xs-12">
+                 <h2 class="" style="margin-bottom: 25px;">
+                    Plan & Billing Setting
+                  </h2>
+                  <div class=" well">
+                    <p style="color: #FEA748; font-weight: bold; cursor:pointer" onclick="$('#change_plan_tab').click();">
+                      Change My Subscription Plan
+                    </p>
+                    <p align = "justify">
+                      You are currently on the <%= @current_plan.plan_name %> plan for $<%= number_with_precision(@current_plan.plan_amount, :precision => 2) %> <%= @current_plan.currency %> per month. Did you know by upgrading your plan you can get access to other churches premier messages.
+                    </p>
+                  </div>
+                  <div class=" well">
+                    <p style="color: #FEA748; font-weight: bold; cursor:pointer" onclick="$('#cancel_account').click();">
+                      Cancel My Account
+                    </p>
+                    <p align = "justify">
+                      Warning: Cancelling your account will immediately delete all your account information. This cannot be undone.
+                    </p>
+                  </div> 
+
+                </div>
+              </div>
+              <!-- <div class="row">
+                <div class="col-sm-12 address_section">
+                  <div class="well" style="width:100%; float: left;">
+                    <h2 class="" style="margin-bottom: 25px;">
+                      Address
+                    </h2>
+                    <div class="form-group" style="width:100%; float: left;">
+                      <label class="col-sm-2 control-label">Address Street1</label>
+                      <div class="col-sm-5">
+                        <input id = "street1" type="text" name="address[street1]" class="form-control" value = "<%= @user.address.street1%>">
+                      </div>
+                    </div>
+                    <div class="form-group" style="width:100%; float: left;">
+                      <label class="col-sm-2 control-label">Address Street2</label>
+                      <div class="col-sm-5">
+                        <input id = "street2" type="text" name="address[street2]" class="form-control" value = "<%= @user.address.street2%>">
+                      </div>
+                    </div>
+                    <div class="form-group" style="width:100%; float: left;">
+                      <label class="col-sm-2 control-label">City</label>
+                      <div class="col-sm-5">
+                        <input id = "city" type="text" name="address[city]" class="form-control" value = "<%=@user.address.city%>">
+                      </div>
+                    </div>
+                    <div class="form-group" style="width:100%; float: left;">
+                      <label class="col-sm-2 control-label">State</label>
+                      <div class="col-sm-5">
+                        <input id = "state" type="text" name="address[state]" class="form-control" value = "<%= @user.address.state%>">
+                      </div>
+                    </div>
+                    <div class="form-group" style="width:100%; float: left;">
+                      <label class="col-sm-2 control-label required">Postal Code</label>
+                      <div class="col-sm-5">
+                        <input id = "postalcode" type="text" name="address[postal_code]" class="form-control" value = "<%= @user.address.postal_code%>">
+                      </div>
+                    </div>
+                    <div class="form-group" style="width:100%; float: left;">
+                      <label class="col-sm-2 control-label required">Country</label>
+                      <div class="col-sm-5">
+                        <input id = "country" type="text" name="address[country]" class="form-control" value = "<%= @user.address.country%>">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-12">
+                  <div class="form-group" style="width:100%; float: left;">
+                    <div class="col-sm-3">
+                      <input id="SaveInfoButton" type="submit" class="btn btn-info" value="Save Info">
+                    </div>
+                  </div>
+                </div>
+              </div> -->
+            </form>
+          </div>
+          <div id="AdminControl" class="tab-pane fade">
+            <div class="row">
+              <div class="col-sm-12">
+                <h2 class="admin_control_tab">
+                  User Administration
+                </h2>
+              </div>
+            </div>
+            <div class="row">
+              <div class = "useradmin">
+                <%= render partial: "user_admin"%>
+              </div>
+            </div>
+          </div>
+          <div id="YourChurchPlane" class="tab-pane fade">
+            <%= render partial: "change_plan", locals: { subdomain_types: @subdomain_types} if !current_subdomain.is_ocm? %>
+          </div>
+          <div id="CancelYourAccount" class="tab-pane fade">
+            <div class="row">
+              <form action="<%= cancel_account_path %>" class="form-horizontal UserAdministration" method= "post" id ="cancel_account_form">
+                <div class="col-sm-12">
+                  <h2 class="heading-title"> Cancel Your Online Media Account</h2>
+                  <p align = "justify">We hate to see you go and hope you'll keep Online Church Media in
+                        mind should your situation change down the road. Below are some things you need to read and consider before you proceed.</p>
+                  <p align = "justify">Cancelling your account will immediately delete all your account information including all messages, music and preferences. This cannot be undone. You will be immediately logged out and if you have a paying account you wont be charged again please review our <a href="/terms_of_service">Terms of Service</a> if you have any question.</p>
+                  <h3 class="text-warning">Terms of Cancellation</h3>
+                  <ol>
+                    <li align = "justify">All account information, messages, music and preferences will be immediately deleted.</li>
+                    <li align = "justify">Accounts cannot be recovered. Your information and data are immediately and permanentely deleted from our site.</li>
+                    <li align = "justify">If you are on a pay plan, you will not be billed again, but you are still responsible for charges incurred upto the point of cancellation.</li>
+                  </ol>
+                  <h3>Agree to the Terms of Cancellation</h3>
+                  <p align = "justify">
+                    Thank you for using our site. Please give your feedback. Your feedback is valuable for us.
+                  </p>
+                  <div class="form-group">
+                    <div class="col-sm-6">
+                      <textarea id ="feedback_text" class="form-control" name="feedback[text]" placeholder = "Enter your feeback here..."></textarea>
+                    </div>
+                  </div>
+                  <p align = "justify">
+                    Reason to deactivate account
+                  </p>
+                  <div class="form-group">
+                    <div class="col-sm-6">
+                      <select class="selectpicker form-control" id="reason" name="feedback[reason]">
+                        <option value="0">Select</option>
+                        <option >Reason 1</option>
+                        <option >Reason 2</option>
+                        <option >Reason 3</option>
+                      </select>
+                    </div>
+                  </div>
+                  
+
+                  <div class="checkbox">
+                    <label>
+                      <input id="terms_of_cancelation" type="checkbox" value="agree" title="Please agree to our policy!">
+                      I have read, understand and agree to the Terms of Cancellation.
+                    </label>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-12" style="margin: 12px 0;">
+                      <input type="submit" value="Delete All my data and cancel my account" style="white-space:pre-wrap;"class="btn btn-danger">
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<%else%>
+  <div class="row">
+     <div class="col-sm-12">
+      <div class="bs-example-tabs">
+        <ul class="nav nav-tabs" id="myTab">
+          <li class="active"><a data-toggle="tab" href="#YourChurchPlane">Your <%= @user.subdomain.subdomain_type.subdomain_type.split('_').first.titleize %> Plan</a></li>
+          <li class=""><a data-toggle="tab" href="#CancelYourAccount">Cancel Your Account</a></li>
+        </ul>
+        <div class="tab-content" id="myTabContent">                  
+          <div id="YourChurchPlane" class="tab-pane fade in active">
+            <%= render partial: "change_plan", locals: { subdomain_types: @subdomain_types} if !current_subdomain.is_ocm? %>
+          </div>
+          <div id="CancelYourAccount" class="tab-pane fade">
+            <div class="row">
+              <form action="<%= cancel_account_path %>" class="form-horizontal UserAdministration" method= "post" id ="cancel_account_form">
+                <div class="col-sm-12">
+                  <h2 class="heading-title"> Cancel Your Online Media Account</h2>
+                    <p align = "justify">We hate to see you go and hope you'll keep Online Church Media in
+                    mind should your situation change down the road. Below are some things you need to read and consider before you proceed.</p>
+                    <p align = "justify">Cancelling your account will immediately delete all your account information including all messages, music and preferences. This cannot be undone. You will be immediately logged out and if you have a paying account you wont be charged again please review our <a href="/terms_of_service">Terms of Service</a> if you have any question.</p>
+                    <h3 class="text-warning">Terms of Cancellation</h3>
+                    <ol>
+                      <li align = "justify">All account information, messages, music and preferences will be immediately deleted.</li>
+                      <li align = "justify">Accounts cannot be recovered. Your information and data are immediately and permanentely deleted from our site.</li>
+                      <li align = "justify">If you are on a pay plan, you will not be billed again, but you are still responsible for charges incurred upto the point of cancellation.</li>
+                    </ol>
+                    <h3>Agree to the Terms of Cancellation</h3>
+                    <p align = "justify">
+                      Thank you for using our site. Please give your feedback. Your feedback is valuable for us.
+                    </p>
+                    <div class="form-group">
+                      <div class="col-sm-6">
+                        <textarea id ="feedback_text" class="form-control" name="feedback[text]" placeholder = "Enter your feeback here..."></textarea>
+                      </div>
+                    </div>
+                    <p align = "justify">
+                    Reason to deactivate account
+                    </p>
+                    <div class="form-group">
+                      <div class="col-sm-6">
+                        <select class="selectpicker form-control" id="reason" name="feedback[reason]">
+                          <option value="0">Select</option>
+                          <option >Reason 1</option>
+                          <option >Reason 2</option>
+                          <option >Reason 3</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="checkbox">
+                      <label>
+                        <input id="terms_of_cancelation" type="checkbox" value="agree" title="Please agree to our policy!">
+                        I have read, understand and agree to the Terms of Cancellation.
+                      </label>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-sm-12" style="margin: 12px 0;">
+                        <input type="submit" value="Delete All my data and cancel my account" class="btn btn-danger">
+                      </div>
+                    </div>
+                    
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<%end%>
+<%if request.referrer.present? &&  params[:action].present? && params[:controller].present? && params[:user_admin].present? %>
+  <script>
+  $(document).ready(function(){
+    $("a[href='#AdminControl']").click();
+  })
+  </script>
+<% end %>
+  
+  <div class="modal fade in as" id="newModal" role="dialog"  data-dismiss="modal"  data-toggle="modal" style="text-align:justify;">
+      <b>Special Offer!!</b><br>
+      You can now view your new subscription plan level in My Account <br>
+      Thank you for your support!<br>
+      <div class="col-sm-12">
+          <div class="monthly-pricing text-center shadow">
+            <ul class="list-group" style="padding-left:0px;">
+              <li class="list-group-item"><p class="message text-success" style="padding-top:15px; ">Gold Plan</p></li>
+              <li class="list-group-item background_blue">
+                <h4 class="text-success"><p class="plan_amount">
+                    $ 7 <br><br><small class="small_text"> per month</small> 
+                </p></h4>
+              </li>
+              <li class="list-group-item min-height_pp"><p class="desc">You can listen online or download any of these messages. this is the best way to skip the line and get messages you want when you want.</p></li>
+                <!-- <li class="list-group-item"><button  data-href="/" class="btn btn-default" style="color: #7B7A78;">Renew Now</button></li> -->
+            </ul>
+          </div>
+      </div>
+  </div>  
+
+<script type="text/javascript">
+  $(function(){
+    var mod = $('#myModal').val();
+    if (mod != undefined){
+      //jquery ui will open it as a modal popup
+      //$('#myModal').css("aria-hidden","false")
+      $('#myModal').dialog({modal: true});
+      //$('.ui-widget-header').hide();
+      $('.ui-widget-content').css('width','340px');
+      $($('.ui-widget-header').find('button')).text("×");
+      $('.ui-widget-overlay').css('background','#101010');
+    }
+    //on click of reason from dropdown jquery ui will open it as a modal popup
+    //$('#myModal').css("aria-hidden","false")
+
+    $('#reason').change(function () {
+      //$('#reason').val("");
+      if ($('#reason').val() && $('#reason').val() != ""){
+        if($('#reason').val() != "0"){
+          $('#newModal').dialog({modal: true});
+          $('.ui-widget-content').addClass("modal-content");
+          $('.modal-content').css('width','500px');
+          $('.modal-content').css('left','24%');
+          $('.modal-content').css('margin-top','-300px');          
+          $('#newModal').css('left','-1%');
+          //$($('.ui-widget-header').find('button')).text("×");
+          $($('.ui-widget-header').find('button')).text("×");
+          $('.ui-widget-overlay').css('background','#101010');
+        }
+      }
+    });
+});  
+</script>

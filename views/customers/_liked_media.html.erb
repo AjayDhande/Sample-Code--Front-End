@@ -1,0 +1,45 @@
+
+    <div class="row">
+        <% if likes.blank? %>
+            <div class="col-sm-12 well">
+                Currently you have no liked media.<br>
+                Once you have some liked media, it will be shown in the tabular format below.
+            </div>
+        <% else %>
+                <h2 class="text text-left" style="padding-left: 7px;">Media You Liked</h2>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="border-none">
+                            <tr>
+                                <th colspan="2" class="border-none">Media </th>
+                                <th class="border-none">Liked Media</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                          <% likes.each do |like| %>
+                            <%if !(like.uploaded_media.deactive?) && (like.uploaded_media.subdomain.is_active?)%>
+                              <tr>
+                                <% media_name = File.basename(like.uploaded_media.media_file_name,File.extname(like.uploaded_media.media_file_name)).gsub("_", " ") %>
+                                <td class="space">
+                                    <a href="/media_details/<%= ApplicationController.crypt(like.uploaded_media.id) %>"><span class="glyphicon glyphicon-play media-play-customer"></span></a>
+                                </td>
+                                <td>
+                                    <a href="/media_details/<%= ApplicationController.crypt(like.uploaded_media.id) %>"><span class="text-play-customer">
+                                        <%#= like.uploaded_media.media_file_name %>
+                                        <%= media_name%></span></a>
+                                </td>
+
+                                <td style="padding-left:40px;">
+                                    <span class="glyphicon glyphicon-heart liked-customer"></span>
+                                    <%#= get_number_of_likes(like.uploaded_media.id)%>
+                                </td>
+                              </tr>
+                            <%end%>
+                          <%end%>
+                        </tbody>
+                    </table>
+                    <%= ajax_will_paginate_for_like likes, params: { controller: "customers", action: "customer_likes" } %>
+                </div>
+        <%end%>
+    </div>
